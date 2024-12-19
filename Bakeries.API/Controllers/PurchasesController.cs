@@ -15,6 +15,29 @@ namespace Bakeries.API.Controllers
         {
             _purchasesServices = purchasesServices;
         }
+        [HttpGet("All")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<PurchasesDTO>>> GetAllPurchases()
+        {
+            try
+            {
+                var model = await _purchasesServices.GetAllPurchasesAsync();
+                if (model is null)
+                {
+
+                    return NotFound($" not found.");
+                }
+                return Ok(model);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
+            }
+        }
+
 
         [HttpGet("{Id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
