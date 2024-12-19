@@ -1,0 +1,83 @@
+# Visual Studio specific files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ASP.NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Uncomment if using NuGet Package Restore
+# packages/
+
+# Uncomment if using .NET Core
+# .vs/
+*.pidb
+*.pdb
+*.ilk
+*.obj
+*.suo
+*.pch
+*.idb
+*.aps
+*.ncb
+*.res
+*.exp
+*.lib
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+
+# End of file names specific for C#
+project.lock.json
+*.log
+*.nupkg
+*.nuspec
+*.user
+*.userprefs
+*.csproj.user
+*.dbmdl
+*.jfm
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folders for IIS temporary files
+IISExpress/
+
+# JetBrains Rider
+.idea/
+.idea/*
+
+# Mono auto generated files
+mono_crash.*.log
+*.pidb
+*.booproj
+*.unityproj
+*.sln.docstates
+
+# Windows Explorer Thumbnail Cache files
+Thumbs.db
+ehthumbs.db
+
+# End of File

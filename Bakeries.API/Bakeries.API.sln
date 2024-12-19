@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bakeries.API", "Bakeries.API.csproj", "{27B47B45-09B8-4489-ABCF-5F569CF48237}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bakeries.DataAccess", "..\Bakeries.DataAccess\Bakeries.DataAccess.csproj", "{7C6E330C-6C5E-4FAD-99B8-CA805A00C289}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bakeries.Business", "..\Bakeries.Business\Bakeries.Business.csproj", "{1DA9DD6D-EC9B-441B-99BC-28D41E370117}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.Shared", "..\Business.Shared\Business.Shared.csproj", "{D27A199E-C7BD-4920-BEE3-8AE7C1AD9DB0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27B47B45-09B8-4489-ABCF-5F569CF48237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27B47B45-09B8-4489-ABCF-5F569CF48237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27B47B45-09B8-4489-ABCF-5F569CF48237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27B47B45-09B8-4489-ABCF-5F569CF48237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C6E330C-6C5E-4FAD-99B8-CA805A00C289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C6E330C-6C5E-4FAD-99B8-CA805A00C289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C6E330C-6C5E-4FAD-99B8-CA805A00C289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C6E330C-6C5E-4FAD-99B8-CA805A00C289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DA9DD6D-EC9B-441B-99BC-28D41E370117}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA9DD6D-EC9B-441B-99BC-28D41E370117}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA9DD6D-EC9B-441B-99BC-28D41E370117}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA9DD6D-EC9B-441B-99BC-28D41E370117}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D27A199E-C7BD-4920-BEE3-8AE7C1AD9DB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D27A199E-C7BD-4920-BEE3-8AE7C1AD9DB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D27A199E-C7BD-4920-BEE3-8AE7C1AD9DB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D27A199E-C7BD-4920-BEE3-8AE7C1AD9DB0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
