@@ -250,7 +250,7 @@ class _PurchasesPageState extends State<PurchasesPage> {
                         IconButton(
                           icon: Icon(Icons.edit),
                           onPressed: () {
-                            openEditPurchaseDialog(purchaseList[index]);
+                          openEditPurchaseDialog(purchaseList[index]);
                           },
                         ),
                         IconButton(
