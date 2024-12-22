@@ -157,6 +157,7 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: $e')),
         );
+        Navigator.of(context).pop();
       }
     }
   }

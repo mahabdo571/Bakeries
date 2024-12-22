@@ -1,145 +1,9 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bakerieswepapp/Model/Purchase.dart'; // استيراد موديل Purchase
 import 'add_purchase_dialog.dart'; // استيراد صفحة الاضافة
-
-// class PurchasesPage extends StatefulWidget {
-//   @override
-//   _PurchasesPageState createState() => _PurchasesPageState();
-// }
-
-// class _PurchasesPageState extends State<PurchasesPage> {
-//   late Future<List<Purchase>> purchases;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     purchases = fetchPurchases();
-//   }
-
-//   // دالة لجلب البيانات من API
-//   Future<List<Purchase>> fetchPurchases() async {
-//     final response =
-//         await http.get(Uri.parse('http://localhost:5145/api/Purchases/All'));
-
-//     if (response.statusCode == 200) {
-//       List jsonResponse = json.decode(response.body);
-//       return jsonResponse.map((data) => Purchase.fromJson(data)).toList();
-//     } else {
-//       throw Exception('فشل في تحميل البيانات');
-//     }
-//   }
-
-//   // دالة لحذف عنصر
-//   Future<void> deletePurchase(int id) async {
-//     final response =
-//         await http.delete(Uri.parse('http://localhost:5145/api/Purchases/$id'));
-
-//     if (response.statusCode == 200) {
-//       setState(() {
-//         purchases = fetchPurchases();
-//       });
-//     } else {
-//       throw Exception('فشل في حذف العنصر');
-//     }
-//   }
-
-//   // دالة لفتح Dialog لإضافة عملية شراء جديدة
-//   void openAddPurchaseDialog() {
-//     showDialog(
-//       context: context,
-//       builder: (context) => AddPurchaseDialog(
-//         isEdit: false,
-//         onAdd: (newPurchase) {
-//           setState(() {
-//             purchases = fetchPurchases();
-//           });
-//         },
-//       ),
-//     );
-//   }
-
-//   // دالة لفتح Dialog لتعديل عملية شراء
-//   void openEditPurchaseDialog(Purchase purchase) {
-//     showDialog(
-//       context: context,
-//       builder: (context) => AddPurchaseDialog(
-//         isEdit: true,
-//         purchaseData: purchase.toJson(),
-//         onEdit: (updatedPurchase) {
-//           setState(() {
-//             purchases = fetchPurchases();
-//           });
-//         },
-//       ),
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('قائمة المشتريات',
-//             style: TextStyle(fontWeight: FontWeight.bold)),
-//         backgroundColor: Colors.brown,
-//       ),
-//       body: FutureBuilder<List<Purchase>>(
-//         future: purchases,
-//         builder: (context, snapshot) {
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             return Center(child: CircularProgressIndicator());
-//           } else if (snapshot.hasError) {
-//             return Center(child: Text('حدث خطأ: ${snapshot.error}'));
-//           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-//             return Center(child: Text('لا توجد بيانات لعرضها'));
-//           } else {
-//             List<Purchase> purchaseList = snapshot.data!;
-//             return ListView.builder(
-//               itemCount: purchaseList.length,
-//               itemBuilder: (context, index) {
-//                 return Card(
-//                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-//                   elevation: 5,
-//                   child: ListTile(
-//                     title: Text(purchaseList[index].item),
-//                     subtitle: Text(
-//                       'الكمية: ${purchaseList[index].quantity}, السعر: ${purchaseList[index].price}',
-//                     ),
-//                     trailing: Row(
-//                       mainAxisSize: MainAxisSize.min,
-//                       children: [
-//                         IconButton(
-//                           icon: Icon(Icons.edit),
-//                           onPressed: () {
-//                             openEditPurchaseDialog(purchaseList[index]);
-//                           },
-//                         ),
-//                         IconButton(
-//                           icon: Icon(Icons.delete),
-//                           onPressed: () {
-//                             deletePurchase(purchaseList[index].id);
-//                           },
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 );
-//               },
-//             );
-//           }
-//         },
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: openAddPurchaseDialog, // فتح Dialog لإضافة عملية شراء
-//         child: Icon(Icons.add),
-//         backgroundColor: Colors.brown,
-//       ),
-//     );
-//   }
-// }
-
-// //-----------------------
 
 class PurchasesPage extends StatefulWidget {
   @override
@@ -159,7 +23,7 @@ class _PurchasesPageState extends State<PurchasesPage> {
   Stream<List<Purchase>> fetchPurchasesStream() async* {
     while (true) {
       // الانتظار لفترة قصيرة قبل إعادة جلب البيانات (كل 5 ثواني مثلاً)
-      await Future.delayed(Duration(seconds: 3));
+      await Future.delayed(Duration(seconds: 2));
 
       final response =
           await http.get(Uri.parse('http://localhost:5145/api/Purchases/All'));
@@ -175,15 +39,32 @@ class _PurchasesPageState extends State<PurchasesPage> {
 
   // دالة لحذف العنصر
   Future<void> deletePurchase(int id) async {
-    final response =
-        await http.delete(Uri.parse('http://localhost:5145/api/Purchases/$id'));
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+    try {
+      final response = await http
+          .delete(Uri.parse('http://localhost:5145/api/Purchases/$id'));
 
-    if (response.statusCode == 200) {
-      // إذا تم الحذف بنجاح، ستستمر البيانات بالتحديث تلقائيًا
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('تم حذف العنصر')));
-    } else {
-      throw Exception('فشل في حذف العنصر');
+      if (response.statusCode == 200) {
+        // إذا تم الحذف بنجاح، ستستمر البيانات بالتحديث تلقائيًا
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('تم حذف العنصر')));
+      } else {
+        throw Exception('فشل في حذف العنصر');
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      await Future.delayed(Duration(seconds: 3));
+      // إغلاق مؤشر التحميل
+      Navigator.of(context).pop();
     }
   }
 
@@ -239,25 +120,106 @@ class _PurchasesPageState extends State<PurchasesPage> {
                 return Card(
                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                   elevation: 5,
-                  child: ListTile(
-                    title: Text(purchaseList[index].ItemName),
-                    subtitle: Text(
-                      'الكمية: ${purchaseList[index].Quantity}, السعر: ${purchaseList[index].UnitPrice}',
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
-                          openEditPurchaseDialog(purchaseList[index]);
-                          },
+                        // العنوان والوصف
+                        Row(
+                          children: [
+                            Icon(Icons.shopping_cart,
+                                color: Colors.brown, size: 24),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                purchaseList[index].ItemName,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
                         ),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            deletePurchase(purchaseList[index].Id);
-                          },
+                        SizedBox(height: 5),
+                        Text(
+                          purchaseList[index].ItemDescription,
+                          style:
+                              TextStyle(fontSize: 14, color: Colors.grey[600]),
+                        ),
+                        Divider(),
+
+                        // تفاصيل الكمية والسعر والتكلفة
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildDetailItem(Icons.inventory, 'الكمية',
+                                '${purchaseList[index].Quantity}'),
+                            _buildDetailItem(Icons.monetization_on, 'السعر',
+                                '${purchaseList[index].UnitPrice}'),
+                            _buildDetailItem(Icons.calculate, 'التكلفة',
+                                '${purchaseList[index].TotalCost}'),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+
+                        // المورد والفاتورة
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildDetailItem(Icons.person, 'المورد',
+                                purchaseList[index].SupplierName),
+                            _buildDetailItem(Icons.upcoming_outlined, 'الوحدة',
+                                purchaseList[index].UnitOfMeasure),
+                            _buildDetailItem(Icons.receipt, 'الفاتورة',
+                                purchaseList[index].SupplierInvoiceNumber),
+                          ],
+                        ),
+                        Divider(),
+
+                        // الحالة وطريقة الدفع
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildDetailItem(Icons.payment, 'الدفع',
+                                purchaseList[index].PaymentMethod),
+                            _buildDetailItem(Icons.notes, 'ملاحظات',
+                                purchaseList[index].Notes),
+                            _buildDetailItem(Icons.info, 'الحالة',
+                                purchaseList[index].Status),
+                          ],
+                        ),
+
+                        // أزرار التحكم
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ElevatedButton.icon(
+                                icon: Icon(Icons.edit, color: Colors.white),
+                                label: Text('تعديل'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                ),
+                                onPressed: () {
+                                  openEditPurchaseDialog(purchaseList[index]);
+                                },
+                              ),
+                              SizedBox(width: 10),
+                              ElevatedButton.icon(
+                                icon: Icon(Icons.delete, color: Colors.white),
+                                label: Text('حذف'),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red),
+                                onPressed: () {
+                                  deletePurchase(purchaseList[index].Id);
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -275,4 +237,26 @@ class _PurchasesPageState extends State<PurchasesPage> {
       ),
     );
   }
+}
+
+Widget _buildDetailItem(IconData icon, String label, String value) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        children: [
+          Icon(icon, color: Colors.brown, size: 18),
+          SizedBox(width: 5),
+          Text(
+            label,
+            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+          ),
+        ],
+      ),
+      Text(
+        value,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+    ],
+  );
 }
