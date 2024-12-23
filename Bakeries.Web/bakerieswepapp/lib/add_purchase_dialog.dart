@@ -101,20 +101,20 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
   Future<void> submitForm() async {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       final purchase = Purchase(
-        Id: widget.isEdit ? widget.purchaseData!['Id'] ?? 0 : 0,
-        ItemDescription: _itemDescriptionController.text,
-        ItemName: _itemNameController.text,
-        Notes: _notesController.text,
-        PaymentMethod: _selectedPaymentMethod.toString(),
-        Quantity: int.tryParse(_quantityController.text) ?? 0,
-        Status: _selectedStatus.toString(),
-        SupplierInvoiceNumber: _supplierInvoiceNumberController.text,
-        SupplierName: _supplierNameController.text,
-        TotalCost: double.tryParse(_totalCostController.text) ?? 0.0,
-        TotalPrice: double.tryParse(_totalPriceController.text) ?? 0.0,
-        UnitOfMeasure: _selectedUnit.toString(),
-        UnitPrice: double.tryParse(_unitPriceController.text) ?? 0.0,
-      );
+          Id: widget.isEdit ? widget.purchaseData!['Id'] ?? 0 : 0,
+          ItemDescription: _itemDescriptionController.text,
+          ItemName: _itemNameController.text,
+          Notes: _notesController.text,
+          PaymentMethod: _selectedPaymentMethod.toString(),
+          Quantity: int.tryParse(_quantityController.text) ?? 0,
+          Status: _selectedStatus.toString(),
+          SupplierInvoiceNumber: _supplierInvoiceNumberController.text,
+          SupplierName: _supplierNameController.text,
+          TotalCost: double.tryParse(_totalCostController.text) ?? 0.0,
+          TotalPrice: double.tryParse(_totalPriceController.text) ?? 0.0,
+          UnitOfMeasure: _selectedUnit.toString(),
+          UnitPrice: double.tryParse(_unitPriceController.text) ?? 0.0,
+          ItemId: 1);
 
       final url = widget.isEdit
           ? Uri.parse('http://localhost:5145/api/Purchases/${purchase.Id}')

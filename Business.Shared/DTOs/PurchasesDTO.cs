@@ -22,6 +22,7 @@ namespace Business.Shared.DTOs
         [Required]
         [StringLength(100)] // تحديد الحد الأقصى لعدد الحروف
         public string SupplierName { get; set; } // اسم المورد
+        public int ItemId { get; set; } // اسم المورد
 
         [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف
         public string SupplierInvoiceNumber { get; set; } // رقم فاتورة المورد

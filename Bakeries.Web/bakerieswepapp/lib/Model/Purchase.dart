@@ -12,6 +12,7 @@ class Purchase {
   final String UnitOfMeasure;
   final String PaymentMethod;
   final String Status;
+  final int ItemId;
 
   Purchase(
       {required this.Id,
@@ -26,7 +27,8 @@ class Purchase {
       required this.ItemDescription,
       required this.UnitOfMeasure,
       required this.PaymentMethod,
-      required this.Status});
+      required this.Status,
+      required this.ItemId});
 
   // تحويل JSON إلى كائن Purchase
   factory Purchase.fromJson(Map<String, dynamic> json) {
@@ -44,6 +46,7 @@ class Purchase {
       UnitOfMeasure: json['UnitOfMeasure'],
       PaymentMethod: json['PaymentMethod'],
       Status: json['Status'],
+      ItemId: json['ItemId'],
     );
   }
 
@@ -63,6 +66,7 @@ class Purchase {
       'UnitOfMeasure': UnitOfMeasure,
       'PaymentMethod': PaymentMethod,
       'Status': Status,
+      'ItemId': ItemId,
     };
   }
 }

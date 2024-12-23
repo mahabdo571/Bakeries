@@ -10,6 +10,7 @@ namespace Bakeries.Business
         public MappingProfile()
         {
             CreateMap<PurchasesModel, PurchasesDTO>().ReverseMap();
+            CreateMap<StockModel, StockDTO>().ReverseMap();
         }
         }
 }

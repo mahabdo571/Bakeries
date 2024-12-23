@@ -26,9 +26,11 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //Repo
 builder.Services.AddScoped<IPurchasesRepo, PurchasesRepo>();
+builder.Services.AddScoped<IStockRepo, StockRepo>();
 
 //Services
 builder.Services.AddScoped<IPurchasesServices, PurchasesServices>();
+builder.Services.AddScoped<IStockServices, StockServices>();
 
 
 builder.Services.AddControllers();

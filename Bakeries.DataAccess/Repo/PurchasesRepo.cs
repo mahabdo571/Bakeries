@@ -20,8 +20,10 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<int> AddPurchasesAsync(PurchasesModel model)
         {
-           await _dbContext.AddAsync(model);
-           await _dbContext.SaveChangesAsync();
+           await _dbContext.Purchases.AddAsync(model);
+            await _dbContext.SaveChangesAsync();
+            _dbContext.Database.ExecuteSqlRaw("EXEC UpdateStockOnPurchase @p0, @p1", model.ItemId, model.Quantity);
+
             return model.Id;
         }
 
