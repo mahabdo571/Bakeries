@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:bakerieswepapp/Componant/add_stock_dilog.dart';
 import 'package:bakerieswepapp/Componant/app_bar_for_all_bage.dart';
 import 'package:bakerieswepapp/Model/Stock.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:bakerieswepapp/Model/Purchase.dart'; // استيراد موديل Purchase
 import '../Componant/add_purchase_dialog.dart'; // استيراد صفحة الاضافة
 
 class StockScreens extends StatefulWidget {
@@ -72,10 +72,10 @@ class _StockScreensState extends State<StockScreens> {
   }
 
   // دالة لفتح Dialog لإضافة عملية شراء جديدة
-  void openAddPurchaseDialog() {
+  void openAddStockDialog() {
     showDialog(
       context: context,
-      builder: (context) => AddPurchaseDialog(
+      builder: (context) => AddStockDialog(
         isEdit: false,
         onAdd: (newPurchase) {
           // بعد إضافة عنصر جديد سيتم تحديث البيانات تلقائيًا
@@ -85,12 +85,12 @@ class _StockScreensState extends State<StockScreens> {
   }
 
   // دالة لفتح Dialog لتعديل عملية شراء
-  void openEditPurchaseDialog(Stock stock) {
+  void openEditStockDialog(Stock stock) {
     showDialog(
       context: context,
-      builder: (context) => AddPurchaseDialog(
+      builder: (context) => AddStockDialog(
         isEdit: true,
-        purchaseData: stock.toJson(),
+        stockData: stock.toJson(),
         onEdit: (updatedPurchase) {
           // بعد التعديل سيتم تحديث البيانات تلقائيًا
         },
@@ -196,7 +196,7 @@ class _StockScreensState extends State<StockScreens> {
                                   backgroundColor: Colors.blue,
                                 ),
                                 onPressed: () {
-                                  openEditPurchaseDialog(StockList[index]);
+                                  openEditStockDialog(StockList[index]);
                                 },
                               ),
                               SizedBox(width: 10),
@@ -222,7 +222,7 @@ class _StockScreensState extends State<StockScreens> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: openAddPurchaseDialog, // فتح Dialog لإضافة عملية شراء
+        onPressed: openAddStockDialog, // فتح Dialog لإضافة عملية شراء
         child: Icon(Icons.add),
         backgroundColor: Colors.brown,
       ),

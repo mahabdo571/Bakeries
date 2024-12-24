@@ -16,7 +16,7 @@ class AppBarForAllBage extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text('المخبز -  $NamePage',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white)),
       backgroundColor: Colors.brown,
       actions: [
         ElevatedButton(
