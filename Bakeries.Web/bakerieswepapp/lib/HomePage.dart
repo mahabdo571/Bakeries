@@ -1,19 +1,7 @@
-import 'package:bakerieswepapp/PurchasesPage.dart';
+import 'package:bakerieswepapp/Componant/app_bar_for_all_bage.dart';
+import 'package:bakerieswepapp/Screens/PurchasesPage.dart';
+import 'package:bakerieswepapp/Screens/stockScreens.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(BakeryApp());
-}
-
-class BakeryApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
-    );
-  }
-}
 
 class HomePage extends StatelessWidget {
   final List<Map<String, String>> productionData = [
@@ -25,42 +13,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('المخبز',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.brown,
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PurchasesPage()),
-              );
-            },
-            child: Text(
-              'المشتريات',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.brown[200],
-            ),
-          ),
-          TextButton(
-            onPressed: () {}, // رابط المخزن
-            child: Text('المخزن', style: TextStyle(color: Colors.white)),
-          ),
-          TextButton(
-            onPressed: () {}, // رابط المنتجات
-            child: Text('المنتجات', style: TextStyle(color: Colors.brown[200])),
-          ),
-          TextButton(
-            onPressed: () {}, // رابط عمليات الإنتاج
-            child:
-                Text('عمليات الإنتاج', style: TextStyle(color: Colors.white)),
-          ),
-        ],
+      appBar: AppBarForAllBage(
+        NamePage: 'الرئيسية',
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

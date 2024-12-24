@@ -9,6 +9,7 @@ namespace Bakeries.DataAccess.Repo.IRepo
 {
     public interface IPurchasesRepo
     {
+        Task<StockModel> GetStockDetailsFromItemId(int itemId, clsDbContext dbContext);
         Task<IEnumerable<PurchasesModel>> GetAllPurchasesAsync();
         Task<PurchasesModel> GetPurchasesByIdAsync(int id);
         Task<int> AddPurchasesAsync(PurchasesModel model);

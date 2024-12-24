@@ -23,7 +23,7 @@ namespace Bakeries.API.Controllers
         {
             try
             {
-                var model = await _purchasesServices.GetAllPurchasesAsync();
+                var model = await _purchasesServices.GetAllPurchasesWithItemDetailsAsync();
                 if (model is null)
                 {
 

@@ -12,7 +12,9 @@ namespace Business.Shared.DTOs
     {
         public int Id { get; set; }
 
-        
+        public string ItemName { get; set; }
+        public string ItemDescription { get; set; }
+
 
         [MaxLength]
         [Column(TypeName = "nvarchar(max)")]
@@ -26,13 +28,7 @@ namespace Business.Shared.DTOs
 
         [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف
         public string SupplierInvoiceNumber { get; set; } // رقم فاتورة المورد
-
-        [Required]
-        [StringLength(200)] // تحديد الحد الأقصى لعدد الحروف
-        public string ItemName { get; set; } // اسم المادة
-
-        [StringLength(500)] // تحديد الحد الأقصى لعدد الحروف
-        public string ItemDescription { get; set; } // وصف المادة
+ 
 
         [Required]
         public int Quantity { get; set; } // الكمية
@@ -51,9 +47,6 @@ namespace Business.Shared.DTOs
         [Column(TypeName = "decimal(18, 3)")]
         public decimal TotalPrice { get; set; } // إجمالي السعر      
 
-        [Required]
-        [Column(TypeName = "decimal(18, 3)")]
-        public decimal TotalCost { get; set; } // التكلفة الإجمالية
 
         [Required]
         [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف

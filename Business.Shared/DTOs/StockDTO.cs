@@ -24,7 +24,11 @@ namespace Business.Shared.DTOs
 
 
         public string Location { get; set; }
+        public string Notes { get; set; }
 
         public DateTime? UpdatedAt { get; set; }=DateTime.Now;
+
+        
+
     }
 }

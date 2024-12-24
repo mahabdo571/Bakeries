@@ -36,15 +36,8 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ItemDescription")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ItemName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
@@ -72,9 +65,6 @@ namespace Bakeries.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal>("TotalCost")
-                        .HasColumnType("decimal(18, 3)");
-
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18, 3)");
 
@@ -90,6 +80,8 @@ namespace Bakeries.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
 
                     b.ToTable("Purchases");
                 });
@@ -137,6 +129,22 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Stock");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchasesModel", b =>
+                {
+                    b.HasOne("Bakeries.DataAccess.Entities.StockModel", "Item")
+                        .WithMany("Purchases")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.StockModel", b =>
+                {
+                    b.Navigation("Purchases");
                 });
 #pragma warning restore 612, 618
         }

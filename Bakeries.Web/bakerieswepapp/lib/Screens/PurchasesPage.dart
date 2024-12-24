@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:bakerieswepapp/Componant/app_bar_for_all_bage.dart';
+import 'package:bakerieswepapp/Model/Stock.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bakerieswepapp/Model/Purchase.dart'; // استيراد موديل Purchase
-import 'add_purchase_dialog.dart'; // استيراد صفحة الاضافة
+import '../Componant/add_purchase_dialog.dart'; // استيراد صفحة الاضافة
 
 class PurchasesPage extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class PurchasesPage extends StatefulWidget {
 
 class _PurchasesPageState extends State<PurchasesPage> {
   late Stream<List<Purchase>> purchasesStream;
+  late Stream<List<Stock>> stockStream;
 
   @override
   void initState() {
@@ -98,10 +101,8 @@ class _PurchasesPageState extends State<PurchasesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('قائمة المشتريات',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.brown,
+      appBar: AppBarForAllBage(
+        NamePage: 'المشتريات',
       ),
       body: StreamBuilder<List<Purchase>>(
         stream: purchasesStream, // استخدام Stream
@@ -157,10 +158,12 @@ class _PurchasesPageState extends State<PurchasesPage> {
                           children: [
                             _buildDetailItem(Icons.inventory, 'الكمية',
                                 '${purchaseList[index].Quantity}'),
-                            _buildDetailItem(Icons.monetization_on, 'السعر',
+                            _buildDetailItem(
+                                Icons.monetization_on,
+                                'سعر الوحدة',
                                 '${purchaseList[index].UnitPrice}'),
-                            _buildDetailItem(Icons.calculate, 'التكلفة',
-                                '${purchaseList[index].TotalCost}'),
+                            _buildDetailItem(Icons.calculate, 'السعر الكلي',
+                                '${purchaseList[index].TotalPrice}'),
                           ],
                         ),
                         SizedBox(height: 10),
@@ -169,11 +172,13 @@ class _PurchasesPageState extends State<PurchasesPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _buildDetailItem(Icons.person, 'المورد',
+                            _buildDetailItem(Icons.person, 'التاجر او المورد',
                                 purchaseList[index].SupplierName),
-                            _buildDetailItem(Icons.upcoming_outlined, 'الوحدة',
+                            _buildDetailItem(
+                                Icons.upcoming_outlined,
+                                'وحدة القياس',
                                 purchaseList[index].UnitOfMeasure),
-                            _buildDetailItem(Icons.receipt, 'الفاتورة',
+                            _buildDetailItem(Icons.receipt, 'رقم الفاتورة',
                                 purchaseList[index].SupplierInvoiceNumber),
                           ],
                         ),
@@ -183,7 +188,7 @@ class _PurchasesPageState extends State<PurchasesPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _buildDetailItem(Icons.payment, 'الدفع',
+                            _buildDetailItem(Icons.payment, 'طريقة الدفع',
                                 purchaseList[index].PaymentMethod),
                             _buildDetailItem(Icons.notes, 'ملاحظات',
                                 purchaseList[index].Notes),

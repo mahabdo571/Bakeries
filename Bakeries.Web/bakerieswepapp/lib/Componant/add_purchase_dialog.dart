@@ -31,7 +31,9 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
   late TextEditingController _totalCostController;
   late TextEditingController _totalPriceController;
   late TextEditingController _unitPriceController;
+  bool _isLoading = true; // حالة التحميل
 
+  final List<Map<int, String>> _items = [];
   final List<String> _statusList = [
     'مدفوع',
     'جديد',
@@ -52,6 +54,7 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
     'شيكل'
   ];
 
+  int? _selectedItem;
   String? _selectedUnit;
   String? _selectedPaymentMethod;
   String? _selectedStatus;
@@ -59,6 +62,7 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
   @override
   void initState() {
     super.initState();
+    _fetchItems();
     _itemDescriptionController = TextEditingController(
         text: widget.purchaseData?['ItemDescription'].toString() ?? '');
     _itemNameController =
@@ -79,6 +83,7 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
         text: widget.purchaseData?['UnitPrice'].toString() ?? '');
 
     _selectedUnit = widget.purchaseData?['UnitOfMeasure'];
+    _selectedItem = widget.purchaseData?['ItemId'];
 
     _selectedPaymentMethod = widget.purchaseData?['PaymentMethod'];
     _selectedStatus = widget.purchaseData?['Status'];
@@ -98,23 +103,56 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
     super.dispose();
   }
 
+  Future<void> _fetchItems() async {
+    try {
+      // عنوان API الخاص بك
+      final url = Uri.parse('http://localhost:5145/api/Stock/All');
+
+      // إرسال الطلب
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+
+        // تحويل البيانات إلى قائمة Map
+        final List<Map<int, String>> loadedItems = data.map((item) {
+          return {item['Id'] as int: item['ItemName'] as String};
+        }).toList();
+
+        setState(() {
+          _items.addAll(loadedItems);
+          _isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load items');
+      }
+    } catch (error) {
+      setState(() {
+        _isLoading = true;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error loading items: $error')),
+      );
+    }
+  }
+
   Future<void> submitForm() async {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       final purchase = Purchase(
           Id: widget.isEdit ? widget.purchaseData!['Id'] ?? 0 : 0,
-          ItemDescription: _itemDescriptionController.text,
-          ItemName: _itemNameController.text,
+           ItemDescription:'',
+          ItemName: '',
           Notes: _notesController.text,
           PaymentMethod: _selectedPaymentMethod.toString(),
           Quantity: int.tryParse(_quantityController.text) ?? 0,
           Status: _selectedStatus.toString(),
           SupplierInvoiceNumber: _supplierInvoiceNumberController.text,
           SupplierName: _supplierNameController.text,
-          TotalCost: double.tryParse(_totalCostController.text) ?? 0.0,
+          // TotalCost: double.tryParse(_totalCostController.text) ?? 0.0,
           TotalPrice: double.tryParse(_totalPriceController.text) ?? 0.0,
           UnitOfMeasure: _selectedUnit.toString(),
           UnitPrice: double.tryParse(_unitPriceController.text) ?? 0.0,
-          ItemId: 1);
+          ItemId: int.tryParse(_selectedItem.toString()) ?? 0);
 
       final url = widget.isEdit
           ? Uri.parse('http://localhost:5145/api/Purchases/${purchase.Id}')
@@ -179,15 +217,30 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
               // صف يحتوي على الحقلين "اسم الصنف" و "اسم المورد"
               Row(
                 children: [
-                  Container(
-                    width: fieldWidth,
-                    child: TextFormField(
-                      controller: _itemNameController,
-                      decoration: InputDecoration(labelText: 'اسم الصنف'),
-                      validator: (value) =>
-                          value!.isEmpty ? 'يجب إدخال الصنف' : null,
-                    ),
-                  ),
+                  _isLoading
+                      ? Center(
+                          child: CircularProgressIndicator()) // حالة التحميل
+                      : Container(
+                          width: fieldWidth,
+                          child: DropdownButtonFormField<int>(
+                            decoration:
+                                InputDecoration(labelText: 'اختيار صنف'),
+                            value: _selectedItem,
+                            items: _items.map((item) {
+                              final id = item.keys.first;
+                              final description = item[id]!;
+                              return DropdownMenuItem<int>(
+                                value: id,
+                                child: Text(description),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              _selectedItem = value;
+                            },
+                            validator: (value) =>
+                                value == null ? 'يجب اختيار  صنف' : null,
+                          ),
+                        ),
                   SizedBox(width: 16),
                   Container(
                     width: fieldWidth,
@@ -254,25 +307,6 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
                       decoration: InputDecoration(labelText: 'رقم الفاتورة'),
                       validator: (value) =>
                           value!.isEmpty ? 'يجب إدخال رقم الفاتورة' : null,
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Container(
-                    width: fieldWidth,
-                    child: TextFormField(
-                      controller: _totalCostController,
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(labelText: 'التكلفة الكلية '),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'يجب إدخال السعر الكلي';
-                        } else if (!RegExp(r'^[+-]?\d+(\.\d+)?$')
-                            .hasMatch(value)) {
-                          return 'أدخل رقم صحيح';
-                        }
-                        return null;
-                      },
                     ),
                   ),
                 ],
@@ -363,15 +397,7 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
                 ],
               ),
               SizedBox(height: 16),
-              // الحقلين "تفاصيل إضافية" و "السعر"
-              TextFormField(
-                controller: _itemDescriptionController,
-                maxLines: 4,
-                decoration: InputDecoration(labelText: 'تفاصيل إضافية'),
-                validator: (value) =>
-                    value!.isEmpty ? 'يجب إدخال التفاصيل العنصر' : null,
-              ),
-              SizedBox(height: 16),
+
               TextFormField(
                 controller: _notesController,
                 maxLines: 3,
