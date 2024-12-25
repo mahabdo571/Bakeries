@@ -529,3 +529,4 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+/Bakeries.Web/bakerieswepapp/build
