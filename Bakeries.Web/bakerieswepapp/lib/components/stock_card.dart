@@ -1,6 +1,6 @@
 // import 'dart:convert';
 
-import 'package:bakerieswepapp/Model/Stock.dart';
+import 'package:bakerieswepapp/models/Stock.dart';
 import 'package:flutter/material.dart';
 
 class StockCard extends StatelessWidget {
@@ -8,7 +8,8 @@ class StockCard extends StatelessWidget {
   final Function(Stock) onEdit;
   final Function(int) onDelete;
 
-  StockCard({required this.stock, required this.onEdit, required this.onDelete});
+  StockCard(
+      {required this.stock, required this.onEdit, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +45,14 @@ class StockCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildDetailItem(Icons.inventory, 'الكمية المتوفرة', '${stock.QuantityInStock}'),
-                _buildDetailItem(Icons.payment, 'الحد الادنى للطلب', stock.ReorderLevel.toString()),
-                _buildDetailItem(Icons.person, 'الموقع في المخزن', stock.Location),
-                _buildDetailItem(Icons.upcoming_outlined, 'وحدة القياس', stock.UnitOfMeasure),
+                _buildDetailItem(Icons.inventory, 'الكمية المتوفرة',
+                    '${stock.QuantityInStock}'),
+                _buildDetailItem(Icons.payment, 'الحد الادنى للطلب',
+                    stock.ReorderLevel.toString()),
+                _buildDetailItem(
+                    Icons.person, 'الموقع في المخزن', stock.Location),
+                _buildDetailItem(Icons.upcoming_outlined, 'وحدة القياس',
+                    stock.UnitOfMeasure),
               ],
             ),
             SizedBox(height: 10),
@@ -59,14 +64,16 @@ class StockCard extends StatelessWidget {
                   ElevatedButton.icon(
                     icon: Icon(Icons.edit, color: Colors.white),
                     label: Text('تعديل'),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                     onPressed: () => onEdit(stock),
                   ),
                   SizedBox(width: 10),
                   ElevatedButton.icon(
                     icon: Icon(Icons.delete, color: Colors.white),
                     label: Text('حذف'),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     onPressed: () => onDelete(stock.Id),
                   ),
                 ],
@@ -86,10 +93,12 @@ class StockCard extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.brown, size: 18),
             SizedBox(width: 5),
-            Text(label, style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+            Text(label,
+                style: TextStyle(fontSize: 14, color: Colors.grey[600])),
           ],
         ),
-        Text(value, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(value,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
       ],
     );
   }

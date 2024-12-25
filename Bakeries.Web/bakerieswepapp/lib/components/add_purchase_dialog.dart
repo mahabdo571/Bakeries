@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:bakerieswepapp/Model/Purchase.dart'; // استيراد الموديل
+import 'package:bakerieswepapp/models/Purchase.dart'; // استيراد الموديل
 import '../api_config.dart';
 
 class AddPurchaseDialog extends StatefulWidget {

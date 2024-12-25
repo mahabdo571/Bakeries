@@ -1,4 +1,4 @@
-import 'package:bakerieswepapp/HomePage.dart';
+import 'package:bakerieswepapp/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {

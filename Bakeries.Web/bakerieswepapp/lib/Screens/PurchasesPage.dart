@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:bakerieswepapp/Componant/app_bar_for_all_bage.dart';
-import 'package:bakerieswepapp/Model/Stock.dart';
+import 'package:bakerieswepapp/components/app_bar/app_bar_for_all_page.dart';
+import 'package:bakerieswepapp/models/Stock.dart';
 import 'package:bakerieswepapp/api_config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:bakerieswepapp/Model/Purchase.dart'; // استيراد موديل Purchase
-import '../Componant/add_purchase_dialog.dart'; // استيراد صفحة الاضافة
+import 'package:bakerieswepapp/models/Purchase.dart'; // استيراد موديل Purchase
+import '../components/add_purchase_dialog.dart'; // استيراد صفحة الاضافة
 
 class PurchasesPage extends StatefulWidget {
   @override
@@ -101,8 +101,8 @@ class _PurchasesPageState extends State<PurchasesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarForAllBage(
-        NamePage: 'المشتريات',
+      appBar: AppBarForAllPage(
+        pageName: 'المشتريات',
       ),
       body: StreamBuilder<List<Purchase>>(
         stream: purchasesStream, // استخدام Stream

@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:bakerieswepapp/Componant/add_stock_dilog.dart';
-import 'package:bakerieswepapp/Componant/app_bar_for_all_bage.dart';
-import 'package:bakerieswepapp/Componant/stock_card.dart';
-import 'package:bakerieswepapp/Model/Stock.dart';
+import 'package:bakerieswepapp/components/add_stock_dilog.dart';
+import 'package:bakerieswepapp/components/app_bar/app_bar_for_all_page.dart';
+import 'package:bakerieswepapp/components/stock_card.dart';
+import 'package:bakerieswepapp/models/Stock.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../api_config.dart';
@@ -86,7 +86,7 @@ class _StockScreensState extends State<StockScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarForAllBage(NamePage: 'المخزن'),
+      appBar: AppBarForAllPage(pageName: 'المخزن'),
       body: StreamBuilder<List<Stock>>(
         stream: StockStream,
         builder: (context, snapshot) {
