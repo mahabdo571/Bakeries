@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bakerieswepapp/Model/Purchase.dart'; // استيراد الموديل
+import '../api_config.dart';
 
 class AddPurchaseDialog extends StatefulWidget {
   final bool isEdit;
@@ -59,6 +60,11 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
   String? _selectedPaymentMethod;
   String? _selectedStatus;
 
+  double _unitPrice = 0;
+  int _quantity = 0;
+
+  double get _totalPrice => _quantity * _unitPrice;
+
   @override
   void initState() {
     super.initState();
@@ -77,8 +83,7 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
         text: widget.purchaseData?['Quantity'].toString() ?? '');
     _totalCostController = TextEditingController(
         text: widget.purchaseData?['TotalCost'].toString() ?? '');
-    _totalPriceController = TextEditingController(
-        text: widget.purchaseData?['TotalPrice'].toString() ?? '');
+
     _unitPriceController = TextEditingController(
         text: widget.purchaseData?['UnitPrice'].toString() ?? '');
 
@@ -87,6 +92,13 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
 
     _selectedPaymentMethod = widget.purchaseData?['PaymentMethod'];
     _selectedStatus = widget.purchaseData?['Status'];
+    setState(() {
+      _unitPrice = double.tryParse(_quantityController.text) ?? 0;
+      _quantity = int.tryParse(_quantityController.text) ?? 0;
+    });
+
+    _totalPriceController =
+        TextEditingController(text: _totalPrice.toString() ?? '');
   }
 
   @override
@@ -106,7 +118,7 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
   Future<void> _fetchItems() async {
     try {
       // عنوان API الخاص بك
-      final url = Uri.parse('http://localhost:5145/api/Stock/All');
+      final url = Uri.parse(ApiConfig.stockAll);
 
       // إرسال الطلب
       final response = await http.get(url);
@@ -140,7 +152,7 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       final purchase = Purchase(
           Id: widget.isEdit ? widget.purchaseData!['Id'] ?? 0 : 0,
-           ItemDescription:'',
+          ItemDescription: '',
           ItemName: '',
           Notes: _notesController.text,
           PaymentMethod: _selectedPaymentMethod.toString(),
@@ -149,14 +161,14 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
           SupplierInvoiceNumber: _supplierInvoiceNumberController.text,
           SupplierName: _supplierNameController.text,
           // TotalCost: double.tryParse(_totalCostController.text) ?? 0.0,
-          TotalPrice: double.tryParse(_totalPriceController.text) ?? 0.0,
+          TotalPrice: _totalPrice,
           UnitOfMeasure: _selectedUnit.toString(),
           UnitPrice: double.tryParse(_unitPriceController.text) ?? 0.0,
           ItemId: int.tryParse(_selectedItem.toString()) ?? 0);
 
       final url = widget.isEdit
-          ? Uri.parse('http://localhost:5145/api/Purchases/${purchase.Id}')
-          : Uri.parse('http://localhost:5145/api/Purchases/');
+          ? Uri.parse('${ApiConfig.purchasesById}${purchase.Id}')
+          : Uri.parse(ApiConfig.purchases);
 
       final purchaseTojson = purchase.toJson();
 
@@ -260,6 +272,10 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
                   Container(
                     width: fieldWidth,
                     child: TextFormField(
+                      enabled: false,
+
+                      // initialValue: _totalPrice.toString(),
+
                       controller: _totalPriceController,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
@@ -283,6 +299,13 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
                       decoration: InputDecoration(labelText: 'سعر الوحدة '),
+                      onChanged: (val) {
+                        setState(() {
+                          _unitPrice = double.tryParse(val) ?? 0;
+                          _totalPriceController = TextEditingController(
+                              text: _totalPrice.toString() ?? '');
+                        });
+                      },
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'يجب إدخال السعر الكلي';
@@ -322,6 +345,13 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
                       keyboardType:
                           TextInputType.numberWithOptions(signed: true),
                       decoration: InputDecoration(labelText: 'الكمية'),
+                      onChanged: (val) {
+                        setState(() {
+                          _quantity = int.tryParse(val) ?? 0;
+                          _totalPriceController = TextEditingController(
+                              text: _totalPrice.toString() ?? '');
+                        });
+                      },
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'يجب إدخال الكمية';

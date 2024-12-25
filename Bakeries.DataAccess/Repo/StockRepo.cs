@@ -27,6 +27,11 @@ namespace Bakeries.DataAccess.Repo
         {
             var model = await _dbContext.Stock.WhereNotDeleted().FirstOrDefaultAsync(s=>s.Id == id);
 
+            var purchases = await _dbContext.Purchases.WhereNotDeleted().FirstOrDefaultAsync((p) => p.ItemId == model.Id);
+
+            if (purchases is not null)
+                throw new Exception("Item associated with purchases cannot be deleted - delete associated purchases first");
+
             model.DeletedAt  = DateTime.Now;
 
             _dbContext.Stock.Update(model);

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bakerieswepapp/Componant/app_bar_for_all_bage.dart';
 import 'package:bakerieswepapp/Model/Stock.dart';
+import 'package:bakerieswepapp/api_config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bakerieswepapp/Model/Purchase.dart'; // استيراد موديل Purchase
@@ -28,8 +29,7 @@ class _PurchasesPageState extends State<PurchasesPage> {
       // الانتظار لفترة قصيرة قبل إعادة جلب البيانات (كل 5 ثواني مثلاً)
       await Future.delayed(Duration(seconds: 2));
 
-      final response =
-          await http.get(Uri.parse('http://localhost:5145/api/Purchases/All'));
+      final response = await http.get(Uri.parse(ApiConfig.purchasesAll));
 
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
@@ -52,15 +52,15 @@ class _PurchasesPageState extends State<PurchasesPage> {
       },
     );
     try {
-      final response = await http
-          .delete(Uri.parse('http://localhost:5145/api/Purchases/$id'));
+      final response =
+          await http.delete(Uri.parse('${ApiConfig.purchasesById}$id'));
 
       if (response.statusCode == 200) {
         // إذا تم الحذف بنجاح، ستستمر البيانات بالتحديث تلقائيًا
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('تم حذف العنصر')));
       } else {
-        throw Exception('فشل في حذف العنصر');
+        throw Exception(response.body);
       }
     } catch (e) {
       print(e);

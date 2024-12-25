@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:bakerieswepapp/Model/Stock.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:bakerieswepapp/Model/Purchase.dart'; // استيراد الموديل
+import '../api_config.dart';
 
 class AddStockDialog extends StatefulWidget {
   final bool isEdit;
@@ -26,6 +26,8 @@ class _AddStockDialogState extends State<AddStockDialog> {
   late TextEditingController _itemDescriptionController;
   late TextEditingController _itemNameController;
   late TextEditingController _quantityController;
+  late TextEditingController _locationController;
+  late TextEditingController _reorderLevelController;
 
   bool _isLoading = true; // حالة التحميل
 
@@ -45,11 +47,20 @@ class _AddStockDialogState extends State<AddStockDialog> {
     super.initState();
 
     _itemDescriptionController = TextEditingController(
-        text: widget.stockData?['ItemDescription'].toString() ?? '');
+        text: widget.stockData?['Notes'].toString() ?? '');
+
+    _locationController = TextEditingController(
+        text: widget.stockData?['Location'].toString() ?? '');
+
+    _reorderLevelController = TextEditingController(
+        text: widget.stockData?['ReorderLevel'].toString() ?? '');
+
     _itemNameController =
         TextEditingController(text: widget.stockData?['ItemName'] ?? '');
+
     _quantityController = TextEditingController(
-        text: widget.stockData?['Quantity'].toString() ?? '');
+        text: widget.stockData?['QuantityInStock'].toString() ?? '');
+
     _selectedUnit = widget.stockData?['UnitOfMeasure'];
   }
 
@@ -57,7 +68,8 @@ class _AddStockDialogState extends State<AddStockDialog> {
   void dispose() {
     _itemDescriptionController.dispose();
     _itemNameController.dispose();
-
+    _reorderLevelController.dispose();
+    _locationController.dispose();
     _quantityController.dispose();
     super.dispose();
   }
@@ -70,13 +82,13 @@ class _AddStockDialogState extends State<AddStockDialog> {
         Notes: _itemDescriptionController.text,
         QuantityInStock: int.tryParse(_quantityController.text) ?? 0,
         UnitOfMeasure: _selectedUnit.toString(),
-        Location: '',
-        ReorderLevel: 0,
+        Location: _locationController.text,
+        ReorderLevel: int.tryParse(_reorderLevelController.text) ?? 0,
       );
 
       final url = widget.isEdit
-          ? Uri.parse('http://localhost:5145/api/Stock/${stock.Id}')
-          : Uri.parse('http://localhost:5145/api/Stock/');
+          ? Uri.parse('${ApiConfig.StockById}${stock.Id}')
+          : Uri.parse(ApiConfig.stock);
 
       final stockTojson = stock.toJson();
 
@@ -97,7 +109,7 @@ class _AddStockDialogState extends State<AddStockDialog> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text(
-                    'Purchase ${widget.isEdit ? "updated" : "added"} successfully!')),
+                    'Item ${widget.isEdit ? "updated" : "added"} successfully!')),
           );
 
           widget.isEdit
@@ -107,8 +119,7 @@ class _AddStockDialogState extends State<AddStockDialog> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content:
-                    Text('Failed to add/update purchase: ${response.body}')),
+                content: Text('Failed to add/update Item: ${response.body}')),
           );
         }
       } catch (e) {
@@ -146,25 +157,20 @@ class _AddStockDialogState extends State<AddStockDialog> {
                           value!.isEmpty ? 'يجب إدخال اسم الصنف ' : null,
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 16),
-
-              // صف يحتوي على الحقلين "رقم الفاتورة" و "السعر الكلي"
-              Row(
-                children: [
+                  SizedBox(height: 16),
                   Container(
                     width: fieldWidth,
                     child: TextFormField(
-                      controller: _quantityController,
-                      decoration: InputDecoration(
-                          labelText: 'ملاحظات او تفاصيل المنتج '),
+                      controller: _locationController,
+                      decoration:
+                          InputDecoration(labelText: 'الموقع في المخزن'),
                       validator: (value) =>
-                          value!.isEmpty ? 'يجب إدخال ملاحظات ' : null,
+                          value!.isEmpty ? 'يجب إدخال الموقع ' : null,
                     ),
                   ),
                 ],
               ),
+
               SizedBox(height: 16),
               // صف يحتوي على الحقلين "الكمية" و "وحدة القياس"
               Row(
@@ -189,6 +195,29 @@ class _AddStockDialogState extends State<AddStockDialog> {
                   SizedBox(width: 16),
                   Container(
                     width: fieldWidth,
+                    child: TextFormField(
+                      controller: _reorderLevelController,
+                      keyboardType:
+                          TextInputType.numberWithOptions(signed: true),
+                      decoration: InputDecoration(labelText: 'ادنى كمية للطلب'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'يجب إدخال الحد الادنى';
+                        } else if (!RegExp(r'^[+-]?\d+$').hasMatch(value)) {
+                          return 'أدخل رقم صحيح';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  Container(
+                    width: fieldWidth,
                     child: DropdownButtonFormField<String>(
                       decoration: InputDecoration(labelText: 'وحدة القياس'),
                       value: _selectedUnit,
@@ -207,7 +236,6 @@ class _AddStockDialogState extends State<AddStockDialog> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
               // صف يحتوي على الحقلين "طريقة الدفع" و "حالة الفاتورة"
 
               TextFormField(

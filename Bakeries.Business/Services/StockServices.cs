@@ -32,8 +32,15 @@ namespace Bakeries.Business.Services
 
         public async Task DeleteStockAsync(int id)
         {
-            await _stockRepo.DeleteStockAsync(id);
-        }
+            try
+            {
+                await _stockRepo.DeleteStockAsync(id);
+            }catch(Exception e)
+            {
+                throw e;
+            }
+
+            }
 
         public async Task<IEnumerable<StockDTO>> GetAllStockAsync()
         {

@@ -1,11 +1,11 @@
 import 'dart:convert';
-
 import 'package:bakerieswepapp/Componant/add_stock_dilog.dart';
 import 'package:bakerieswepapp/Componant/app_bar_for_all_bage.dart';
+import 'package:bakerieswepapp/Componant/stock_card.dart';
 import 'package:bakerieswepapp/Model/Stock.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../Componant/add_purchase_dialog.dart'; // استيراد صفحة الاضافة
+import '../api_config.dart';
 
 class StockScreens extends StatefulWidget {
   @override
@@ -14,7 +14,6 @@ class StockScreens extends StatefulWidget {
 
 class _StockScreensState extends State<StockScreens> {
   late Stream<List<Stock>> StockStream;
-  late Stream<List<Stock>> stockStream;
 
   @override
   void initState() {
@@ -25,12 +24,8 @@ class _StockScreensState extends State<StockScreens> {
   // دالة لإنشاء Stream للتحديث التلقائي
   Stream<List<Stock>> fetchStockStream() async* {
     while (true) {
-      // الانتظار لفترة قصيرة قبل إعادة جلب البيانات (كل 5 ثواني مثلاً)
       await Future.delayed(Duration(seconds: 2));
-
-      final response =
-          await http.get(Uri.parse('http://localhost:5145/api/Stock/All'));
-
+      final response = await http.get(Uri.parse(ApiConfig.stockAll));
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
         yield jsonResponse.map((data) => Stock.fromJson(data)).toList();
@@ -41,32 +36,26 @@ class _StockScreensState extends State<StockScreens> {
   }
 
   // دالة لحذف العنصر
-  Future<void> deletePurchase(int id) async {
+  Future<void> deleteStockItem(int id) async {
     showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      },
+      builder: (context) => Center(child: CircularProgressIndicator()),
     );
     try {
-      final response = await http
-          .delete(Uri.parse('http://localhost:5145/api/Purchases/$id'));
-
+      final response =
+          await http.delete(Uri.parse('${ApiConfig.StockById}$id'));
       if (response.statusCode == 200) {
-        // إذا تم الحذف بنجاح، ستستمر البيانات بالتحديث تلقائيًا
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('تم حذف العنصر')));
       } else {
-        throw Exception('فشل في حذف العنصر');
+        throw Exception(response.body);
       }
     } catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       await Future.delayed(Duration(seconds: 3));
-      // إغلاق مؤشر التحميل
       Navigator.of(context).pop();
     }
   }
@@ -77,9 +66,7 @@ class _StockScreensState extends State<StockScreens> {
       context: context,
       builder: (context) => AddStockDialog(
         isEdit: false,
-        onAdd: (newPurchase) {
-          // بعد إضافة عنصر جديد سيتم تحديث البيانات تلقائيًا
-        },
+        onAdd: (newPurchase) {},
       ),
     );
   }
@@ -91,9 +78,7 @@ class _StockScreensState extends State<StockScreens> {
       builder: (context) => AddStockDialog(
         isEdit: true,
         stockData: stock.toJson(),
-        onEdit: (updatedPurchase) {
-          // بعد التعديل سيتم تحديث البيانات تلقائيًا
-        },
+        onEdit: (updatedstock) {},
       ),
     );
   }
@@ -101,11 +86,9 @@ class _StockScreensState extends State<StockScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarForAllBage(
-        NamePage: 'المخزن',
-      ),
+      appBar: AppBarForAllBage(NamePage: 'المخزن'),
       body: StreamBuilder<List<Stock>>(
-        stream: StockStream, // استخدام Stream
+        stream: StockStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -118,103 +101,10 @@ class _StockScreensState extends State<StockScreens> {
             return ListView.builder(
               itemCount: StockList.length,
               itemBuilder: (context, index) {
-                return Card(
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // العنوان والوصف
-                        Row(
-                          children: [
-                            Icon(Icons.shopping_cart,
-                                color: Colors.brown, size: 24),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                StockList[index].ItemName,
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          StockList[index].Notes,
-                          style:
-                              TextStyle(fontSize: 14, color: Colors.grey[600]),
-                        ),
-                        Divider(),
-
-                        // تفاصيل الكمية والسعر والتكلفة
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildDetailItem(Icons.inventory, 'الكمية',
-                                '${StockList[index].QuantityInStock}'),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-
-                        // المورد والفاتورة
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildDetailItem(Icons.person, 'الموقع في المخزن',
-                                StockList[index].Location),
-                            _buildDetailItem(Icons.upcoming_outlined,
-                                'وحدة القياس', StockList[index].UnitOfMeasure),
-                          ],
-                        ),
-                        Divider(),
-
-                        // الحالة وطريقة الدفع
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildDetailItem(Icons.payment, 'الحد الادنى للطلب',
-                                StockList[index].ReorderLevel.toString()),
-                          ],
-                        ),
-
-                        // أزرار التحكم
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ElevatedButton.icon(
-                                icon: Icon(Icons.edit, color: Colors.white),
-                                label: Text('تعديل'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                ),
-                                onPressed: () {
-                                  openEditStockDialog(StockList[index]);
-                                },
-                              ),
-                              SizedBox(width: 10),
-                              ElevatedButton.icon(
-                                icon: Icon(Icons.delete, color: Colors.white),
-                                label: Text('حذف'),
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red),
-                                onPressed: () {
-                                  deletePurchase(StockList[index].Id);
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                return StockCard(
+                  stock: StockList[index],
+                  onEdit: openEditStockDialog,
+                  onDelete: deleteStockItem,
                 );
               },
             );
@@ -222,32 +112,10 @@ class _StockScreensState extends State<StockScreens> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: openAddStockDialog, // فتح Dialog لإضافة عملية شراء
+        onPressed: openAddStockDialog,
         child: Icon(Icons.add),
         backgroundColor: Colors.brown,
       ),
     );
   }
-}
-
-Widget _buildDetailItem(IconData icon, String label, String value) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Row(
-        children: [
-          Icon(icon, color: Colors.brown, size: 18),
-          SizedBox(width: 5),
-          Text(
-            label,
-            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-          ),
-        ],
-      ),
-      Text(
-        value,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-    ],
-  );
 }
