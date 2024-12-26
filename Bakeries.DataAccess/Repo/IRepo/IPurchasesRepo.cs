@@ -7,13 +7,9 @@ using System.Threading.Tasks;
 
 namespace Bakeries.DataAccess.Repo.IRepo
 {
-    public interface IPurchasesRepo
+    public interface IPurchasesRepo : IRepoBase<PurchasesModel>
     {
         Task<StockModel> GetStockDetailsFromItemId(int itemId, clsDbContext dbContext);
-        Task<IEnumerable<PurchasesModel>> GetAllPurchasesAsync();
-        Task<PurchasesModel> GetPurchasesByIdAsync(int id);
-        Task<int> AddPurchasesAsync(PurchasesModel model);
-        Task UpdatePurchasesAsync(PurchasesModel model);
-        Task DeletePurchasesAsync(int id);
+
     }
 }

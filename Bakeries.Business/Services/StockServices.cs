@@ -23,18 +23,18 @@ namespace Bakeries.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<int> AddStockAsync(StockDTO model)
+        public async Task<int> AddAsync(StockDTO model)
         {
             var newModel = _mapper.Map<StockModel>(model);
 
-            return await _stockRepo.AddStockAsync(newModel);
+            return await _stockRepo.AddAsync(newModel);
         }
 
-        public async Task DeleteStockAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             try
             {
-                await _stockRepo.DeleteStockAsync(id);
+                await _stockRepo.DeleteAsync(id);
             }catch(Exception e)
             {
                 throw e;
@@ -42,9 +42,9 @@ namespace Bakeries.Business.Services
 
             }
 
-        public async Task<IEnumerable<StockDTO>> GetAllStockAsync()
+        public async Task<IEnumerable<StockDTO>> GetAllAsync()
         {
-            var model = await _stockRepo.GetAllStockAsync(); ;
+            var model = await _stockRepo.GetAllAsync(); ;
 
             var newModel = _mapper.Map<IEnumerable<StockDTO>>(model);
 
@@ -52,14 +52,14 @@ namespace Bakeries.Business.Services
             return newModel;
         }
 
-        public async Task<StockDTO> GetStockByIdAsync(int id)
+        public async Task<StockDTO> GetByIdAsync(int id)
         {
-            return _mapper.Map<StockDTO>(await _stockRepo.GetStockByIdAsync(id));
+            return _mapper.Map<StockDTO>(await _stockRepo.GetByIdAsync(id));
         }
 
-        public async Task UpdateStockAsync(StockDTO model)
+        public async Task UpdateAsync(StockDTO model)
         {
-            await _stockRepo.UpdateStockAsync(_mapper.Map<StockModel>(model));
+            await _stockRepo.UpdateAsync(_mapper.Map<StockModel>(model));
         }
     }
 }

@@ -30,23 +30,29 @@ namespace Bakeries.Business.Services
 
 
 
-        public async Task<int> AddPurchasesAsync(PurchasesDTO model)
+        public async Task<int> AddAsync(PurchasesDTO model)
         {
             var newModel = _mapper.Map<PurchasesModel>(model);
 
-            return await _purchasesRepo.AddPurchasesAsync(newModel);
+            return await _purchasesRepo.AddAsync(newModel);
 
         }
 
-        public async Task DeletePurchasesAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-           await _purchasesRepo.DeletePurchasesAsync(id);
+           await _purchasesRepo.DeleteAsync(id);
+        }
+
+        public async Task<IEnumerable<PurchasesDTO>> GetAllAsync()
+        {
+            var newModel = _mapper.Map<IEnumerable<PurchasesDTO>>( await _purchasesRepo.GetAllAsync());
+            return newModel;
         }
 
         public async Task<IEnumerable<PurchasesDTO>> GetAllPurchasesWithItemDetailsAsync()
         {
             // استرجاع بيانات الـ Purchases
-            var model = await _purchasesRepo.GetAllPurchasesAsync();
+            var model = await _purchasesRepo.GetAllAsync();
 
             // استخدام AutoMapper لتحويل البيانات إلى DTO
             var newModel = _mapper.Map<IEnumerable<PurchasesDTO>>(model);
@@ -78,14 +84,14 @@ namespace Bakeries.Business.Services
 
 
 
-        public async Task<PurchasesDTO> GetPurchasesByIdAsync(int id)
+        public async Task<PurchasesDTO> GetByIdAsync(int id)
         {
-            return _mapper.Map<PurchasesDTO>(await _purchasesRepo.GetPurchasesByIdAsync(id));
+            return _mapper.Map<PurchasesDTO>(await _purchasesRepo.GetByIdAsync(id));
         }
 
-        public async Task UpdatePurchasesAsync(PurchasesDTO model)
+        public async Task UpdateAsync(PurchasesDTO model)
         {
-            await _purchasesRepo.UpdatePurchasesAsync(_mapper.Map<PurchasesModel>(model));
+            await _purchasesRepo.UpdateAsync(_mapper.Map<PurchasesModel>(model));
         }
     }
 }

@@ -1,13 +1,31 @@
-using Bakeries.Business.Services;
+﻿using Bakeries.Business.Services;
 using Bakeries.Business.Services.IServices;
 using Bakeries.DataAccess;
 using Bakeries.DataAccess.Repo;
 using Bakeries.DataAccess.Repo.IRepo;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
+using Microsoft.Extensions.Hosting;
+using Serilog.Sinks.Syslog;
+using System.Runtime.InteropServices;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 
+
+builder.Logging.ClearProviders();  // إزالة المزودات الافتراضية
+builder.Services.AddLogging(); // تأكد من إضافة خدمة ILogger
+if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+{
+    builder.Logging.AddEventLog(); // إضافة Event Log كمزود للتسجيلات
+
+}
+else
+{
+  builder.Logging.AddSerilog();
+}
 
 
 builder.Services.AddDbContext<clsDbContext>(options =>
@@ -27,10 +45,14 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //Repo
 builder.Services.AddScoped<IPurchasesRepo, PurchasesRepo>();
 builder.Services.AddScoped<IStockRepo, StockRepo>();
+builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
+builder.Services.AddScoped<IProductIngredientRepo, ProductIngredientRepo>();
 
 //Services
 builder.Services.AddScoped<IPurchasesServices, PurchasesServices>();
 builder.Services.AddScoped<IStockServices, StockServices>();
+builder.Services.AddScoped<IProductServices, ProductServices>();
+builder.Services.AddScoped<IProductIngredientService, ProductIngredientService>();
 
 
 builder.Services.AddControllers();

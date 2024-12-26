@@ -4,12 +4,9 @@ using Business.Shared.DTOs;
 
 namespace Bakeries.Business.Services.IServices
 {
-    public interface IPurchasesServices
+    public interface IPurchasesServices  :IServices<PurchasesDTO>
     {
         Task<IEnumerable<PurchasesDTO>> GetAllPurchasesWithItemDetailsAsync();
-        Task<PurchasesDTO> GetPurchasesByIdAsync(int id);
-        Task<int> AddPurchasesAsync(PurchasesDTO model);
-        Task UpdatePurchasesAsync(PurchasesDTO model);
-        Task DeletePurchasesAsync(int id);
+
     }
 }

@@ -15,7 +15,8 @@ namespace Business.Shared.DTOs
         public string ItemName { get; set; }
 
         [Required]
-        public int QuantityInStock { get; set; }
+        public int AvailableQuantity { get; set; }
+
         [StringLength(50, ErrorMessage = "lenght max 50")]
         public string UnitOfMeasure { get; set; }
 

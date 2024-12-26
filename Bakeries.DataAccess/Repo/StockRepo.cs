@@ -16,14 +16,14 @@ namespace Bakeries.DataAccess.Repo
         _dbContext = dbContext;
         
         }
-        public async  Task<int> AddStockAsync(StockModel model)
+        public async  Task<int> AddAsync(StockModel model)
         {
             await _dbContext.Stock.AddAsync(model);
             await _dbContext.SaveChangesAsync();
             return model .Id;
         }
 
-        public async Task DeleteStockAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var model = await _dbContext.Stock.WhereNotDeleted().FirstOrDefaultAsync(s=>s.Id == id);
 
@@ -39,18 +39,18 @@ namespace Bakeries.DataAccess.Repo
 
         }
 
-        public async Task<IEnumerable<StockModel>> GetAllStockAsync()
+        public async Task<IEnumerable<StockModel>> GetAllAsync()
         {
           return  await _dbContext.Stock.WhereNotDeleted().ToListAsync();
         }
 
-        public async Task<StockModel> GetStockByIdAsync(int id)
+        public async Task<StockModel> GetByIdAsync(int id)
         {
             return await _dbContext.Stock.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
 
         }
 
-        public async Task UpdateStockAsync(StockModel model)
+        public async Task UpdateAsync(StockModel model)
         {
             _dbContext.Stock.Update(model);
             await _dbContext.SaveChangesAsync();

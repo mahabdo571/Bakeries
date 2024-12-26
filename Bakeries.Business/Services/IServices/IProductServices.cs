@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Bakeries.Business.Services.IServices
 {
-    public interface IStockServices : IServices<StockDTO>
+    public interface IProductServices :IServices<ProductDTO>
     {
-      
+
     }
 }

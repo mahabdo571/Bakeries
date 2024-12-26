@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Bakeries.DataAccess.Repo.IRepo
 {
-    public interface IStockRepo:IRepoBase<StockModel>
+    public interface IProductsRepo : IRepoBase<ProductsModel>
     {
+
     }
 }

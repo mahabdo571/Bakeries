@@ -22,6 +22,97 @@ namespace Bakeries.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductIngredientModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UnitOfMeasure")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("stockId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("IX_ProductIngredient_ProductId");
+
+                    b.HasIndex("stockId")
+                        .HasDatabaseName("IX_ProductIngredient_StockId");
+
+                    b.ToTable("ProductIngredient");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductsModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .HasDatabaseName("IX_Products_Name");
+
+                    b.ToTable("product");
+                });
+
             modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchasesModel", b =>
                 {
                     b.Property<int>("Id")
@@ -94,6 +185,9 @@ namespace Bakeries.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AvailableQuantity")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -112,9 +206,6 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("QuantityInStock")
-                        .HasColumnType("int");
-
                     b.Property<int>("ReorderLevel")
                         .HasColumnType("int");
 
@@ -128,7 +219,29 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ItemName")
+                        .HasDatabaseName("IX_Stock_ItemName");
+
                     b.ToTable("Stock");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductIngredientModel", b =>
+                {
+                    b.HasOne("Bakeries.DataAccess.Entities.ProductsModel", "Product")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bakeries.DataAccess.Entities.StockModel", "stock")
+                        .WithMany()
+                        .HasForeignKey("stockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("stock");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchasesModel", b =>
@@ -140,6 +253,11 @@ namespace Bakeries.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductsModel", b =>
+                {
+                    b.Navigation("Ingredients");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.StockModel", b =>

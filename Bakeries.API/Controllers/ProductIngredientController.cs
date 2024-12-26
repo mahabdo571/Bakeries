@@ -6,32 +6,33 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bakeries.API.Controllers
 {
-    [Route("api/Stock")]
+    [Route("api/ProductIngredient")]
     [ApiController]
-    public class StockController : ControllerBase
+    public class ProductIngredientController : ControllerBase
     {
-        private readonly IStockServices _stockServices;
-        private readonly ILogger<StockController> _logger;
+        private readonly IProductIngredientService _productIngredientService;
+        private readonly ILogger<ProductIngredientController> _logger;
 
-        public StockController(IStockServices stockServices, ILogger<StockController> logger)
+        public ProductIngredientController(IProductIngredientService productIngredientService, ILogger<ProductIngredientController> logger)
         {
-            _stockServices = stockServices;
+            _productIngredientService = productIngredientService;
             _logger = logger;
         }
+
 
         [HttpGet("All")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<StockDTO>>> GetAllStock()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProduct()
         {
+
             try
             {
-                var model = await _stockServices.GetAllAsync();
+                var model = await _productServices.GetAllAsync();
                 if (model is null)
                 {
                     _logger.LogWarning("model is null  - not found.");
-
                     return NotFound($" not found.");
                 }
                 return Ok(model);
@@ -47,11 +48,11 @@ namespace Bakeries.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<StockDTO>> GetPurchasesById([FromRoute] int Id)
+        public async Task<ActionResult<ProductDTO>> GetProductById([FromRoute] int Id)
         {
             try
             {
-                var model = await _stockServices.GetByIdAsync(Id);
+                var model = await _productServices.GetByIdAsync(Id);
                 if (model is null)
                 {
                     _logger.LogWarning("model is null  - not found.");
@@ -66,12 +67,11 @@ namespace Bakeries.API.Controllers
             }
         }
 
-
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> AddStock([FromBody] StockDTO model)
+        public async Task<ActionResult> AddStock([FromBody] ProductDTO model)
         {
             try
             {
@@ -82,11 +82,11 @@ namespace Bakeries.API.Controllers
                     return BadRequest("model data cannot be null.");
                 }
 
-                int newId = await _stockServices.AddAsync(model);
+                int newId = await _productServices.AddAsync(model);
                 model.Id = newId;
 
 
-                return CreatedAtAction(nameof(GetPurchasesById), new { Id = newId }, model);
+                return CreatedAtAction(nameof(GetProductById), new { Id = newId }, model);
             }
             catch (ArgumentException ex)
             {
@@ -99,13 +99,12 @@ namespace Bakeries.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
             }
         }
-
         [HttpPut("{Id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> UpdateStock([FromRoute] int Id, [FromBody] StockDTO model)
+        public async Task<ActionResult> UpdateProduct([FromRoute] int Id, [FromBody] ProductDTO model)
         {
 
 
@@ -113,12 +112,13 @@ namespace Bakeries.API.Controllers
             {
                 if (Id != model.Id)
                 {
-                    _logger.LogWarning("model ID mismatch.");
+                    _logger.LogWarning("model is null  - not found.");
+
                     return BadRequest("model ID mismatch.");
                 }
 
 
-                await _stockServices.UpdateAsync(model);
+                await _productServices.UpdateAsync(model);
 
                 return Ok(new { message = $"model with ID {Id} has been successfully updated.", model });
 
@@ -144,11 +144,11 @@ namespace Bakeries.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> DeleteStock([FromRoute] int Id)
+        public async Task<ActionResult> DeleteProduct([FromRoute] int Id)
         {
             try
             {
-                await _stockServices.DeleteAsync(Id);
+                await _productServices.DeleteAsync(Id);
                 return Ok(new { message = $"Purchases with ID {Id} has been successfully deleted." });
             }
             catch (KeyNotFoundException ex)
@@ -159,10 +159,10 @@ namespace Bakeries.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
             }
         }
+
 
 
     }

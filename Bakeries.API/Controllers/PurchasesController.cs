@@ -10,10 +10,12 @@ namespace Bakeries.API.Controllers
     public class PurchasesController : ControllerBase
     {
         private readonly IPurchasesServices _purchasesServices;
+        private readonly ILogger<PurchasesController> _logger;
 
-        public PurchasesController(IPurchasesServices purchasesServices)
+        public PurchasesController(IPurchasesServices purchasesServices, ILogger<PurchasesController> logger)
         {
             _purchasesServices = purchasesServices;
+            _logger = logger;
         }
         [HttpGet("All")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -26,14 +28,14 @@ namespace Bakeries.API.Controllers
                 var model = await _purchasesServices.GetAllPurchasesWithItemDetailsAsync();
                 if (model is null)
                 {
-
+                    _logger.LogWarning("model is null  - not found.");
                     return NotFound($" not found.");
                 }
                 return Ok(model);
             }
             catch (Exception ex)
             {
-
+                _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
             }
         }
@@ -47,9 +49,10 @@ namespace Bakeries.API.Controllers
         {
             try
             {
-                var model = await _purchasesServices.GetPurchasesByIdAsync(Id);
+                var model = await _purchasesServices.GetByIdAsync(Id);
                 if (model is null)
                 {
+                    _logger.LogWarning("model is null  - not found.");
 
                     return NotFound($"model with ID {Id} not found.");
                 }
@@ -57,7 +60,7 @@ namespace Bakeries.API.Controllers
             }
             catch (Exception ex)
             {
-
+                _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
             }
         }
@@ -74,10 +77,11 @@ namespace Bakeries.API.Controllers
 
                 if (model is null)
                 {
+                    _logger.LogWarning("model is null  - not found.");
                     return BadRequest("model data cannot be null.");
                 }
 
-                int newId = await _purchasesServices.AddPurchasesAsync(model);
+                int newId = await _purchasesServices.AddAsync(model);
                 model.Id = newId;
 
 
@@ -85,12 +89,12 @@ namespace Bakeries.API.Controllers
             }
             catch (ArgumentException ex)
             {
-
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-
+                _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
             }
         }
@@ -108,27 +112,31 @@ namespace Bakeries.API.Controllers
             {
                 if (Id != model.Id)
                 {
+                 
+                    _logger.LogWarning("model ID mismatch.");
+
                     return BadRequest("model ID mismatch.");
                 }
 
 
-                await _purchasesServices.UpdatePurchasesAsync(model);
+                await _purchasesServices.UpdateAsync(model);
 
                 return Ok(new { message = $"model with ID {Id} has been successfully updated.", model });
 
             }
             catch (KeyNotFoundException ex)
             {
-
+                _logger.LogError(ex.Message);
                 return NotFound($"model with ID {Id} not found. {ex.Message}");
             }
             catch (ArgumentException ex)
             {
-
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
 
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
             }
@@ -142,17 +150,17 @@ namespace Bakeries.API.Controllers
         {
             try
             {
-                await _purchasesServices.DeletePurchasesAsync(Id);
+                await _purchasesServices.DeleteAsync(Id);
                 return Ok(new { message = $"Purchases with ID {Id} has been successfully deleted." });
             }
             catch (KeyNotFoundException ex)
             {
-
+                _logger.LogError(ex.Message);
                 return NotFound($"Purchases with ID {Id} not found. {ex.Message}");
             }
             catch (Exception ex)
             {
-
+                _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
             }
         }

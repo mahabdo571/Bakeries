@@ -13,23 +13,16 @@ namespace Bakeries.DataAccess.Repo
     public class PurchasesRepo : IPurchasesRepo
     {
         private readonly clsDbContext _dbContext;
-        private readonly IServiceProvider _serviceProvider;
+   
        
-        public PurchasesRepo(clsDbContext dbContext,IServiceProvider serviceProvider)
+        public PurchasesRepo(clsDbContext dbContext)
         {
             _dbContext = dbContext;
-            _serviceProvider = serviceProvider;
+
         }
 
-        //public async Task<int> AddPurchasesAsync(PurchasesModel model)
-        //{
-        //   await _dbContext.Purchases.AddAsync(model);
-        //    await _dbContext.SaveChangesAsync();
-        //    _dbContext.Database.ExecuteSqlRaw("EXEC UpdateStockOnPurchase @p0, @p1", model.ItemId, model.Quantity);
-
-        //    return model.Id;
-        //}
-        public async Task<int> AddPurchasesAsync(PurchasesModel model)
+ 
+        public async Task<int> AddAsync(PurchasesModel model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
@@ -61,7 +54,7 @@ namespace Bakeries.DataAccess.Repo
             }
         }
 
-        public async Task DeletePurchasesAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var model = await _dbContext.Purchases.WhereNotDeleted().FirstOrDefaultAsync(p=>p.Id==id);
 
@@ -74,7 +67,7 @@ namespace Bakeries.DataAccess.Repo
 
         }
 
-        public async Task<IEnumerable<PurchasesModel>> GetAllPurchasesAsync()
+        public async Task<IEnumerable<PurchasesModel>> GetAllAsync()
         {
             var model =  await _dbContext.Purchases.WhereNotDeleted().ToListAsync();
 
@@ -92,12 +85,12 @@ namespace Bakeries.DataAccess.Repo
       
         }
 
-        public async Task<PurchasesModel> GetPurchasesByIdAsync(int id)
+        public async Task<PurchasesModel> GetByIdAsync(int id)
         {
            return await _dbContext.Purchases.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task UpdatePurchasesAsync(PurchasesModel model)
+        public async Task UpdateAsync(PurchasesModel model)
         {
             _dbContext.Update(model);
             await _dbContext.SaveChangesAsync();
