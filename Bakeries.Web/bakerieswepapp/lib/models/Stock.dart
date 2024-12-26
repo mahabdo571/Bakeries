@@ -1,6 +1,6 @@
 class Stock {
   final int Id;
-  final int QuantityInStock;
+  final int AvailableQuantity;
   final String ItemName;
   final String Notes;
   final String Location;
@@ -9,7 +9,7 @@ class Stock {
 
   Stock({
     required this.Id,
-    required this.QuantityInStock,
+    required this.AvailableQuantity,
     required this.ItemName,
     required this.Notes,
     required this.Location,
@@ -22,7 +22,7 @@ class Stock {
       'Id': Id,
       'ItemName': ItemName,
       'Notes': Notes,
-      'QuantityInStock': QuantityInStock,
+      'AvailableQuantity': AvailableQuantity,
       'Location': Location,
       'UnitOfMeasure': UnitOfMeasure,
       'ReorderLevel': ReorderLevel,
@@ -34,7 +34,7 @@ class Stock {
       Id: json['Id'],
       Notes: json['Notes'],
       ItemName: json['ItemName'],
-      QuantityInStock: json['QuantityInStock'],
+      AvailableQuantity: json['AvailableQuantity'],
       Location: json['Location'],
       UnitOfMeasure: json['UnitOfMeasure'],
       ReorderLevel: json['ReorderLevel'],

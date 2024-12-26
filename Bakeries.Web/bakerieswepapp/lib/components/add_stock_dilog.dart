@@ -80,7 +80,7 @@ class _AddStockDialogState extends State<AddStockDialog> {
         Id: widget.isEdit ? widget.stockData!['Id'] ?? 0 : 0,
         ItemName: _itemNameController.text,
         Notes: _itemDescriptionController.text,
-        QuantityInStock: int.tryParse(_quantityController.text) ?? 0,
+        AvailableQuantity: int.tryParse(_quantityController.text) ?? 0,
         UnitOfMeasure: _selectedUnit.toString(),
         Location: _locationController.text,
         ReorderLevel: int.tryParse(_reorderLevelController.text) ?? 0,

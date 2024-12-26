@@ -46,7 +46,7 @@ class StockCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildDetailItem(Icons.inventory, 'الكمية المتوفرة',
-                    '${stock.QuantityInStock}'),
+                    '${stock.AvailableQuantity}'),
                 _buildDetailItem(Icons.payment, 'الحد الادنى للطلب',
                     stock.ReorderLevel.toString()),
                 _buildDetailItem(
