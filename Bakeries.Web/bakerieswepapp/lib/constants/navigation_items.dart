@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:bakerieswepapp/models/navigation_item.dart';
 import 'package:bakerieswepapp/screens/home/home_page.dart';
-import 'package:bakerieswepapp/screens/PurchasesPage.dart';
+import 'package:bakerieswepapp/screens/purchases/purchases_page.dart';
 import 'package:bakerieswepapp/screens/stockScreens.dart';
 
 final List<NavigationItem> navigationItems = [
