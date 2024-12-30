@@ -9,4 +9,9 @@ class ApiConfig {
   static const String purchases = '$baseUrl/Purchases';
   static const String purchasesAll = '$baseUrl/Purchases/All';
   static const String purchasesById = '$purchases/';
+
+  //Product
+  static const String Products = '$baseUrl/Product';
+  static const String ProductAll = '$baseUrl/Product/All';
+  static const String ProductById = '$Products/';
 }
