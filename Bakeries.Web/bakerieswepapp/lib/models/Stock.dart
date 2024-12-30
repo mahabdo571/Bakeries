@@ -19,25 +19,25 @@ class Stock {
 
   Map<String, dynamic> toJson() {
     return {
-      'Id': Id,
-      'ItemName': ItemName,
-      'Notes': Notes,
-      'AvailableQuantity': AvailableQuantity,
-      'Location': Location,
-      'UnitOfMeasure': UnitOfMeasure,
-      'ReorderLevel': ReorderLevel,
+      'Id': Id ?? 0,
+      'ItemName': ItemName ?? '',
+      'Notes': Notes ?? '',
+      'AvailableQuantity': AvailableQuantity ?? 0,
+      'Location': Location ?? '',
+      'UnitOfMeasure': UnitOfMeasure ?? '',
+      'ReorderLevel': ReorderLevel ?? 0,
     };
   }
 
   factory Stock.fromJson(Map<String, dynamic> json) {
     return Stock(
-      Id: json['Id'],
-      Notes: json['Notes'],
+      Id: json['Id'] ?? 0,
+      Notes: json['Notes'] ?? '',
       ItemName: json['ItemName'],
-      AvailableQuantity: json['AvailableQuantity'],
-      Location: json['Location'],
-      UnitOfMeasure: json['UnitOfMeasure'],
-      ReorderLevel: json['ReorderLevel'],
+      AvailableQuantity: json['AvailableQuantity'] ?? 0,
+      Location: json['Location'] ?? '',
+      UnitOfMeasure: json['UnitOfMeasure'] ?? '',
+      ReorderLevel: json['ReorderLevel'] ?? 0,
     );
   }
 }

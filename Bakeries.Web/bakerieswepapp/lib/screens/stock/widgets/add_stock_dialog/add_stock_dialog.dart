@@ -53,6 +53,7 @@ class AddStockDialog extends StatelessWidget {
       );
       Navigator.of(context).pop();
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('حدث خطأ: $e')),
       );

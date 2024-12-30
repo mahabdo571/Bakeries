@@ -1,10 +1,6 @@
 import 'package:bakerieswepapp/models/Stock.dart';
 import 'package:bakerieswepapp/screens/stock/widgets/add_stock_dialog/form_sections/quantity_section.dart';
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/item_section.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/price_section.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/status_section.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/supplier_section.dart';
 
 class StockForm extends StatefulWidget {
   final bool isEdit;
@@ -25,16 +21,12 @@ class StockForm extends StatefulWidget {
 class _StockFormState extends State<StockForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _notesController = TextEditingController();
-  final TextEditingController _supplierNameController = TextEditingController();
-  final TextEditingController _supplierInvoiceNumberController =
-      TextEditingController();
+  final TextEditingController _itemNameController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _reorderLevelController = TextEditingController();
 
-  double _unitPrice = 0;
-  int _quantity = 0;
-  int? _selectedItemId;
-  String? _selectedUnit;
-  String? _selectedPaymentMethod;
-  String? _selectedStatus;
+  int _availableQuantity = 0;
+  String? _unitOfMeasure;
 
   @override
   void initState() {
@@ -47,21 +39,20 @@ class _StockFormState extends State<StockForm> {
   void _initializeFormData() {
     final data = widget.stockData!;
     _notesController.text = data['Notes'] ?? '';
-    _supplierNameController.text = data['SupplierName'] ?? '';
-    _supplierInvoiceNumberController.text = data['SupplierInvoiceNumber'] ?? '';
-    _unitPrice = data['UnitPrice'] ?? 0.0;
-    _quantity = data['Quantity'] ?? 0;
-    _selectedItemId = data['ItemId'];
-    _selectedUnit = data['UnitOfMeasure'];
-    _selectedPaymentMethod = data['PaymentMethod'];
-    _selectedStatus = data['Status'];
+    _itemNameController.text = data['ItemName'] ?? '';
+    _unitOfMeasure = data['UnitOfMeasure'];
+    _locationController.text = data['Location'] ?? '';
+    _reorderLevelController.text = data['ReorderLevel'].toString();
+
+    _availableQuantity = data['AvailableQuantity'] ?? 0;
   }
 
   @override
   void dispose() {
     _notesController.dispose();
-    _supplierNameController.dispose();
-    _supplierInvoiceNumberController.dispose();
+    _itemNameController.dispose();
+    _locationController.dispose();
+    _reorderLevelController.dispose();
     super.dispose();
   }
 
@@ -69,12 +60,12 @@ class _StockFormState extends State<StockForm> {
     if (_formKey.currentState?.validate() ?? false) {
       final stock = Stock(
         Id: widget.isEdit ? widget.stockData!['Id'] : 0,
-        AvailableQuantity: 8,
-        ItemName: '',
-        Notes: '',
-        Location: '',
-        UnitOfMeasure: '',
-        ReorderLevel: 0,
+        AvailableQuantity: _availableQuantity,
+        ItemName: _itemNameController.text,
+        Notes: _notesController.text,
+        Location: _locationController.text,
+        UnitOfMeasure: _unitOfMeasure!,
+        ReorderLevel: int.tryParse(_reorderLevelController.text) ?? 0,
       );
 
       widget.onSubmit(stock);
@@ -89,36 +80,32 @@ class _StockFormState extends State<StockForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ItemSection(
-              selectedItemId: _selectedItemId,
-              onItemSelected: (id) => setState(() => _selectedItemId = id),
+            TextFormField(
+              controller: _itemNameController,
+              decoration: const InputDecoration(labelText: 'اسم الصنف'),
+              validator: (value) =>
+                  value?.isEmpty ?? true ? 'يجب إدخال الاسم ' : null,
             ),
             const SizedBox(height: 16),
-            SupplierSection(
-              supplierNameController: _supplierNameController,
-              supplierInvoiceNumberController: _supplierInvoiceNumberController,
+            TextFormField(
+              controller: _locationController,
+              decoration: const InputDecoration(labelText: 'الموقع في المخزن'),
+              validator: (value) =>
+                  value?.isEmpty ?? true ? 'يجب إدخال الموقع ' : null,
             ),
             const SizedBox(height: 16),
-            PriceSection(
-              unitPrice: _unitPrice,
-              quantity: _quantity,
-              onUnitPriceChanged: (price) => setState(() => _unitPrice = price),
+            TextFormField(
+              controller: _reorderLevelController,
+              decoration: const InputDecoration(labelText: 'ادنى كمية للطلب'),
+              validator: (value) =>
+                  value?.isEmpty ?? true ? 'يجب إدخال ادنى كمية  ' : null,
             ),
             const SizedBox(height: 16),
             QuantitySection(
-              quantity: _quantity,
-              selectedUnit: _selectedUnit,
-              onQuantityChanged: (q) => setState(() => _quantity = q),
-              onUnitChanged: (unit) => setState(() => _selectedUnit = unit),
-            ),
-            const SizedBox(height: 16),
-            StatusSection(
-              selectedPaymentMethod: _selectedPaymentMethod,
-              selectedStatus: _selectedStatus,
-              onPaymentMethodChanged: (method) =>
-                  setState(() => _selectedPaymentMethod = method),
-              onStatusChanged: (status) =>
-                  setState(() => _selectedStatus = status),
+              quantity: _availableQuantity,
+              selectedUnit: _unitOfMeasure,
+              onQuantityChanged: (q) => setState(() => _availableQuantity = q),
+              onUnitChanged: (unit) => setState(() => _unitOfMeasure = unit),
             ),
             const SizedBox(height: 16),
             TextFormField(

@@ -49,11 +49,9 @@ class StockService {
   }
 
   static Future<Stock> addStock(Stock stockData) async {
-    final response = await http.post(
-      Uri.parse(ApiConfig.stockAll),
-      headers: {'Content-Type': 'application/json'},
-      body:  jsonEncode(stockData.toJson())
-    );
+    final response = await http.post(Uri.parse(ApiConfig.stock),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(stockData.toJson()));
 
     if (response.statusCode == 201) {
       return Stock.fromJson(json.decode(response.body));
@@ -62,8 +60,7 @@ class StockService {
     }
   }
 
-  static Future<Stock> updateStock(
-      int id, Stock stockData) async {
+  static Future<Stock> updateStock(int id, Stock stockData) async {
     final response = await http.put(
       Uri.parse('${ApiConfig.StockById}$id'),
       headers: {'Content-Type': 'application/json'},
@@ -71,7 +68,7 @@ class StockService {
     );
 
     if (response.statusCode == 200) {
-      return Stock.fromJson(json.decode(response.body));
+      return Stock.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to update stock item');
     }
