@@ -6,12 +6,14 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final Function(Product) onEdit;
   final Function(int) onDelete;
+  final Function(int) onClickOnTheIngredients;
 
   const ProductCard({
     Key? key,
     required this.product,
     required this.onEdit,
     required this.onDelete,
+    required this.onClickOnTheIngredients,
   }) : super(key: key);
 
   @override
@@ -73,6 +75,11 @@ class ProductCard extends StatelessWidget {
               value: product.Price.toString(),
             ),
             ProductDetailItem(
+              icon: Icons.inventory,
+              label: 'تفاصيل اضافية',
+              value: product.Description.toString(),
+            ),
+            ProductDetailItem(
               icon: Icons.category,
               label: 'الوحدة',
               value: product.Unit,
@@ -87,6 +94,13 @@ class ProductCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        ElevatedButton.icon(
+          onPressed: () => onClickOnTheIngredients(product.Id),
+          icon: const Icon(Icons.list, color: Colors.white),
+          label: const Text('المكونات'),
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+        ),
+        const SizedBox(width: 8),
         ElevatedButton.icon(
           onPressed: () => onEdit(product),
           icon: const Icon(Icons.edit, color: Colors.white),

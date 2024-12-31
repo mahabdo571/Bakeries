@@ -33,7 +33,7 @@ class Stock {
     return Stock(
       Id: json['Id'] ?? 0,
       Notes: json['Notes'] ?? '',
-      ItemName: json['ItemName'],
+      ItemName: json['ItemName']??'',
       AvailableQuantity: json['AvailableQuantity'] ?? 0,
       Location: json['Location'] ?? '',
       UnitOfMeasure: json['UnitOfMeasure'] ?? '',

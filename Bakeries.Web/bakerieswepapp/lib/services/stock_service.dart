@@ -68,7 +68,7 @@ class StockService {
     );
 
     if (response.statusCode == 200) {
-      return Stock.fromJson(jsonDecode(response.body));
+      return Stock.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to update stock item');
     }

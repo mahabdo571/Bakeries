@@ -1,8 +1,8 @@
+import 'package:bakerieswepapp/Screens/ingredients/ingredients_page.dart';
 import 'package:bakerieswepapp/models/product.dart';
 import 'package:bakerieswepapp/screens/Product/widgets/product_card.dart';
 import 'package:bakerieswepapp/services/product_service.dart';
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/services/stock_service.dart';
 
 class ProductList extends StatefulWidget {
   const ProductList({Key? key}) : super(key: key);
@@ -28,11 +28,11 @@ class _ProductListState extends State<ProductList> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-        
+
         if (snapshot.hasError) {
           return Center(child: Text('حدث خطأ: ${snapshot.error}'));
         }
-        
+
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('لا توجد بيانات لعرضها'));
         }
@@ -44,6 +44,7 @@ class _ProductListState extends State<ProductList> {
             product: snapshot.data![index],
             onEdit: _handleEdit,
             onDelete: _handleDelete,
+            onClickOnTheIngredients: _onClickOnTheIngredients,
           ),
         );
       },
@@ -52,6 +53,19 @@ class _ProductListState extends State<ProductList> {
 
   void _handleEdit(Product product) {
     // Handle edit logic
+  }
+  void _onClickOnTheIngredients(int productId) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            IngredientsScreens(productId: productId),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return child;
+        },
+        transitionDuration: Duration.zero,
+      ),
+    );
   }
 
   Future<void> _handleDelete(int id) async {
