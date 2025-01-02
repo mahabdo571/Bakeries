@@ -1,4 +1,5 @@
 import 'package:bakerieswepapp/Screens/ingredients/ingredients_page.dart';
+import 'package:bakerieswepapp/Screens/product/widgets/product_dialog/product_dialog.dart';
 import 'package:bakerieswepapp/models/product.dart';
 import 'package:bakerieswepapp/screens/Product/widgets/product_card.dart';
 import 'package:bakerieswepapp/services/product_service.dart';
@@ -52,7 +53,16 @@ class _ProductListState extends State<ProductList> {
   }
 
   void _handleEdit(Product product) {
-    // Handle edit logic
+      showDialog(
+      context: context,
+      builder: (context) => ProductDialog(
+        isEdit: true,
+        productData: product.toJson() ,
+        onAdd: (newProduct) {
+          // Handle add callback
+        },
+      ),
+    );
   }
   void _onClickOnTheIngredients(int productId) {
     Navigator.push(

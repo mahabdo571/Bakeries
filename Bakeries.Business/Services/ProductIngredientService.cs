@@ -47,6 +47,16 @@ namespace Bakeries.Business.Services
             return newModel;
         }
 
+        public async Task<IEnumerable<ProductIngredientDTO>> GetAllByProductIdAsync(int productId)
+        {
+            var model = await _productIngredientRepo.GetAllByProductIdAsync(productId); ;
+
+            var newModel = _mapper.Map<IEnumerable<ProductIngredientDTO>>(model);
+
+
+            return newModel;
+        }
+
         public async Task<ProductIngredientDTO> GetByIdAsync(int id)
         {
             return _mapper.Map<ProductIngredientDTO>(await _productIngredientRepo.GetByIdAsync(id));

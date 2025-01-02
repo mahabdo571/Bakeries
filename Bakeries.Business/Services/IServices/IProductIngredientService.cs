@@ -9,6 +9,7 @@ namespace Bakeries.Business.Services.IServices
 {
     public interface IProductIngredientService : IServices<ProductIngredientDTO>
     {
+        Task<IEnumerable<ProductIngredientDTO>> GetAllByProductIdAsync(int productId);
 
     }
 }

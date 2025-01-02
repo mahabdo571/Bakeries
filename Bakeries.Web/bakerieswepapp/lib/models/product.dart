@@ -17,23 +17,23 @@ class Product {
 
   Map<String, dynamic> toJson() {
     return {
-      'Id': Id,
-      'Name': Name,
-      'Description': Description,
-      'Price': Price,
-      'Unit': Unit,
-      'Notes': Notes,
+      'Id': Id ?? 0,
+      'Name': Name ?? '',
+      'Description': Description ?? '',
+      'Price': Price ?? 0.00,
+      'Unit': Unit ?? '',
+      'Notes': Notes ?? '',
     };
   }
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      Id: json['Id'],
-      Description: json['Description'],
-      Name: json['Name'],
-      Price: json['Price'],
-      Unit: json['Unit'],
-      Notes: json['Notes'],
+      Id: json['Id'] ?? 0,
+      Description: json['Description'] ?? '',
+      Name: json['Name'] ?? '',
+      Price: json['Price'] ?? 0.00,
+      Unit: json['Unit'] ?? '',
+      Notes: json['Notes'] ?? '',
     );
   }
 }

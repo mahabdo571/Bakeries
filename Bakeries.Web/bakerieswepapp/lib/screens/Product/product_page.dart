@@ -1,6 +1,6 @@
 
+import 'package:bakerieswepapp/Screens/product/widgets/product_dialog/product_dialog.dart';
 import 'package:bakerieswepapp/screens/Product/widgets/product_list.dart';
-import 'package:bakerieswepapp/screens/stock/widgets/add_stock_dialog/add_stock_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:bakerieswepapp/components/app_bar/app_bar_for_all_page.dart';
 
@@ -24,7 +24,7 @@ class ProductScreens extends StatelessWidget {
   void _showAddStockDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AddStockDialog(
+      builder: (context) => ProductDialog(
         isEdit: false,
         onAdd: (newStock) {
           // Handle add callback

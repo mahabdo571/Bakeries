@@ -1,11 +1,11 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:bakerieswepapp/api_config.dart';
 import 'package:bakerieswepapp/models/product.dart';
-import 'package:http/http.dart' as http;
-class ProductService {
 
- static Stream<List<Product>> getStockStream() async* {
+
+class ProductService {
+  static Stream<List<Product>> getStockStream() async* {
     while (true) {
       try {
         final response = await http.get(Uri.parse(ApiConfig.ProductAll));
@@ -24,7 +24,6 @@ class ProductService {
     }
   }
 
-  
   static Future<void> deleteProduct(int id) async {
     final response = await http.delete(
       Uri.parse('${ApiConfig.ProductById}$id'),
@@ -35,5 +34,29 @@ class ProductService {
     }
   }
 
+  static Future<Product> addProduct(Product productData) async {
+    final response = await http.post(Uri.parse(ApiConfig.Products),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(productData.toJson()));
 
+    if (response.statusCode == 201) {
+      return Product.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to add purchase');
+    }
+  }
+
+  static Future<Product> updateProduct(int id, Product productData) async {
+    final response = await http.put(
+      Uri.parse('${ApiConfig.ProductById}$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(productData.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return Product.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to update purchase');
+    }
+  }
 }
