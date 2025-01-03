@@ -34,6 +34,8 @@ class ProductService {
     }
   }
 
+
+
   static Future<Product> addProduct(Product productData) async {
     final response = await http.post(Uri.parse(ApiConfig.Products),
         headers: {'Content-Type': 'application/json'},
@@ -59,4 +61,31 @@ class ProductService {
       throw Exception('Failed to update purchase');
     }
   }
+
+
+  static Future<Product> getProductById(int id) async {
+  try {
+    // إرسال الطلب إلى الـ API
+    final response = await http.get(Uri.parse('${ApiConfig.ProductById}$id'));
+
+    // تحقق إذا كانت الاستجابة ناجحة
+    if (response.statusCode == 200) {
+      // فك التشفير وتحويل البيانات إلى كائن Product
+      final data = json.decode(response.body);
+      
+      if (data is Map<String, dynamic>) {
+        return Product.fromJson(data); // إرجاع الكائن المطلوب
+      } else {
+        throw Exception('Unexpected response format');
+      }
+    } else {
+      // إذا لم تكن حالة الاستجابة 200
+      throw Exception('Failed to load product. Status code: ${response.statusCode}');
+    }
+  } catch (e) {
+    // معالجة أي خطأ يحدث أثناء الطلب
+    throw Exception('Error fetching product: $e');
+  }
+}
+
 }

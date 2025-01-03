@@ -1,4 +1,3 @@
-import 'package:bakerieswepapp/models/product.dart';
 import 'package:bakerieswepapp/models/product_ingredient.dart';
 import 'package:bakerieswepapp/screens/Product/widgets/product_detail_item.dart';
 import 'package:flutter/material.dart';
@@ -49,12 +48,12 @@ class IngredientsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                productIngredient.Name,
+                productIngredient.stock.ItemName,
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
-                productIngredient.Notes,
+                productIngredient.product.Name,
                 style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               ),
             ],
@@ -73,17 +72,17 @@ class IngredientsCard extends StatelessWidget {
             ProductDetailItem(
               icon: Icons.inventory,
               label: 'السعر',
-              value: productIngredient.Price.toString(),
+              value: productIngredient.Quantity.toString(),
             ),
             ProductDetailItem(
               icon: Icons.inventory,
               label: 'تفاصيل اضافية',
-              value: productIngredient.Description.toString(),
+              value: productIngredient.UnitOfMeasure.toString(),
             ),
             ProductDetailItem(
               icon: Icons.category,
               label: 'الوحدة',
-              value: productIngredient.Unit,
+              value: productIngredient.UnitOfMeasure,
             ),
           ],
         ),
@@ -95,13 +94,6 @@ class IngredientsCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        ElevatedButton.icon(
-          onPressed: () => onClickOnTheIngredients(productIngredient.Id),
-          icon: const Icon(Icons.list, color: Colors.white),
-          label: const Text('المكونات'),
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-        ),
-        const SizedBox(width: 8),
         ElevatedButton.icon(
           onPressed: () => onEdit(productIngredient),
           icon: const Icon(Icons.edit, color: Colors.white),

@@ -16,11 +16,13 @@ namespace Bakeries.Business.Services
     {
 
         private readonly IProductIngredientRepo _productIngredientRepo;
+      
         private readonly IMapper _mapper;
 
-        public ProductIngredientService(IProductIngredientRepo productIngredientRepo, IMapper mapper)
+        public ProductIngredientService(IProductIngredientRepo productIngredientRepo,IStockRepo stockRepo, IMapper mapper)
         {
             _productIngredientRepo = productIngredientRepo;
+       
             _mapper = mapper;
         }
 
@@ -49,10 +51,13 @@ namespace Bakeries.Business.Services
 
         public async Task<IEnumerable<ProductIngredientDTO>> GetAllByProductIdAsync(int productId)
         {
-            var model = await _productIngredientRepo.GetAllByProductIdAsync(productId); ;
+            var model = await _productIngredientRepo.GetAllByProductIdAsync(productId);
+
+           
 
             var newModel = _mapper.Map<IEnumerable<ProductIngredientDTO>>(model);
 
+         
 
             return newModel;
         }

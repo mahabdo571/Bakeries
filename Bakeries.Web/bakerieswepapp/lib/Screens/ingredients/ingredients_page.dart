@@ -1,19 +1,29 @@
 import 'package:bakerieswepapp/Screens/ingredients/widgets/ingredients_list.dart';
-import 'package:bakerieswepapp/screens/Product/widgets/product_list.dart';
+import 'package:bakerieswepapp/models/product.dart';
 import 'package:bakerieswepapp/screens/stock/widgets/add_stock_dialog/add_stock_dialog.dart';
+import 'package:bakerieswepapp/services/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bakerieswepapp/components/app_bar/app_bar_for_all_page.dart';
 
-class IngredientsScreens extends StatelessWidget {
+class IngredientsScreens extends StatefulWidget {
   final int productId;
+
   const IngredientsScreens({Key? key, required this.productId})
       : super(key: key);
+
+  @override
+  State<IngredientsScreens> createState() => _IngredientsScreensState();
+}
+
+class _IngredientsScreensState extends State<IngredientsScreens> {
   @override
   Widget build(BuildContext context) {
+    _getProductById(widget.productId);
+
     return Scaffold(
-      appBar: AppBarForAllPage(pageName: 'مكونات المنتج - $productId'),
+      appBar: AppBarForAllPage(pageName: 'مكونات المنتج - '),
       body: IngredientsList(
-        productId: productId,
+        productId: widget.productId,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddStockDialog(context),
@@ -33,5 +43,14 @@ class IngredientsScreens extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void _getProductById(int id) async {
+    try {
+      Product product = await ProductService.getProductById(id);
+      print(product.Name);
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 }

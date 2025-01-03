@@ -43,7 +43,20 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<IEnumerable<ProductIngredientModel>> GetAllByProductIdAsync(int productId)
         {
-            return await _dbContext.ProductIngredient.WhereNotDeleted().Where((pI)=>pI.ProductId ==productId).ToListAsync();
+            //var model =  await _dbContext.ProductIngredient.WhereNotDeleted().Where((pI)=>pI.ProductId ==productId).ToListAsync();
+
+
+            //return model;
+
+            return await _dbContext.ProductIngredient
+        .WhereNotDeleted()
+        .Where(pI => pI.ProductId == productId)
+        .Include(pI => pI.stock) 
+        .Include(pI => pI.Product) 
+        .ToListAsync();
+
+          
+
         }
 
         public async Task<ProductIngredientModel> GetByIdAsync(int id)

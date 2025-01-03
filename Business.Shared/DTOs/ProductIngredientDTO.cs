@@ -10,15 +10,16 @@ namespace Business.Shared.DTOs
     public class ProductIngredientDTO
     {
         public int Id { get; set; }
-        public int stockId { get; set; }
-        public int ProductId { get; set; }
+        public StockDTO stock { get; set;}
+        public ProductDTO product { get; set;}
+
 
         [Required]
         [Range(0, double.MaxValue)]
-        public double Quantity { get; set; } // الكمية المطلوبة من المكون لإنتاج المنتج
+        public double Quantity { get; set; }
 
         [Required]
-        [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف
-        public string UnitOfMeasure { get; set; } // وحدة القياس
+        [StringLength(50)] 
+        public string UnitOfMeasure { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 import 'package:bakerieswepapp/Screens/ingredients/ingredients_page.dart';
 import 'package:bakerieswepapp/Screens/ingredients/widgets/ingredients_card.dart';
 import 'package:bakerieswepapp/Screens/product/widgets/product_dialog/product_dialog.dart';
+import 'package:bakerieswepapp/models/product.dart';
 import 'package:bakerieswepapp/models/product_ingredient.dart';
 import 'package:bakerieswepapp/services/ingredients_service.dart';
 import 'package:bakerieswepapp/services/product_service.dart';
@@ -8,7 +9,8 @@ import 'package:flutter/material.dart';
 
 class IngredientsList extends StatefulWidget {
   final int productId;
-  IngredientsList({Key? key, required this.productId}) : super(key: key);
+  IngredientsList({Key? key, required this.productId, })
+      : super(key: key);
 
   @override
   _IngredientsListState createState() => _IngredientsListState();
@@ -16,7 +18,6 @@ class IngredientsList extends StatefulWidget {
 
 class _IngredientsListState extends State<IngredientsList> {
   late Stream<List<ProductIngredient>> stockStream;
-
   @override
   void initState() {
     super.initState();
@@ -24,8 +25,14 @@ class _IngredientsListState extends State<IngredientsList> {
         IngredientsService.getProductIngredientStream(widget.productId);
   }
 
+
+
+     
+     
   @override
   Widget build(BuildContext context) {
+    
+  
     return StreamBuilder<List<ProductIngredient>>(
       stream: stockStream,
       builder: (context, snapshot) {
@@ -40,7 +47,9 @@ class _IngredientsListState extends State<IngredientsList> {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('لا توجد بيانات لعرضها'));
         }
-
+       
+        
+       
         return ListView.builder(
           padding: const EdgeInsets.all(16),
           itemCount: snapshot.data!.length,

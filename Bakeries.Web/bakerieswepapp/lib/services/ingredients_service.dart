@@ -11,6 +11,7 @@ class IngredientsService {
 
         if (response.statusCode == 200) {
           List jsonResponse = json.decode(response.body);
+         
           yield jsonResponse.map((data) => ProductIngredient.fromJson(data)).toList();
         } else {
           throw Exception('Failed to load stock items');

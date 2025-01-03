@@ -1,39 +1,38 @@
+import 'package:bakerieswepapp/models/Stock.dart';
+import 'package:bakerieswepapp/models/product.dart';
+
 class ProductIngredient {
   final int Id;
-  final double Price;
-  final String Name;
-  final String Description;
-  final String Unit;
-  final String Notes;
+  final int Quantity;
+  final String UnitOfMeasure;
+  final Stock stock;
+  final Product product;
 
   ProductIngredient({
     required this.Id,
-    required this.Price,
-    required this.Name,
-    required this.Description,
-    required this.Unit,
-    required this.Notes,
+    required this.Quantity,
+    required this.UnitOfMeasure,
+    required this.stock,
+    required this.product,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'Id': Id ?? 0,
-      'Name': Name ?? '',
-      'Description': Description ?? '',
-      'Price': Price ?? 0.00,
-      'Unit': Unit ?? '',
-      'Notes': Notes ?? '',
+      'Quantity': Quantity ?? 0,
+      'UnitOfMeasure': UnitOfMeasure ?? '',
+      'stock':stock,
+      'product': product,
     };
   }
 
   factory ProductIngredient.fromJson(Map<String, dynamic> json) {
     return ProductIngredient(
       Id: json['Id'] ?? 0,
-      Description: json['Description'] ?? '',
-      Name: json['Name'] ?? '',
-      Price: json['Price'] ?? 0.00,
-      Unit: json['Unit'] ?? '',
-      Notes: json['Notes'] ?? '',
+      Quantity: json['Quantity'] ?? 0,
+      UnitOfMeasure: json['UnitOfMeasure'] ?? '',
+      stock:Stock.fromJson(json['stock']),
+      product: Product.fromJson(json['product']),
     );
   }
 }
