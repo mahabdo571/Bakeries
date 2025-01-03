@@ -1,4 +1,4 @@
-@Bakeries.API_HostAddress = http://localhost:5145
+@Bakeries.API_HostAddress = http://192.168.1.27:5145
 
 GET {{Bakeries.API_HostAddress}}/weatherforecast/
 Accept: application/json

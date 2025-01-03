@@ -16,12 +16,19 @@ class IngredientsScreens extends StatefulWidget {
 }
 
 class _IngredientsScreensState extends State<IngredientsScreens> {
+   Product? _product;
+
   @override
   Widget build(BuildContext context) {
     _getProductById(widget.productId);
+    if (_product == null) {
+      return Scaffold(
+        body: Text("lodding"),
+      );
+    }else{
 
     return Scaffold(
-      appBar: AppBarForAllPage(pageName: 'مكونات المنتج - '),
+      appBar: AppBarForAllPage(pageName: 'مكونات المنتج - ${_product!.Name}'),
       body: IngredientsList(
         productId: widget.productId,
       ),
@@ -31,6 +38,7 @@ class _IngredientsScreensState extends State<IngredientsScreens> {
         child: const Icon(Icons.add),
       ),
     );
+  }
   }
 
   void _showAddStockDialog(BuildContext context) {
@@ -48,9 +56,12 @@ class _IngredientsScreensState extends State<IngredientsScreens> {
   void _getProductById(int id) async {
     try {
       Product product = await ProductService.getProductById(id);
-      print(product.Name);
+      setState(() {
+        _product = product;
+      });
     } catch (e) {
       print('Error: $e');
+      throw Exception('Unexpected response format');
     }
   }
 }

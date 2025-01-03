@@ -33,7 +33,14 @@ builder.Services.AddDbContext<clsDbContext>(options =>
         builder.Configuration.GetConnectionString("ConnectionToDB")
     )
 );
-
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Listen(System.Net.IPAddress.Parse("192.168.1.27"), 5000); // HTTP
+    options.Listen(System.Net.IPAddress.Parse("192.168.1.27"), 5001, listenOptions =>
+    {
+        listenOptions.UseHttps(); // HTTPS
+    });
+});
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -56,7 +63,6 @@ builder.Services.AddScoped<IProductIngredientService, ProductIngredientService>(
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -67,9 +73,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 
-app.UseHttpsRedirection();
+     //app.UseHttpsRedirection();
+
+
+
 
 app.UseAuthorization();
 
