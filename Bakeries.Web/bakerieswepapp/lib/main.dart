@@ -1,13 +1,12 @@
 import 'package:bakerieswepapp/Screens/home/home_page.dart';
 import 'package:flutter/material.dart';
-import 'dart:io'; // ضروري لاستخدام HttpOverrides
+import 'dart:io'; 
 
 void main() {
-  // تعطيل التحقق من الشهادات
   HttpOverrides.global = MyHttpOverrides();
 
-  // تشغيل التطبيق بعد تعطيل التحقق من الشهادات
-  runApp(MaterialApp(
+  runApp(MaterialApp( 
+    debugShowCheckedModeBanner: false,
     home: Scaffold(
       body: HomePage(),
     ),

@@ -7,6 +7,7 @@ class ProductIngredient {
   final String UnitOfMeasure;
   final Stock stock;
   final Product product;
+  final String Notes;
 
   ProductIngredient({
     required this.Id,
@@ -14,6 +15,7 @@ class ProductIngredient {
     required this.UnitOfMeasure,
     required this.stock,
     required this.product,
+    required this.Notes,
   });
 
   Map<String, dynamic> toJson() {
@@ -21,8 +23,9 @@ class ProductIngredient {
       'Id': Id ?? 0,
       'Quantity': Quantity ?? 0,
       'UnitOfMeasure': UnitOfMeasure ?? '',
-      'stock':stock,
+      'stock': stock,
       'product': product,
+      'Notes': Notes ?? '',
     };
   }
 
@@ -31,7 +34,8 @@ class ProductIngredient {
       Id: json['Id'] ?? 0,
       Quantity: json['Quantity'] ?? 0,
       UnitOfMeasure: json['UnitOfMeasure'] ?? '',
-      stock:Stock.fromJson(json['stock']),
+      Notes: json['Notes'] ?? '',
+      stock: Stock.fromJson(json['stock']),
       product: Product.fromJson(json['product']),
     );
   }

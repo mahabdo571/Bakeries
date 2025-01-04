@@ -21,5 +21,6 @@ namespace Business.Shared.DTOs
         [Required]
         [StringLength(50)] 
         public string UnitOfMeasure { get; set; }
+        public string Notes { get; set; }
     }
 }

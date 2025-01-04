@@ -71,13 +71,13 @@ class IngredientsCard extends StatelessWidget {
           children: [
             ProductDetailItem(
               icon: Icons.inventory,
-              label: 'السعر',
+              label: 'الكمية ',
               value: productIngredient.Quantity.toString(),
             ),
             ProductDetailItem(
               icon: Icons.inventory,
               label: 'تفاصيل اضافية',
-              value: productIngredient.UnitOfMeasure.toString(),
+              value: productIngredient.Notes,
             ),
             ProductDetailItem(
               icon: Icons.category,

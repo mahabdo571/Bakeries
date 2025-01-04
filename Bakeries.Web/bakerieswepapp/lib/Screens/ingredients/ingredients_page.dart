@@ -16,29 +16,41 @@ class IngredientsScreens extends StatefulWidget {
 }
 
 class _IngredientsScreensState extends State<IngredientsScreens> {
-   Product? _product;
+  Product? _product;
+  @override
+  void initState() {
+    super.initState();
+    _getProductById(widget.productId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _getProductById(widget.productId);
     if (_product == null) {
       return Scaffold(
-        body: Text("lodding"),
+        appBar: AppBarForAllPage(pageName: ''),
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _showAddStockDialog(context),
+          backgroundColor: Colors.brown,
+          child: const Icon(Icons.add),
+        ),
       );
-    }else{
-
-    return Scaffold(
-      appBar: AppBarForAllPage(pageName: 'مكونات المنتج - ${_product!.Name}'),
-      body: IngredientsList(
-        productId: widget.productId,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddStockDialog(context),
-        backgroundColor: Colors.brown,
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
+    } else {
+      return Scaffold(
+        appBar: AppBarForAllPage(pageName: 'مكونات المنتج - ${_product!.Name}'),
+        body: IngredientsList(
+          productId: widget.productId,
+          product: _product!,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _showAddStockDialog(context),
+          backgroundColor: Colors.brown,
+          child: const Icon(Icons.add),
+        ),
+      );
+    }
   }
 
   void _showAddStockDialog(BuildContext context) {
