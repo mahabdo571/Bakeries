@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:bakerieswepapp/models/Stock.dart';
-import 'package:bakerieswepapp/api_config.dart';
+import '../models/Stock.dart';
+import '../api_config.dart';
 
 class StockService {
   static Future<List<Stock>> getStockItems() async {

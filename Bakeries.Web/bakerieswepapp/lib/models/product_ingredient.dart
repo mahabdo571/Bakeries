@@ -1,5 +1,5 @@
-import 'package:bakerieswepapp/models/Stock.dart';
-import 'package:bakerieswepapp/models/product.dart';
+import 'Stock.dart';
+import 'product.dart';
 
 class ProductIngredient {
   final int Id;

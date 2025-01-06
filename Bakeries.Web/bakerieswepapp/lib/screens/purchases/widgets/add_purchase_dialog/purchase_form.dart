@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/models/Purchase.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/item_section.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/price_section.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/quantity_section.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/status_section.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/supplier_section.dart';
+import '../../../../models/Purchase.dart';
+import 'form_sections/item_section.dart';
+import 'form_sections/price_section.dart';
+import 'form_sections/quantity_section.dart';
+import 'form_sections/status_section.dart';
+import 'form_sections/supplier_section.dart';
 
 class PurchaseForm extends StatefulWidget {
   final bool isEdit;

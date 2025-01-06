@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/models/Purchase.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/purchase_detail_item.dart';
+import '../../../models/Purchase.dart';
+import 'purchase_detail_item.dart';
 
 class PurchaseCard extends StatelessWidget {
   final Purchase purchase;

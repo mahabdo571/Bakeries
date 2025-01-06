@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/models/navigation_item.dart';
+import '../../models/navigation_item.dart';
 
 class ResponsiveNavMenu extends StatelessWidget {
   final String currentPage;

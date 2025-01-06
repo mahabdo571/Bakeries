@@ -1,7 +1,7 @@
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/add_purchase_dialog.dart';
+import 'widgets/add_purchase_dialog/add_purchase_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/components/app_bar/app_bar_for_all_page.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/purchase_list.dart';
+import '../../components/app_bar/app_bar_for_all_page.dart';
+import 'widgets/purchase_list.dart';
 
 
 class PurchasesPage extends StatelessWidget {

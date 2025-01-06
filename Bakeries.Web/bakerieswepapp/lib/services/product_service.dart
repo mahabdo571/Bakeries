@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:bakerieswepapp/api_config.dart';
-import 'package:bakerieswepapp/models/product.dart';
+import '../api_config.dart';
+import '../models/product.dart';
 
 
 class ProductService {

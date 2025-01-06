@@ -1,9 +1,9 @@
 
-import 'package:bakerieswepapp/components/app_bar/app_bar_for_all_page.dart';
+import '../../components/app_bar/app_bar_for_all_page.dart';
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/screens/home/widgets/dashboard_section.dart';
-import 'package:bakerieswepapp/screens/home/widgets/responsive_grid.dart';
-import 'package:bakerieswepapp/models/dashboard_item.dart';
+import 'widgets/dashboard_section.dart';
+import 'widgets/responsive_grid.dart';
+import '../../models/dashboard_item.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

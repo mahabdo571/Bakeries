@@ -1,10 +1,10 @@
-import 'package:bakerieswepapp/Screens/ingredients/ingredients_page.dart';
-import 'package:bakerieswepapp/Screens/ingredients/widgets/ingredients_card.dart';
-import 'package:bakerieswepapp/Screens/product/widgets/product_dialog/product_dialog.dart';
-import 'package:bakerieswepapp/models/product.dart';
-import 'package:bakerieswepapp/models/product_ingredient.dart';
-import 'package:bakerieswepapp/services/ingredients_service.dart';
-import 'package:bakerieswepapp/services/product_service.dart';
+import '../../../Screens/ingredients/ingredients_page.dart';
+import '../../../Screens/ingredients/widgets/ingredients_card.dart';
+import '../../../Screens/product/widgets/product_dialog/product_dialog.dart';
+import '../../../models/product.dart';
+import '../../../models/product_ingredient.dart';
+import '../../../services/ingredients_service.dart';
+import '../../../services/product_service.dart';
 import 'package:flutter/material.dart';
 
 class IngredientsList extends StatefulWidget {

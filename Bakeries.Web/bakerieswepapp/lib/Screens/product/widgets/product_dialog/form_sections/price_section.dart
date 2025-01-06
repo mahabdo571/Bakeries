@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/constants/units.dart';
+
+import '../../../../../constants/units.dart';
 
 class PriceSection extends StatelessWidget {
   final double unitPrice;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/constants/purchase_status.dart';
-import 'package:bakerieswepapp/constants/payment_methods.dart';
+import '../../../../../constants/purchase_status.dart';
+import '../../../../../constants/payment_methods.dart';
 
 class StatusSection extends StatelessWidget {
   final String? selectedPaymentMethod;

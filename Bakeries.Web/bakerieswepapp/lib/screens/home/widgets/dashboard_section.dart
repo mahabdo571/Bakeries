@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/models/dashboard_item.dart';
+import '../../../models/dashboard_item.dart';
 
 class DashboardSection extends StatelessWidget {
   final DashboardItem item;

@@ -1,5 +1,5 @@
-import 'package:bakerieswepapp/models/Stock.dart';
-import 'package:bakerieswepapp/screens/stock/widgets/add_stock_dialog/form_sections/quantity_section.dart';
+import '../../../../models/Stock.dart';
+import 'form_sections/quantity_section.dart';
 import 'package:flutter/material.dart';
 
 class StockForm extends StatefulWidget {

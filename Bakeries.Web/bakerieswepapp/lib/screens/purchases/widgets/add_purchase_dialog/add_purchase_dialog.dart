@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/models/Purchase.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/purchase_form.dart';
-import 'package:bakerieswepapp/services/purchases_service.dart';
+import '../../../../models/Purchase.dart';
+import 'purchase_form.dart';
+import '../../../../services/purchases_service.dart';
 
 class AddPurchaseDialog extends StatelessWidget {
   final bool isEdit;

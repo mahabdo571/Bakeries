@@ -1,8 +1,8 @@
-import 'package:bakerieswepapp/Screens/ingredients/ingredients_page.dart';
-import 'package:bakerieswepapp/Screens/product/widgets/product_dialog/product_dialog.dart';
-import 'package:bakerieswepapp/models/product.dart';
-import 'package:bakerieswepapp/screens/Product/widgets/product_card.dart';
-import 'package:bakerieswepapp/services/product_service.dart';
+import '../../../Screens/ingredients/ingredients_page.dart';
+import '../../../Screens/product/widgets/product_dialog/product_dialog.dart';
+import '../../../models/product.dart';
+import 'product_card.dart';
+import '../../../services/product_service.dart';
 import 'package:flutter/material.dart';
 
 class ProductList extends StatefulWidget {

@@ -1,8 +1,8 @@
 
-import 'package:bakerieswepapp/Screens/product/widgets/product_dialog/product_dialog.dart';
-import 'package:bakerieswepapp/screens/Product/widgets/product_list.dart';
+import '../../Screens/product/widgets/product_dialog/product_dialog.dart';
+import 'widgets/product_list.dart';
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/components/app_bar/app_bar_for_all_page.dart';
+import '../../components/app_bar/app_bar_for_all_page.dart';
 
 
 class ProductScreens extends StatelessWidget {

@@ -1,6 +1,6 @@
-import 'package:bakerieswepapp/models/Stock.dart';
-import 'package:bakerieswepapp/screens/stock/widgets/add_stock_dialog/stock_form.dart';
-import 'package:bakerieswepapp/services/stock_service.dart';
+import '../../../../models/Stock.dart';
+import 'stock_form.dart';
+import '../../../../services/stock_service.dart';
 import 'package:flutter/material.dart';
 
 class AddStockDialog extends StatelessWidget {

@@ -1,8 +1,8 @@
-import 'package:bakerieswepapp/models/navigation_item.dart';
-import 'package:bakerieswepapp/screens/Product/product_page.dart';
-import 'package:bakerieswepapp/screens/home/home_page.dart';
-import 'package:bakerieswepapp/screens/purchases/purchases_page.dart';
-import 'package:bakerieswepapp/screens/stock/stock_page.dart';
+import '../models/navigation_item.dart';
+import '../screens/Product/product_page.dart';
+import '../screens/home/home_page.dart';
+import '../screens/purchases/purchases_page.dart';
+import '../screens/stock/stock_page.dart';
 
 final List<NavigationItem> navigationItems = [
   NavigationItem(

@@ -1,6 +1,6 @@
-import 'package:bakerieswepapp/Screens/product/widgets/product_dialog/product_form.dart';
-import 'package:bakerieswepapp/models/product.dart';
-import 'package:bakerieswepapp/services/product_service.dart';
+import '../../../../Screens/product/widgets/product_dialog/product_form.dart';
+import '../../../../models/product.dart';
+import '../../../../services/product_service.dart';
 import 'package:flutter/material.dart';
 
 class ProductDialog extends StatelessWidget {

@@ -1,5 +1,5 @@
-import 'package:bakerieswepapp/models/product_ingredient.dart';
-import 'package:bakerieswepapp/screens/Product/widgets/product_detail_item.dart';
+import '../../../models/product_ingredient.dart';
+import '../../Product/widgets/product_detail_item.dart';
 import 'package:flutter/material.dart';
 
 class IngredientsCard extends StatelessWidget {

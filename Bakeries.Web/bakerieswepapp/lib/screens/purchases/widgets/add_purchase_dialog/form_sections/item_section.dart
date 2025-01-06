@@ -1,6 +1,6 @@
-import 'package:bakerieswepapp/models/Stock.dart';
+import '../../../../../models/Stock.dart';
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/services/stock_service.dart';
+import '../../../../../services/stock_service.dart';
 
 class ItemSection extends StatefulWidget {
   final int? selectedItemId;

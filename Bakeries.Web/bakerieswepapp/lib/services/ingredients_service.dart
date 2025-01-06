@@ -1,5 +1,5 @@
-import 'package:bakerieswepapp/api_config.dart';
-import 'package:bakerieswepapp/models/product_ingredient.dart';
+import '../api_config.dart';
+import '../models/product_ingredient.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 class IngredientsService {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/constants/units.dart';
+import '../../../../../constants/units.dart';
 
 class QuantitySection extends StatelessWidget {
   final int quantity;

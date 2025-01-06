@@ -35,8 +35,8 @@ builder.Services.AddDbContext<clsDbContext>(options =>
 );
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Listen(System.Net.IPAddress.Parse("192.168.1.27"), 5000); // HTTP
-    options.Listen(System.Net.IPAddress.Parse("192.168.1.27"), 5001, listenOptions =>
+    options.Listen(System.Net.IPAddress.Parse("0.0.0.0"), 5000); // HTTP
+    options.Listen(System.Net.IPAddress.Parse("0.0.0.0"), 5001, listenOptions =>
     {
         listenOptions.UseHttps(); // HTTPS
     });

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bakerieswepapp/models/Stock.dart';
-import 'package:bakerieswepapp/screens/stock/widgets/stock_detail_item.dart';
+import '../../../models/Stock.dart';
+import 'stock_detail_item.dart';
 
 class StockCard extends StatelessWidget {
   final Stock stock;

@@ -1,5 +1,5 @@
-import 'package:bakerieswepapp/Screens/product/widgets/product_dialog/form_sections/price_section.dart';
-import 'package:bakerieswepapp/models/product.dart';
+import '../../../../Screens/product/widgets/product_dialog/form_sections/price_section.dart';
+import '../../../../models/product.dart';
 import 'package:flutter/material.dart';
 
 class ProductForm extends StatefulWidget {

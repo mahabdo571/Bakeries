@@ -1,4 +1,4 @@
-import 'package:bakerieswepapp/Screens/home/home_page.dart';
+import 'Screens/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:io'; 
 
