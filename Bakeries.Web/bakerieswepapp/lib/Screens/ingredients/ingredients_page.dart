@@ -1,3 +1,5 @@
+import 'package:bakerieswepapp/Screens/ingredients/widgets/add_update_dialog/add_update_dialog.dart';
+
 import '../../Screens/ingredients/widgets/ingredients_list.dart';
 import '../../models/product.dart';
 import '../stock/widgets/add_stock_dialog/add_stock_dialog.dart';
@@ -32,7 +34,7 @@ class _IngredientsScreensState extends State<IngredientsScreens> {
           child: CircularProgressIndicator(),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => _showAddStockDialog(context),
+          onPressed: () => _showAddDialog(context),
           backgroundColor: Colors.brown,
           child: const Icon(Icons.add),
         ),
@@ -45,7 +47,7 @@ class _IngredientsScreensState extends State<IngredientsScreens> {
           product: _product!,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => _showAddStockDialog(context),
+          onPressed: () => _showAddDialog(context),
           backgroundColor: Colors.brown,
           child: const Icon(Icons.add),
         ),
@@ -53,10 +55,10 @@ class _IngredientsScreensState extends State<IngredientsScreens> {
     }
   }
 
-  void _showAddStockDialog(BuildContext context) {
+  void _showAddDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AddStockDialog(
+      builder: (context) => AddUpdateDialog(
         isEdit: false,
         onAdd: (newStock) {
           // Handle add callback
