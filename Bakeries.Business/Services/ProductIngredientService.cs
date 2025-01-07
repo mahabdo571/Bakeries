@@ -16,13 +16,13 @@ namespace Bakeries.Business.Services
     {
 
         private readonly IProductIngredientRepo _productIngredientRepo;
-      
+
         private readonly IMapper _mapper;
 
-        public ProductIngredientService(IProductIngredientRepo productIngredientRepo,IStockRepo stockRepo, IMapper mapper)
+        public ProductIngredientService(IProductIngredientRepo productIngredientRepo, IStockRepo stockRepo, IMapper mapper)
         {
             _productIngredientRepo = productIngredientRepo;
-       
+
             _mapper = mapper;
         }
 

@@ -1,4 +1,5 @@
 import 'package:bakerieswepapp/Screens/ingredients/widgets/add_update_dialog/add_updte_form.dart';
+import 'package:bakerieswepapp/models/product_ingredient.dart';
 
 import '../../../../models/Stock.dart';
 import '../../../../services/stock_service.dart';
@@ -24,7 +25,7 @@ class AddUpdateDialog extends StatelessWidget {
       title: Text(isEdit ? 'تعديل عملية شراء' : 'إضافة عملية شراء'),
       content: AddUpdateForm(
         isEdit: isEdit,
-        stockData: stockData,
+        productIngredientData: stockData,
         onSubmit: (purchase) => _handleSubmit(context, purchase),
       ),
       actions: [
@@ -36,15 +37,16 @@ class AddUpdateDialog extends StatelessWidget {
     );
   }
 
-  Future<void> _handleSubmit(BuildContext context, Stock stock) async {
+  Future<void> _handleSubmit(
+      BuildContext context, ProductIngredient stock) async {
     try {
       if (isEdit) {
-        await StockService.updateStock(stock.Id, stock);
+        //await StockService.updateStock(stock.Id,);
 
         onEdit?.call(stock.toJson());
       } else {
-        final newstock = await StockService.addStock(stock);
-        onAdd?.call(newstock.toJson());
+        //final newstock = await StockService.addStock(stock);
+        // onAdd?.call(newstock.toJson());
       }
 
       ScaffoldMessenger.of(context).showSnackBar(

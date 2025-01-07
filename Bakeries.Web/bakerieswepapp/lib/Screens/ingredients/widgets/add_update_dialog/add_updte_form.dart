@@ -1,4 +1,5 @@
 import 'package:bakerieswepapp/models/product_ingredient.dart';
+import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/quantity_section.dart';
 import 'package:flutter/material.dart';
 
 class AddUpdateForm extends StatefulWidget {
@@ -58,9 +59,14 @@ class _AddUpdateFormState extends State<AddUpdateForm> {
   void _handleSubmit() {
     if (_formKey.currentState?.validate() ?? false) {
       final productIngredient = ProductIngredient(
-        Id: widget.isEdit ? widget.productIngredientData!['Id'] : 0,
-
-      );
+          Id: widget.isEdit ? widget.productIngredientData!['Id'] : 0,
+          Notes: '',
+          Quantity: 4,
+          UnitOfMeasure: 'طن',
+          product: null,
+          stock: null,
+          ProductId: 1,
+          stockId: 1);
 
       widget.onSubmit(productIngredient);
     }

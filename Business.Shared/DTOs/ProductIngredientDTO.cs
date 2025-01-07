@@ -10,9 +10,13 @@ namespace Business.Shared.DTOs
     public class ProductIngredientDTO
     {
         public int Id { get; set; }
-        public StockDTO stock { get; set;}
-        public ProductDTO product { get; set;}
+        public StockDTO? stock { get; set;}
+        public ProductDTO? product { get; set;}
 
+        [Required]
+        public int stockId { get; set; }
+        [Required]
+        public int ProductId { get; set; }
 
         [Required]
         [Range(0, double.MaxValue)]

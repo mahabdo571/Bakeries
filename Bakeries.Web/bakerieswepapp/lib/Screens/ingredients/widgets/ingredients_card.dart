@@ -48,12 +48,12 @@ class IngredientsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                productIngredient.stock.ItemName,
+                productIngredient.stock!.ItemName,
                 style:
                     const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
-                productIngredient.product.Name,
+                productIngredient.product!.Name,
                 style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               ),
             ],
