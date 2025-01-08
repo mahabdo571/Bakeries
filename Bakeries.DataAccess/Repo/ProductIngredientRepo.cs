@@ -34,6 +34,12 @@ namespace Bakeries.DataAccess.Repo
 
             _dbContext.ProductIngredient.Update(model);
             await _dbContext.SaveChangesAsync();
+        }  
+        
+        public async Task<ProductIngredientModel> GetByStockIdAsync(int stockId)
+        {
+            return await _dbContext.ProductIngredient.WhereNotDeleted().FirstOrDefaultAsync(p => p.stockId == stockId);
+
         }
 
         public async Task<IEnumerable<ProductIngredientModel>> GetAllAsync()

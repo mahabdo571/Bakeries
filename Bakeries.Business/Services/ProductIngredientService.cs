@@ -26,12 +26,31 @@ namespace Bakeries.Business.Services
             _mapper = mapper;
         }
 
-
-        public async Task<int> AddAsync(ProductIngredientDTO model)
+        public async Task<int> add(ProductIngredientAddUpdateDTO model)
         {
             var newModel = _mapper.Map<ProductIngredientModel>(model);
 
+            if (await CheckTheProductComponentIfItExists(model)) {
+                return -2;
+            }
             return await _productIngredientRepo.AddAsync(newModel);
+        }
+
+        private async Task<bool> CheckTheProductComponentIfItExists(ProductIngredientAddUpdateDTO model)
+        {
+            var tempModel =await GetAllByProductIdAsync(model.ProductId);
+            var stockModel = await _productIngredientRepo.GetByStockIdAsync(model.stockId);
+
+            if (tempModel != null && stockModel != null) { 
+            return true;
+            }
+
+            return false;
+        }
+
+        public  Task<int> AddAsync(ProductIngredientDTO model)
+        {
+            return null;
         }
 
         public async Task DeleteAsync(int id)
@@ -65,6 +84,12 @@ namespace Bakeries.Business.Services
         public async Task<ProductIngredientDTO> GetByIdAsync(int id)
         {
             return _mapper.Map<ProductIngredientDTO>(await _productIngredientRepo.GetByIdAsync(id));
+        }
+
+        public async Task Update(ProductIngredientAddUpdateDTO model)
+        {
+            await _productIngredientRepo.UpdateAsync(_mapper.Map<ProductIngredientModel>(model));
+
         }
 
         public async Task UpdateAsync(ProductIngredientDTO model)

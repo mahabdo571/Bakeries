@@ -1,7 +1,8 @@
-import '../../../../models/Stock.dart';
-import 'stock_form.dart';
-import '../../../../services/stock_service.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../models/Stock.dart';
+import '../../../../services/stock_service.dart';
+import 'stock_form.dart';
 
 class AddStockDialog extends StatelessWidget {
   final bool isEdit;

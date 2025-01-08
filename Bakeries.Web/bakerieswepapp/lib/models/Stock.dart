@@ -26,18 +26,20 @@ class Stock {
       'Location': Location ?? '',
       'UnitOfMeasure': UnitOfMeasure ?? '',
       'ReorderLevel': ReorderLevel ?? 0,
-    };
+    }..removeWhere((key, value) => value == null);
   }
 
   factory Stock.fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic> cleanedJson = Map.from(json)
+      ..removeWhere((key, value) => value == null);
     return Stock(
-      Id: json['Id'] ?? 0,
-      Notes: json['Notes'] ?? '',
-      ItemName: json['ItemName']??'',
-      AvailableQuantity: json['AvailableQuantity'] ?? 0,
-      Location: json['Location'] ?? '',
-      UnitOfMeasure: json['UnitOfMeasure'] ?? '',
-      ReorderLevel: json['ReorderLevel'] ?? 0,
+      Id: cleanedJson['Id'] ?? 0,
+      Notes: cleanedJson['Notes'] ?? '',
+      ItemName: cleanedJson['ItemName'] ?? '',
+      AvailableQuantity: cleanedJson['AvailableQuantity'] ?? 0,
+      Location: cleanedJson['Location'] ?? '',
+      UnitOfMeasure: cleanedJson['UnitOfMeasure'] ?? '',
+      ReorderLevel: cleanedJson['ReorderLevel'] ?? 0,
     );
   }
 }

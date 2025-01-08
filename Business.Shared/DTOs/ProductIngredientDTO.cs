@@ -7,24 +7,27 @@ using System.Threading.Tasks;
 
 namespace Business.Shared.DTOs
 {
-    public class ProductIngredientDTO
+    public class ProductIngredientDTO 
     {
-        public int Id { get; set; }
-        public StockDTO? stock { get; set;}
-        public ProductDTO? product { get; set;}
 
-        [Required]
-        public int stockId { get; set; }
-        [Required]
-        public int ProductId { get; set; }
+
+
+        public int Id { get; set; }
+
+
 
         [Required]
         [Range(0, double.MaxValue)]
         public double Quantity { get; set; }
 
         [Required]
-        [StringLength(50)] 
+        [StringLength(50)]
         public string UnitOfMeasure { get; set; }
         public string Notes { get; set; }
+
+        public StockDTO? stock { get; set; }
+        public ProductDTO? product { get; set; }
+
+
     }
 }

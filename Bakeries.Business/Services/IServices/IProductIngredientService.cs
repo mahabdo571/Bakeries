@@ -11,5 +11,8 @@ namespace Bakeries.Business.Services.IServices
     {
         Task<IEnumerable<ProductIngredientDTO>> GetAllByProductIdAsync(int productId);
 
+        Task<int> add(ProductIngredientAddUpdateDTO model);
+        Task Update(ProductIngredientAddUpdateDTO model);
+
     }
 }

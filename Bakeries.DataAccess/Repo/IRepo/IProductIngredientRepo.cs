@@ -10,5 +10,6 @@ namespace Bakeries.DataAccess.Repo.IRepo
     public interface IProductIngredientRepo : IRepoBase<ProductIngredientModel>
     {
         Task<IEnumerable<ProductIngredientModel>> GetAllByProductIdAsync(int productId);
+        Task<ProductIngredientModel> GetByStockIdAsync(int stockId);
     }
 }

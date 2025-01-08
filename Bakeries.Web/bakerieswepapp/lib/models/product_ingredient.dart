@@ -27,8 +27,6 @@ class ProductIngredient {
       'Id': Id ?? 0,
       'Quantity': Quantity ?? 0,
       'UnitOfMeasure': UnitOfMeasure ?? '',
-      'stock': stock,
-      'product': product,
       'Notes': Notes ?? '',
       'stockId': stockId ?? 0,
       'ProductId': ProductId ?? 0,
@@ -38,16 +36,19 @@ class ProductIngredient {
   factory ProductIngredient.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic> cleanedJson = Map.from(json)
       ..removeWhere((key, value) => value == null);
-    print('jjjgtg $cleanedJson');
     return ProductIngredient(
       Id: cleanedJson['Id'] ?? 0,
       Quantity: cleanedJson['Quantity'] ?? 0,
       UnitOfMeasure: cleanedJson['UnitOfMeasure'] ?? '',
       Notes: cleanedJson['Notes'] ?? '',
-      stockId: cleanedJson['stockId'] ?? 0,
-      ProductId: cleanedJson['ProductId'] ?? 0,
-      stock: Stock.fromJson(cleanedJson['stock']),
-      product: Product.fromJson(cleanedJson['product']),
+      stockId: cleanedJson['stock']?['Id'] ?? 0,
+      ProductId: cleanedJson['product']?['Id'] ?? 0,
+      stock: cleanedJson.containsKey('stock')
+          ? Stock.fromJson(cleanedJson['stock'])
+          : null,
+      product: cleanedJson.containsKey('product')
+          ? Product.fromJson(cleanedJson['product'])
+          : null,
     );
   }
 }

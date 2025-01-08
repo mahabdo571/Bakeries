@@ -52,17 +52,16 @@ class _PurchaseListState extends State<PurchaseList> {
   }
 
   void _handleEdit(Purchase purchase) {
-      showDialog(
+    showDialog(
       context: context,
       builder: (context) => AddPurchaseDialog(
         isEdit: true,
-        purchaseData: purchase.toJson() ,
+        purchaseData: purchase.toJson(),
         onAdd: (newPurchase) {
           // Handle add callback
         },
       ),
     );
-
   }
 
   void _handleDelete(int id) async {

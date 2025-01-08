@@ -1,6 +1,6 @@
-import 'package:bakerieswepapp/models/product_ingredient.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/item_section.dart';
-import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/quantity_section.dart';
+import '../../../../models/product_ingredient.dart';
+import '../../../../screens/purchases/widgets/add_purchase_dialog/form_sections/item_section.dart';
+import '../../../../screens/purchases/widgets/add_purchase_dialog/form_sections/quantity_section.dart';
 import 'package:flutter/material.dart';
 
 class AddUpdateForm extends StatefulWidget {
@@ -41,7 +41,7 @@ class _AddUpdateFormState extends State<AddUpdateForm> {
     final data = widget.productIngredientData!;
     _notesController.text = data['Notes'] ?? '';
 
-    _unitOfMeasure = data['UnitOfMeasure'];
+    _unitOfMeasure = data['UnitOfMeasure'] ?? '';
     _itemSelected = data['stockId'] ?? 0;
     _quantity = data['Quantity'] ?? 0;
   }
@@ -62,7 +62,7 @@ class _AddUpdateFormState extends State<AddUpdateForm> {
           UnitOfMeasure: _unitOfMeasure ?? '',
           product: null,
           stock: null,
-          ProductId: widget.productId ?? 0,
+          ProductId: widget.productId,
           stockId: _itemSelected ?? 0);
 
       widget.onSubmit(productIngredient);

@@ -1,6 +1,6 @@
-import 'package:bakerieswepapp/Screens/ingredients/widgets/add_update_dialog/add_updte_form.dart';
-import 'package:bakerieswepapp/models/product_ingredient.dart';
-import 'package:bakerieswepapp/services/ingredients_service.dart';
+import 'add_updte_form.dart';
+import '../../../../models/product_ingredient.dart';
+import '../../../../services/ingredients_service.dart';
 
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class AddUpdateDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(isEdit ? 'تعديل عملية شراء' : 'إضافة عملية شراء'),
+      title: Text(isEdit ? 'تعديل المكون' : 'إضافة مكون '),
       content: AddUpdateForm(
         isEdit: isEdit,
         productId: productId,
@@ -42,7 +42,7 @@ class AddUpdateDialog extends StatelessWidget {
       BuildContext context, ProductIngredient productIngredient) async {
     try {
       if (isEdit) {
-        //await StockService.updateStock(stock.Id,);
+      await IngredientsService.updateProductIngredient(productIngredient.Id,productIngredient);
 
         onEdit?.call(productIngredient.toJson());
       } else {
@@ -58,9 +58,9 @@ class AddUpdateDialog extends StatelessWidget {
       );
       Navigator.of(context).pop();
     } catch (e) {
-      print('ddddd $e');
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('حدث خطأ: $e')),
+        SnackBar(content: Text(' $e')),
       );
     }
   }

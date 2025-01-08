@@ -27,13 +27,15 @@ class Product {
   }
 
   factory Product.fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic> cleanedJson = Map.from(json)
+      ..removeWhere((key, value) => value == null);
     return Product(
-      Id: json['Id'] ?? 0,
-      Description: json['Description'] ?? '',
-      Name: json['Name'] ?? '',
-      Price: json['Price'] ?? 0.00,
-      Unit: json['Unit'] ?? '',
-      Notes: json['Notes'] ?? '',
+      Id: cleanedJson['Id'] ?? 0,
+      Description: cleanedJson['Description'] ?? '',
+      Name: cleanedJson['Name'] ?? '',
+      Price: cleanedJson['Price'] ?? 0.00,
+      Unit: cleanedJson['Unit'] ?? '',
+      Notes: cleanedJson['Notes'] ?? '',
     );
   }
 }

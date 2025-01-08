@@ -22,6 +22,11 @@ namespace Bakeries.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
+          //  modelBuilder.Entity<ProductIngredientModel>()
+          //.HasIndex(e => e.stockId)
+          //.IsUnique()
+          //.HasDatabaseName("IX_ProductIngredient_StockId");
+
             // إضافة فهرس على ProductId في جدول ProductIngredientModel
             modelBuilder.Entity<ProductIngredientModel>()
                 .HasIndex(pi => pi.ProductId)

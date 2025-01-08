@@ -1,8 +1,9 @@
-import 'add_stock_dialog/add_stock_dialog.dart';
 import 'package:flutter/material.dart';
+
 import '../../../models/Stock.dart';
-import 'stock_card.dart';
 import '../../../services/stock_service.dart';
+import 'add_stock_dialog/add_stock_dialog.dart';
+import 'stock_card.dart';
 
 class StockList extends StatefulWidget {
   const StockList({Key? key}) : super(key: key);

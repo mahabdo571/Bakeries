@@ -1,6 +1,7 @@
-import 'widgets/add_purchase_dialog/add_purchase_dialog.dart';
 import 'package:flutter/material.dart';
+
 import '../../components/app_bar/app_bar_for_all_page.dart';
+import 'widgets/add_purchase_dialog/add_purchase_dialog.dart';
 import 'widgets/purchase_list.dart';
 
 

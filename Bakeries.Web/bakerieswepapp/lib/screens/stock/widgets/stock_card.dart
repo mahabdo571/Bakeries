@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../models/Stock.dart';
 import 'stock_detail_item.dart';
 

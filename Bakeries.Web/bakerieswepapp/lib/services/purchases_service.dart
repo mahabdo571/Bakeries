@@ -35,6 +35,7 @@ class PurchasesService {
   }
 
   static Future<Purchase> addPurchase(Purchase purchaseData) async {
+    
     final response = await http.post(Uri.parse(ApiConfig.purchases),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(purchaseData.toJson()));

@@ -95,7 +95,7 @@ namespace Bakeries.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> AddProductIngredient([FromBody] ProductIngredientDTO model)
+        public async Task<ActionResult> AddProductIngredient([FromBody] ProductIngredientAddUpdateDTO model)
         {
             try
             {
@@ -105,9 +105,13 @@ namespace Bakeries.API.Controllers
                     _logger.LogWarning("model is null  - not found.");
                     return BadRequest("model data cannot be null.");
                 }
+              
+                int newId = await _productIngredientService.add(model);
 
-                int newId = await _productIngredientService.AddAsync(model);
-                model.Id = newId;
+                if (newId == -2) {
+                    return BadRequest("هذا العنصر موجود ");
+                }
+              model.Id = newId;
 
 
                 return CreatedAtAction(nameof(GetProductIngredientById), new { Id = newId }, model);
@@ -128,7 +132,7 @@ namespace Bakeries.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> UpdateProductIngredient([FromRoute] int Id, [FromBody] ProductIngredientDTO model)
+        public async Task<ActionResult> UpdateProductIngredient([FromRoute] int Id, [FromBody] ProductIngredientAddUpdateDTO model)
         {
 
 
@@ -142,7 +146,7 @@ namespace Bakeries.API.Controllers
                 }
 
 
-                await _productIngredientService.UpdateAsync(model);
+                await _productIngredientService.Update(model);
 
                 return Ok(new { message = $"model with ID {Id} has been successfully updated.", model });
 

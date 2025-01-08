@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import '../../../../models/Stock.dart';
 import 'form_sections/quantity_section.dart';
-import 'package:flutter/material.dart';
 
 class StockForm extends StatefulWidget {
   final bool isEdit;

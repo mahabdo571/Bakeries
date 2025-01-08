@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
+
 import '../../../models/product_ingredient.dart';
 import '../../Product/widgets/product_detail_item.dart';
-import 'package:flutter/material.dart';
 
 class IngredientsCard extends StatelessWidget {
   final ProductIngredient productIngredient;
-  final Function(ProductIngredient) onEdit;
-  final Function(int) onDelete;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
   final Function(int) onClickOnTheIngredients;
 
   const IngredientsCard({
@@ -95,14 +96,14 @@ class IngredientsCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ElevatedButton.icon(
-          onPressed: () => onEdit(productIngredient),
+          onPressed: () => onEdit(),
           icon: const Icon(Icons.edit, color: Colors.white),
           label: const Text('تعديل'),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
         ),
         const SizedBox(width: 8),
         ElevatedButton.icon(
-          onPressed: () => onDelete(productIngredient.Id),
+          onPressed: () => onDelete(),
           icon: const Icon(Icons.delete, color: Colors.white),
           label: const Text('حذف'),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),

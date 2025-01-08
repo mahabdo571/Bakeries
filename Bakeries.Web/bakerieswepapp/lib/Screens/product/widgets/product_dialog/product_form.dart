@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import '../../../../Screens/product/widgets/product_dialog/form_sections/price_section.dart';
 import '../../../../models/product.dart';
-import 'package:flutter/material.dart';
 
 class ProductForm extends StatefulWidget {
   final bool isEdit;

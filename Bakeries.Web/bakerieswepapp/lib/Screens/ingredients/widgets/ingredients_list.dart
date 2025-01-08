@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
+
 import '../../../Screens/ingredients/ingredients_page.dart';
 import '../../../Screens/ingredients/widgets/ingredients_card.dart';
-import '../../../Screens/product/widgets/product_dialog/product_dialog.dart';
 import '../../../models/product.dart';
 import '../../../models/product_ingredient.dart';
 import '../../../services/ingredients_service.dart';
 import '../../../services/product_service.dart';
-import 'package:flutter/material.dart';
+import 'add_update_dialog/add_update_dialog.dart';
 
 class IngredientsList extends StatefulWidget {
   final int productId;
@@ -81,8 +82,8 @@ class _IngredientsListState extends State<IngredientsList> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) => IngredientsCard(
                   productIngredient: snapshot.data![index],
-                  onEdit: _handleEdit,
-                  onDelete: _handleDelete,
+                  onEdit: () => _handleEdit(snapshot.data![index]),
+                  onDelete:() => _handleDelete(snapshot.data![index].Id),
                   onClickOnTheIngredients: _onClickOnTheIngredients,
                 ),
               );
@@ -93,13 +94,14 @@ class _IngredientsListState extends State<IngredientsList> {
     );
   }
 
-  void _handleEdit(ProductIngredient product) {
+  void _handleEdit(ProductIngredient productIngredient) {
     showDialog(
       context: context,
-      builder: (context) => ProductDialog(
+      builder: (context) => AddUpdateDialog(
         isEdit: true,
-        productData: product.toJson(),
-        onAdd: (newProduct) {
+        stockData: productIngredient.toJson(),
+        productId: widget.productId,
+        onEdit: (productEdited) {
           // Handle add callback
         },
       ),
@@ -122,7 +124,7 @@ class _IngredientsListState extends State<IngredientsList> {
 
   Future<void> _handleDelete(int id) async {
     try {
-      await ProductService.deleteProduct(id);
+      await IngredientsService.deleteProductIngredient(id);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('تم حذف العنصر بنجاح')),
       );

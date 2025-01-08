@@ -1,8 +1,7 @@
-import 'package:bakerieswepapp/Screens/ingredients/widgets/add_update_dialog/add_update_dialog.dart';
+import 'widgets/add_update_dialog/add_update_dialog.dart';
 
 import '../../Screens/ingredients/widgets/ingredients_list.dart';
 import '../../models/product.dart';
-import '../stock/widgets/add_stock_dialog/add_stock_dialog.dart';
 import '../../services/product_service.dart';
 import 'package:flutter/material.dart';
 import '../../components/app_bar/app_bar_for_all_page.dart';
