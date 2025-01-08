@@ -59,6 +59,7 @@ class _IngredientsScreensState extends State<IngredientsScreens> {
     showDialog(
       context: context,
       builder: (context) => AddUpdateDialog(
+        productId: widget.productId,
         isEdit: false,
         onAdd: (newStock) {
           // Handle add callback

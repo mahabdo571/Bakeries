@@ -1,8 +1,7 @@
 import 'package:bakerieswepapp/Screens/ingredients/widgets/add_update_dialog/add_updte_form.dart';
 import 'package:bakerieswepapp/models/product_ingredient.dart';
+import 'package:bakerieswepapp/services/ingredients_service.dart';
 
-import '../../../../models/Stock.dart';
-import '../../../../services/stock_service.dart';
 import 'package:flutter/material.dart';
 
 class AddUpdateDialog extends StatelessWidget {
@@ -10,13 +9,14 @@ class AddUpdateDialog extends StatelessWidget {
   final Map<String, dynamic>? stockData;
   final Function(Map<String, dynamic>)? onAdd;
   final Function(Map<String, dynamic>)? onEdit;
-
+  final int productId;
   const AddUpdateDialog({
     Key? key,
     this.isEdit = false,
     this.stockData,
     this.onAdd,
     this.onEdit,
+    required this.productId,
   }) : super(key: key);
 
   @override
@@ -25,6 +25,7 @@ class AddUpdateDialog extends StatelessWidget {
       title: Text(isEdit ? 'تعديل عملية شراء' : 'إضافة عملية شراء'),
       content: AddUpdateForm(
         isEdit: isEdit,
+        productId: productId,
         productIngredientData: stockData,
         onSubmit: (purchase) => _handleSubmit(context, purchase),
       ),
@@ -38,15 +39,16 @@ class AddUpdateDialog extends StatelessWidget {
   }
 
   Future<void> _handleSubmit(
-      BuildContext context, ProductIngredient stock) async {
+      BuildContext context, ProductIngredient productIngredient) async {
     try {
       if (isEdit) {
         //await StockService.updateStock(stock.Id,);
 
-        onEdit?.call(stock.toJson());
+        onEdit?.call(productIngredient.toJson());
       } else {
-        //final newstock = await StockService.addStock(stock);
-        // onAdd?.call(newstock.toJson());
+        final newstock =
+            await IngredientsService.addProductIngredient(productIngredient);
+        onAdd?.call(newstock.toJson());
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -56,7 +58,7 @@ class AddUpdateDialog extends StatelessWidget {
       );
       Navigator.of(context).pop();
     } catch (e) {
-      print(e);
+      print('ddddd $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('حدث خطأ: $e')),
       );

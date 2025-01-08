@@ -2,17 +2,21 @@ import '../api_config.dart';
 import '../models/product_ingredient.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-class IngredientsService {
 
-  static Stream<List<ProductIngredient>> getProductIngredientStream(int productId) async* {
+class IngredientsService {
+  static Stream<List<ProductIngredient>> getProductIngredientStream(
+      int productId) async* {
     while (true) {
       try {
-        final response = await http.get(Uri.parse('${ApiConfig.GetAllProductIngredientByProductId}$productId'));
+        final response = await http.get(Uri.parse(
+            '${ApiConfig.GetAllProductIngredientByProductId}$productId'));
 
         if (response.statusCode == 200) {
           List jsonResponse = json.decode(response.body);
-         
-          yield jsonResponse.map((data) => ProductIngredient.fromJson(data)).toList();
+
+          yield jsonResponse
+              .map((data) => ProductIngredient.fromJson(data))
+              .toList();
         } else {
           throw Exception('Failed to load stock items');
         }
@@ -24,4 +28,17 @@ class IngredientsService {
     }
   }
 
+  static Future<ProductIngredient> addProductIngredient(
+      ProductIngredient productIngredient) async {
+    print('777777 ${productIngredient.toJson()}');
+    final response = await http.post(Uri.parse(ApiConfig.ProductIngredient),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(productIngredient.toJson()));
+
+    if (response.statusCode == 201) {
+      return ProductIngredient.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to add purchase');
+    }
+  }
 }

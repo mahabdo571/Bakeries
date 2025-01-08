@@ -1,15 +1,18 @@
 import 'package:bakerieswepapp/models/product_ingredient.dart';
+import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/item_section.dart';
 import 'package:bakerieswepapp/screens/purchases/widgets/add_purchase_dialog/form_sections/quantity_section.dart';
 import 'package:flutter/material.dart';
 
 class AddUpdateForm extends StatefulWidget {
   final bool isEdit;
+  final int productId;
   final Map<String, dynamic>? productIngredientData;
   final Function(ProductIngredient) onSubmit;
 
   const AddUpdateForm({
     Key? key,
     required this.isEdit,
+    required this.productId,
     this.productIngredientData,
     required this.onSubmit,
   }) : super(key: key);
@@ -21,12 +24,10 @@ class AddUpdateForm extends StatefulWidget {
 class _AddUpdateFormState extends State<AddUpdateForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _notesController = TextEditingController();
-  final TextEditingController _itemNameController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _reorderLevelController = TextEditingController();
 
-  int _availableQuantity = 0;
+  int _quantity = 0;
   String? _unitOfMeasure;
+  int? _itemSelected;
 
   @override
   void initState() {
@@ -39,20 +40,16 @@ class _AddUpdateFormState extends State<AddUpdateForm> {
   void _initializeFormData() {
     final data = widget.productIngredientData!;
     _notesController.text = data['Notes'] ?? '';
-    _itemNameController.text = data['ItemName'] ?? '';
-    _unitOfMeasure = data['UnitOfMeasure'];
-    _locationController.text = data['Location'] ?? '';
-    _reorderLevelController.text = data['ReorderLevel'].toString();
 
-    _availableQuantity = data['AvailableQuantity'] ?? 0;
+    _unitOfMeasure = data['UnitOfMeasure'];
+    _itemSelected = data['stockId'] ?? 0;
+    _quantity = data['Quantity'] ?? 0;
   }
 
   @override
   void dispose() {
     _notesController.dispose();
-    _itemNameController.dispose();
-    _locationController.dispose();
-    _reorderLevelController.dispose();
+
     super.dispose();
   }
 
@@ -60,13 +57,13 @@ class _AddUpdateFormState extends State<AddUpdateForm> {
     if (_formKey.currentState?.validate() ?? false) {
       final productIngredient = ProductIngredient(
           Id: widget.isEdit ? widget.productIngredientData!['Id'] : 0,
-          Notes: '',
-          Quantity: 4,
-          UnitOfMeasure: 'طن',
+          Notes: _notesController.text,
+          Quantity: _quantity,
+          UnitOfMeasure: _unitOfMeasure ?? '',
           product: null,
           stock: null,
-          ProductId: 1,
-          stockId: 1);
+          ProductId: widget.productId ?? 0,
+          stockId: _itemSelected ?? 0);
 
       widget.onSubmit(productIngredient);
     }
@@ -80,31 +77,18 @@ class _AddUpdateFormState extends State<AddUpdateForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextFormField(
-              controller: _itemNameController,
-              decoration: const InputDecoration(labelText: 'اسم الصنف'),
-              validator: (value) =>
-                  value?.isEmpty ?? true ? 'يجب إدخال الاسم ' : null,
+            ItemSection(
+              selectedItemId: _itemSelected,
+              onItemSelected: (itemId) {
+                setState(() => _itemSelected = itemId);
+              },
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _locationController,
-              decoration: const InputDecoration(labelText: 'الموقع في المخزن'),
-              validator: (value) =>
-                  value?.isEmpty ?? true ? 'يجب إدخال الموقع ' : null,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _reorderLevelController,
-              decoration: const InputDecoration(labelText: 'ادنى كمية للطلب'),
-              validator: (value) =>
-                  value?.isEmpty ?? true ? 'يجب إدخال ادنى كمية  ' : null,
-            ),
             const SizedBox(height: 16),
             QuantitySection(
-              quantity: _availableQuantity,
+              quantity: _quantity,
               selectedUnit: _unitOfMeasure,
-              onQuantityChanged: (q) => setState(() => _availableQuantity = q),
+              onQuantityChanged: (q) => setState(() => _quantity = q),
               onUnitChanged: (unit) => setState(() => _unitOfMeasure = unit),
             ),
             const SizedBox(height: 16),

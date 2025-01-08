@@ -32,19 +32,22 @@ class ProductIngredient {
       'Notes': Notes ?? '',
       'stockId': stockId ?? 0,
       'ProductId': ProductId ?? 0,
-    };
+    }..removeWhere((key, value) => value == null);
   }
 
   factory ProductIngredient.fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic> cleanedJson = Map.from(json)
+      ..removeWhere((key, value) => value == null);
+    print('jjjgtg $cleanedJson');
     return ProductIngredient(
-      Id: json['Id'] ?? 0,
-      Quantity: json['Quantity'] ?? 0,
-      UnitOfMeasure: json['UnitOfMeasure'] ?? '',
-      Notes: json['Notes'] ?? '',
-      stockId: json['stockId'] ?? 0,
-      ProductId: json['ProductId'] ?? 0,
-      stock: Stock.fromJson(json['stock']),
-      product: Product.fromJson(json['product']),
+      Id: cleanedJson['Id'] ?? 0,
+      Quantity: cleanedJson['Quantity'] ?? 0,
+      UnitOfMeasure: cleanedJson['UnitOfMeasure'] ?? '',
+      Notes: cleanedJson['Notes'] ?? '',
+      stockId: cleanedJson['stockId'] ?? 0,
+      ProductId: cleanedJson['ProductId'] ?? 0,
+      stock: Stock.fromJson(cleanedJson['stock']),
+      product: Product.fromJson(cleanedJson['product']),
     );
   }
 }
