@@ -36,9 +36,13 @@ namespace Bakeries.DataAccess.Repo
             await _dbContext.SaveChangesAsync();
         }  
         
-        public async Task<ProductIngredientModel> GetByStockIdAsync(int stockId)
+        public async Task<bool> IsIngredientAlreadyAddedAsync(int productId,int stockId)
         {
-            return await _dbContext.ProductIngredient.WhereNotDeleted().FirstOrDefaultAsync(p => p.stockId == stockId);
+            var exists = await _dbContext.ProductIngredient.WhereNotDeleted().AnyAsync(x => x.ProductId == productId && x.stockId == stockId);
+            return exists;
+           
+            
+          //  return await _dbContext.ProductIngredient.WhereNotDeleted().FirstOrDefaultAsync(p => p.stockId == stockId);
 
         }
 

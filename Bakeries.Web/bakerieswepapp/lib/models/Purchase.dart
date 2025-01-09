@@ -1,7 +1,7 @@
 class Purchase {
   final int Id;
   final String Notes;
-  final int Quantity;
+  final double Quantity;
   // final double TotalCost;
   final double TotalPrice;
   final double UnitPrice;

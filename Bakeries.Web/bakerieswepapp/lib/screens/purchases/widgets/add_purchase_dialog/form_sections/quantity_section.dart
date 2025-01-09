@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../../../constants/units.dart';
 
 class QuantitySection extends StatelessWidget {
-  final int quantity;
+  final double quantity;
   final String? selectedUnit;
-  final Function(int) onQuantityChanged;
+  final Function(double) onQuantityChanged;
   final Function(String) onUnitChanged;
 
   const QuantitySection({
@@ -23,12 +23,15 @@ class QuantitySection extends StatelessWidget {
         Expanded(
           child: TextFormField(
             initialValue: quantity.toString(),
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.numberWithOptions(
+                decimal: true), // لتمكين إدخال الأرقام العشرية
             decoration: const InputDecoration(labelText: 'الكمية'),
-            onChanged: (val) => onQuantityChanged(int.tryParse(val) ?? 0),
+            onChanged: (val) => onQuantityChanged(
+                double.tryParse(val) ?? 0.0), // استخدام double بدلاً من int
             validator: (value) {
               if (value?.isEmpty ?? true) return 'يجب إدخال الكمية';
-              if (!RegExp(r'^\d+$').hasMatch(value!)) return 'أدخل رقم صحيح';
+              if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value!))
+                return 'أدخل رقم صحيح';
               return null;
             },
           ),

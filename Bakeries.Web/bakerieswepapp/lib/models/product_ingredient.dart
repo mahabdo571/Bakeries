@@ -3,7 +3,7 @@ import 'product.dart';
 
 class ProductIngredient {
   final int Id;
-  final int Quantity;
+  final double Quantity;
   final String UnitOfMeasure;
   final Stock? stock;
   final Product? product;

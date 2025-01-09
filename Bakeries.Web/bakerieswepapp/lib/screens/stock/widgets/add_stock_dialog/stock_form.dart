@@ -26,7 +26,7 @@ class _StockFormState extends State<StockForm> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _reorderLevelController = TextEditingController();
 
-  int _availableQuantity = 0;
+  double _availableQuantity = 0;
   String? _unitOfMeasure;
 
   @override

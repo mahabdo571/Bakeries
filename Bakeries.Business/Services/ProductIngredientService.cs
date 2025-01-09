@@ -38,14 +38,10 @@ namespace Bakeries.Business.Services
 
         private async Task<bool> CheckTheProductComponentIfItExists(ProductIngredientAddUpdateDTO model)
         {
-            var tempModel =await GetAllByProductIdAsync(model.ProductId);
-            var stockModel = await _productIngredientRepo.GetByStockIdAsync(model.stockId);
+          
+           return await _productIngredientRepo.IsIngredientAlreadyAddedAsync(model.ProductId,model.stockId);
 
-            if (tempModel != null && stockModel != null) { 
-            return true;
-            }
-
-            return false;
+           
         }
 
         public  Task<int> AddAsync(ProductIngredientDTO model)

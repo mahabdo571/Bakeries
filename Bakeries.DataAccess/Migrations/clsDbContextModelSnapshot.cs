@@ -42,8 +42,8 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
+                    b.Property<float>("Quantity")
+                        .HasColumnType("real");
 
                     b.Property<string>("UnitOfMeasure")
                         .IsRequired()
@@ -65,6 +65,42 @@ namespace Bakeries.DataAccess.Migrations
                         .HasDatabaseName("IX_ProductIngredient_StockId");
 
                     b.ToTable("ProductIngredient");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("QuantityDamaged")
+                        .HasColumnType("real");
+
+                    b.Property<float>("QuantityProduced")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Production");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductsModel", b =>
@@ -138,8 +174,8 @@ namespace Bakeries.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                    b.Property<float>("Quantity")
+                        .HasColumnType("real");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -185,8 +221,8 @@ namespace Bakeries.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AvailableQuantity")
-                        .HasColumnType("int");
+                    b.Property<float>("AvailableQuantity")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -244,6 +280,17 @@ namespace Bakeries.DataAccess.Migrations
                     b.Navigation("stock");
                 });
 
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionModel", b =>
+                {
+                    b.HasOne("Bakeries.DataAccess.Entities.ProductsModel", "Product")
+                        .WithMany("Production")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchasesModel", b =>
                 {
                     b.HasOne("Bakeries.DataAccess.Entities.StockModel", "Item")
@@ -258,6 +305,8 @@ namespace Bakeries.DataAccess.Migrations
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductsModel", b =>
                 {
                     b.Navigation("Ingredients");
+
+                    b.Navigation("Production");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.StockModel", b =>

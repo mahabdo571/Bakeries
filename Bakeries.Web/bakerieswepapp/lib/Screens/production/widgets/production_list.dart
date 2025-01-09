@@ -5,19 +5,18 @@ import '../../../Screens/ingredients/widgets/ingredients_card.dart';
 import '../../../models/product.dart';
 import '../../../models/product_ingredient.dart';
 import '../../../services/ingredients_service.dart';
-import 'add_update_dialog/add_update_dialog.dart';
 
-class IngredientsList extends StatefulWidget {
+class ProductionList extends StatefulWidget {
   final int productId;
   final Product product;
-  IngredientsList({Key? key, required this.productId, required this.product})
+  ProductionList({Key? key, required this.productId, required this.product})
       : super(key: key);
 
   @override
-  _IngredientsListState createState() => _IngredientsListState();
+  _ProductionListState createState() => _ProductionListState();
 }
 
-class _IngredientsListState extends State<IngredientsList> {
+class _ProductionListState extends State<ProductionList> {
   late Stream<List<ProductIngredient>> stockStream;
   @override
   void initState() {
@@ -96,14 +95,7 @@ class _IngredientsListState extends State<IngredientsList> {
   void _handleEdit(ProductIngredient productIngredient) {
     showDialog(
       context: context,
-      builder: (context) => AddUpdateDialog(
-        isEdit: true,
-        stockData: productIngredient.toJson(),
-        productId: widget.productId,
-        onEdit: (productEdited) {
-          // Handle add callback
-        },
-      ),
+      builder: (context) => Text('ToDo'),
     );
   }
 

@@ -42,7 +42,8 @@ class AddUpdateDialog extends StatelessWidget {
       BuildContext context, ProductIngredient productIngredient) async {
     try {
       if (isEdit) {
-      await IngredientsService.updateProductIngredient(productIngredient.Id,productIngredient);
+        await IngredientsService.updateProductIngredient(
+            productIngredient.Id, productIngredient);
 
         onEdit?.call(productIngredient.toJson());
       } else {
@@ -58,9 +59,8 @@ class AddUpdateDialog extends StatelessWidget {
       );
       Navigator.of(context).pop();
     } catch (e) {
-
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(' $e')),
+        SnackBar(content: Text(' ${e}')),
       );
     }
   }

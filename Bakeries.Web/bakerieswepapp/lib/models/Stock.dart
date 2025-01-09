@@ -1,6 +1,6 @@
 class Stock {
   final int Id;
-  final int AvailableQuantity;
+  final double AvailableQuantity;
   final String ItemName;
   final String Notes;
   final String Location;

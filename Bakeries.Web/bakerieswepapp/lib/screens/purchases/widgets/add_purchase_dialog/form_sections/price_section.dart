@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PriceSection extends StatelessWidget {
   final double unitPrice;
-  final int quantity;
+  final double quantity;
   final Function(double) onUnitPriceChanged;
 
   const PriceSection({

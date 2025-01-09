@@ -17,7 +17,7 @@ namespace Bakeries.DataAccess.Entities
 
         [Required]
         [Range(0, double.MaxValue)]
-        public double Quantity { get; set; } // الكمية المطلوبة من المكون لإنتاج المنتج
+        public float Quantity { get; set; } // الكمية المطلوبة من المكون لإنتاج المنتج
    
         [Required]
         [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف

@@ -37,12 +37,13 @@ class IngredientsService {
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         return ProductIngredient.fromJson(jsonDecode(response.body));
+      } else if (response.statusCode == 400) {
+        throw Exception(jsonDecode(response.body)['messagge']);
       } else {
-        throw Exception('Failed to add ');
+        throw Exception("خطأ غير معروف");
       }
     } catch (e) {
-      print('eeescat $e');
-      throw Exception('Failed to add ProductIngredient');
+      throw Exception(e);
     }
   }
 
@@ -57,14 +58,14 @@ class IngredientsService {
       if (response.statusCode == 200) {
         return ProductIngredient.fromJson(jsonDecode(response.body));
       } else {
-        throw Exception('Failed to add ');
+        throw Exception(jsonDecode(response.body)['messagge']);
       }
     } catch (e) {
-      throw Exception('Failed to add ProductIngredient');
+      throw Exception(e);
     }
   }
 
-    static Future<void> deleteProductIngredient(int id) async {
+  static Future<void> deleteProductIngredient(int id) async {
     final response = await http.delete(
       Uri.parse('${ApiConfig.ProductIngredientById}$id'),
     );

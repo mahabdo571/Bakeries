@@ -25,7 +25,7 @@ class _AddUpdateFormState extends State<AddUpdateForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _notesController = TextEditingController();
 
-  int _quantity = 0;
+  double _quantity = 0;
   String? _unitOfMeasure;
   int? _itemSelected;
 

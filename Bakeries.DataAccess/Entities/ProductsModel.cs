@@ -25,6 +25,10 @@ namespace Bakeries.DataAccess.Entities
         public string Unit { get; set; } // مثل "قطعة" أو "كيلوغرام"
 
         public virtual ICollection<ProductIngredientModel> Ingredients { get; set; }
+        public virtual ICollection<ProductionModel> Production { get; set; }
+
+       
+
 
     }
 }

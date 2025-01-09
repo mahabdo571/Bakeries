@@ -31,7 +31,7 @@ class _PurchaseFormState extends State<PurchaseForm> {
       TextEditingController();
 
   double _unitPrice = 0;
-  int _quantity = 0;
+  double _quantity = 0.0;
   int? _selectedItemId;
   String? _selectedUnit;
   String? _selectedPaymentMethod;
@@ -51,7 +51,7 @@ class _PurchaseFormState extends State<PurchaseForm> {
     _supplierNameController.text = data['SupplierName'] ?? '';
     _supplierInvoiceNumberController.text = data['SupplierInvoiceNumber'] ?? '';
     _unitPrice = data['UnitPrice'] ?? 0.0;
-    _quantity = data['Quantity'] ?? 0;
+    _quantity = data['Quantity'] ?? 0.0;
     _selectedItemId = data['ItemId'];
     _selectedUnit = data['UnitOfMeasure'];
     _selectedPaymentMethod = data['PaymentMethod'];

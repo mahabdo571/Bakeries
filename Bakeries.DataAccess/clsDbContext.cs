@@ -14,6 +14,7 @@ namespace Bakeries.DataAccess
         public DbSet<StockModel> Stock { get; set; }
         public DbSet<ProductsModel> product { get; set; }
         public DbSet<ProductIngredientModel> ProductIngredient { get; set; }
+        public DbSet<ProductionModel> Production { get; set; }
         public clsDbContext(DbContextOptions op) : base(op)
         {
 

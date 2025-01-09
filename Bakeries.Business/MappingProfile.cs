@@ -14,6 +14,7 @@ namespace Bakeries.Business
             CreateMap<ProductsModel, ProductDTO>().ReverseMap();
             CreateMap<ProductIngredientModel, ProductIngredientDTO>().ReverseMap();
             CreateMap<ProductIngredientModel, ProductIngredientAddUpdateDTO>().ReverseMap();
+            CreateMap<ProductionModel, ProductionDTO>().ReverseMap();
 
 
         }

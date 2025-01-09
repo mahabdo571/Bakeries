@@ -1,3 +1,5 @@
+import 'package:bakerieswepapp/Screens/production/production_page.dart';
+
 import '../models/navigation_item.dart';
 import '../screens/Product/product_page.dart';
 import '../screens/home/home_page.dart';
@@ -23,6 +25,6 @@ final List<NavigationItem> navigationItems = [
   ),
   NavigationItem(
     title: 'عمليات الانتاج',
-    route: StockScreens(), // Replace with actual Production page
+    route: ProductionScreen(), // Replace with actual Production page
   ),
 ];

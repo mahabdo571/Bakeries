@@ -6,54 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bakeries.API.Controllers
 {
-    [Route("api/ProductIngredient")]
+    [Route("api/Production")]
     [ApiController]
-    public class ProductIngredientController : ControllerBase
+    public class ProductionController(IProductionServices _productionServices
+        , ILogger<ProductionController> _logger) : ControllerBase
     {
-        private readonly IProductIngredientService _productIngredientService;
-        private readonly ILogger<ProductIngredientController> _logger;
-
-        public ProductIngredientController(IProductIngredientService productIngredientService, ILogger<ProductIngredientController> logger)
-        {
-            _productIngredientService = productIngredientService;
-            _logger = logger;
-        }
-
 
         [HttpGet("All")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<ProductIngredientDTO>>> GetAllProductIngredient()
+        public async Task<ActionResult<IEnumerable<ProductionDTO>>> GetAllProduct()
         {
 
             try
             {
-                var model = await _productIngredientService.GetAllAsync();
-                if (model is null)
-                {
-                    _logger.LogWarning("model is null  - not found.");
-                    return NotFound($" not found.");
-                }
-                return Ok(model);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
-            }
-        }      
-        
-        [HttpGet("GetAllByProductId/{productId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<ProductIngredientDTO>>> GetAllByProductIdAsync(int productId)
-        {
-
-            try
-            {
-                var model = await _productIngredientService.GetAllByProductIdAsync(productId);
+                var model = await _productionServices.GetAllAsync();
                 if (model is null)
                 {
                     _logger.LogWarning("model is null  - not found.");
@@ -72,11 +40,11 @@ namespace Bakeries.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ProductIngredientDTO>> GetProductIngredientById([FromRoute] int Id)
+        public async Task<ActionResult<ProductionDTO>>  GetProductionById([FromRoute] int Id)
         {
             try
             {
-                var model = await _productIngredientService.GetByIdAsync(Id);
+                var model = await _productionServices.GetByIdAsync(Id);
                 if (model is null)
                 {
                     _logger.LogWarning("model is null  - not found.");
@@ -95,7 +63,7 @@ namespace Bakeries.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> AddProductIngredient([FromBody] ProductIngredientAddUpdateDTO model)
+        public async Task<ActionResult> AddProduction([FromBody] ProductionDTO model)
         {
             try
             {
@@ -105,16 +73,12 @@ namespace Bakeries.API.Controllers
                     _logger.LogWarning("model is null  - not found.");
                     return BadRequest("model data cannot be null.");
                 }
-              
-                int newId = await _productIngredientService.add(model);
 
-                if (newId == -2) {
-                    return BadRequest(new {messagge="هذا العنصر موجود"});
-                }
-              model.Id = newId;
+                int newId = await _productionServices.AddAsync(model);
+                model.Id = newId;
 
 
-                return CreatedAtAction(nameof(GetProductIngredientById), new { Id = newId }, model);
+                return CreatedAtAction(nameof( GetProductionById), new { Id = newId }, model);
             }
             catch (ArgumentException ex)
             {
@@ -132,7 +96,7 @@ namespace Bakeries.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> UpdateProductIngredient([FromRoute] int Id, [FromBody] ProductIngredientAddUpdateDTO model)
+        public async Task<ActionResult> UpdateProduction([FromRoute] int Id, [FromBody] ProductionDTO model)
         {
 
 
@@ -146,7 +110,7 @@ namespace Bakeries.API.Controllers
                 }
 
 
-                await _productIngredientService.Update(model);
+                await _productionServices.UpdateAsync(model);
 
                 return Ok(new { message = $"model with ID {Id} has been successfully updated.", model });
 
@@ -172,11 +136,11 @@ namespace Bakeries.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> DeleteProduct([FromRoute] int Id)
+        public async Task<ActionResult> DeleteProductin([FromRoute] int Id)
         {
             try
             {
-                await _productIngredientService.DeleteAsync(Id);
+                await _productionServices.DeleteAsync(Id);
                 return Ok(new { message = $"Purchases with ID {Id} has been successfully deleted." });
             }
             catch (KeyNotFoundException ex)
@@ -190,8 +154,6 @@ namespace Bakeries.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
             }
         }
-
-
 
     }
 }

@@ -25,7 +25,7 @@ namespace Bakeries.DataAccess.Entities
     
 
         [Required]
-        public int Quantity { get; set; } // الكمية
+        public float Quantity { get; set; } // الكمية
 
         [Required]
         [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف
