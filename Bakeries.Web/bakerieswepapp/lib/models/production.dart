@@ -3,7 +3,7 @@ import 'product.dart';
 class Production {
   final int Id;
   final String Notes;
-  final String ProductName;
+  final String? ProductName;
   final double QuantityProduced;
   final double QuantityDamaged;
   final int ProductId;

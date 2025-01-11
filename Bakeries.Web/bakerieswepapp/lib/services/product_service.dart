@@ -5,8 +5,21 @@ import 'package:http/http.dart' as http;
 import '../api_config.dart';
 import '../models/product.dart';
 
-
 class ProductService {
+  static Future<List<Product>> getProductItems() async {
+    try {
+      final response = await http.get(Uri.parse(ApiConfig.ProductAll));
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
+        return jsonResponse.map((data) => Product.fromJson(data)).toList();
+      } else {
+        throw Exception('Failed to load stock items');
+      }
+    } catch (e) {
+      throw Exception('Error fetching stock items: $e');
+    }
+  }
+
   static Stream<List<Product>> getStockStream() async* {
     while (true) {
       try {
@@ -36,8 +49,6 @@ class ProductService {
     }
   }
 
-
-
   static Future<Product> addProduct(Product productData) async {
     final response = await http.post(Uri.parse(ApiConfig.Products),
         headers: {'Content-Type': 'application/json'},
@@ -64,30 +75,29 @@ class ProductService {
     }
   }
 
-
   static Future<Product> getProductById(int id) async {
-  try {
-    // إرسال الطلب إلى الـ API
-    final response = await http.get(Uri.parse('${ApiConfig.ProductById}$id'));
+    try {
+      // إرسال الطلب إلى الـ API
+      final response = await http.get(Uri.parse('${ApiConfig.ProductById}$id'));
 
-    // تحقق إذا كانت الاستجابة ناجحة
-    if (response.statusCode == 200) {
-      // فك التشفير وتحويل البيانات إلى كائن Product
-      final data = json.decode(response.body);
-      
-      if (data is Map<String, dynamic>) {
-        return Product.fromJson(data); // إرجاع الكائن المطلوب
+      // تحقق إذا كانت الاستجابة ناجحة
+      if (response.statusCode == 200) {
+        // فك التشفير وتحويل البيانات إلى كائن Product
+        final data = json.decode(response.body);
+
+        if (data is Map<String, dynamic>) {
+          return Product.fromJson(data); // إرجاع الكائن المطلوب
+        } else {
+          throw Exception('Unexpected response format');
+        }
       } else {
-        throw Exception('Unexpected response format');
+        // إذا لم تكن حالة الاستجابة 200
+        throw Exception(
+            'Failed to load product. Status code: ${response.statusCode}');
       }
-    } else {
-      // إذا لم تكن حالة الاستجابة 200
-      throw Exception('Failed to load product. Status code: ${response.statusCode}');
+    } catch (e) {
+      // معالجة أي خطأ يحدث أثناء الطلب
+      throw Exception('Error fetching product: $e');
     }
-  } catch (e) {
-    // معالجة أي خطأ يحدث أثناء الطلب
-    throw Exception('Error fetching product: $e');
   }
-}
-
 }
