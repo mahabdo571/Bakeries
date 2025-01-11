@@ -174,6 +174,20 @@ namespace Bakeries.Business.Services
         }
 
 
+        public async Task<IEnumerable<ProductionDTO>> ProductionProcessWithAssociatedProductAsync()
+        {
+            var model = await _productionRepo.ProductionProcessWithAssociatedProductAsync();
+
+
+
+            var newModel = _mapper.Map<IEnumerable<ProductionDTO>>(model);
+
+
+
+            return newModel;
+        }
+
+
 
 
     }

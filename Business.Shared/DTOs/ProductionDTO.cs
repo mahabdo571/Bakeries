@@ -10,7 +10,10 @@ namespace Business.Shared.DTOs
 {
     public class ProductionDTO
     {
-
+        public ProductionDTO()
+        {
+            ProductName = _product is not null ? _product.Name : "";
+        }
         public int Id { get; set; }
         [Required]
         public float QuantityProduced { get; set; }
@@ -23,8 +26,17 @@ namespace Business.Shared.DTOs
         [Required]
   
         public int ProductId { get; set; }
-        public ProductDTO Product { get; set; }
 
+        public string ProductName { get; private set; } 
+
+        private ProductDTO _product { get; set; }
+
+  
+   
 
     }
+
+   
+
+
 }

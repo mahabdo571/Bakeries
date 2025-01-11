@@ -21,4 +21,11 @@ class ApiConfig {
   static const String ProductIngredientById = '$ProductIngredient/';
   static const String GetAllProductIngredientByProductId =
       '$ProductIngredient/GetAllByProductId/';
+
+  //Production
+  static const String Production = '$baseUrl/Production';
+  static const String ProductionAll = '$Production/All';
+  static const String ProductionById = '$Production/';
+  static const String ProductionProcessWithAssociatedProduct =
+      '$Production/ProductionProcessWithAssociatedProduct';
 }

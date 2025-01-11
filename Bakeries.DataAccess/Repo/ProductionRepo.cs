@@ -81,5 +81,21 @@ namespace Bakeries.DataAccess.Repo
             return await _dbContext.Database.BeginTransactionAsync();
         }
 
+        public async Task<IEnumerable<ProductionModel>> ProductionProcessWithAssociatedProductAsync()
+        {
+            //var model =  await _dbContext.ProductIngredient.WhereNotDeleted().Where((pI)=>pI.ProductId ==productId).ToListAsync();
+
+
+            //return model;
+
+            return await _dbContext.Production
+        .WhereNotDeleted()
+        .Include(pI => pI.Product)
+        .ToListAsync();
+
+
+
+        }
+
     }
 }

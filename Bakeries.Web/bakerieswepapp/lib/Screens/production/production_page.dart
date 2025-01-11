@@ -9,7 +9,7 @@ class ProductionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarForAllPage(pageName: 'عمليات الانتاج'),
-      body: ProductionList(productId: productId, product: product),
+      body: ProductionList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddStockDialog(context),
         backgroundColor: Colors.brown,

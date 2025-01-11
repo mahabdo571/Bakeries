@@ -14,7 +14,7 @@ namespace Bakeries.DataAccess.Repo.IRepo
         Task<StockModel> GetStockItemAsync(int stockId);
         Task UpdateStockAsync(StockModel stockItems);
         Task SaveChangesAsync();
-
+        Task<IEnumerable<ProductionModel>> ProductionProcessWithAssociatedProductAsync();
         Task<IDbContextTransaction> BeginTransactionAsync();
     }
 }
