@@ -33,7 +33,7 @@ class _ItemSectionState extends State<ProductItemSection> {
 
   Future<void> _loadItems() async {
     try {
-      final items = await ProductService.getProductItems();
+      final items = await ProductService.GetProductsWithComponents();
       setState(() {
         _items = items;
         _isLoading = false;

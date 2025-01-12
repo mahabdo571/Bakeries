@@ -9,6 +9,6 @@ namespace Bakeries.Business.Services.IServices
 {
     public interface IProductServices :IServices<ProductDTO>
     {
-
+        Task<IEnumerable<ProductDTO>> GetProductsWithComponentsServes();
     }
 }

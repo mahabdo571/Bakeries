@@ -57,5 +57,17 @@ namespace Bakeries.Business.Services
         {
             await _productsRepo.UpdateAsync(_mapper.Map<ProductsModel>(model));
         }
+        public async Task<IEnumerable<ProductDTO>> GetProductsWithComponentsServes() {
+
+            var model = await _productsRepo.GetProductsWithComponents(); ;
+
+            var newModel = _mapper.Map<IEnumerable<ProductDTO>>(model);
+
+
+            return newModel;
+        }
+
+
+        
     }
 }

@@ -171,7 +171,7 @@ namespace Bakeries.Business.Services
                     await transaction.RollbackAsync();
                     Console.WriteLine($"33333 {ex.Message}");
 
-                   await DeleteAsync(productionId);
+                  // await DeleteAsync(productionId);
                     // إلقاء الاستثناء مرة أخرى ليتعامل معه الكود في الطبقات الأعلى
                     throw new Exception($"An error occurred while processing the production. All changes have been rolled back. {ex.Message}", ex);
                 }

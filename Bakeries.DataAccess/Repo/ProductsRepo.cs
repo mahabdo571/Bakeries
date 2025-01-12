@@ -88,5 +88,17 @@ namespace Bakeries.DataAccess.Repo
             _dbContext.product.Update(model);
             await _dbContext.SaveChangesAsync();
         }
+
+        public  async Task<IEnumerable<ProductsModel>> GetProductsWithComponents()
+        {
+            var products = await _dbContext.product
+    .FromSqlRaw("EXEC GetProductsWithComponents")
+    .ToListAsync();
+
+            return products;
+        }
+
+     
+
     }
 }

@@ -16,9 +16,9 @@ namespace Bakeries.Business
             CreateMap<ProductIngredientModel, ProductIngredientAddUpdateDTO>().ReverseMap();
             //CreateMap<ProductionModel, ProductionDTO>().ReverseMap()
             CreateMap<ProductionModel, ProductionDTO>()
-           .ReverseMap();
-           //.ForMember(dest => dest.Product, opt => opt.Ignore())
-           //.ForMember(dest => dest.Id, opt => opt.Ignore())
+           .ReverseMap()
+           .ForMember(dest => dest.Product, opt => opt.Ignore());
+           //.ForMember(dest => dest.Id, opt => opt.Ignore());
 
            
 

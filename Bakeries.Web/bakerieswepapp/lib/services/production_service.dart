@@ -23,7 +23,7 @@ class ProductionService {
         throw Exception('Error fetching stock items: $e');
       }
 
-      await Future.delayed(const Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 5));
     }
   }
 

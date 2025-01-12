@@ -1,9 +1,11 @@
+import 'package:bakerieswepapp/Screens/production/widgets/production_dialog/production_dialog.dart';
+
 import '../../../models/production.dart';
 import 'production_card.dart';
 import '../../../services/production_service.dart';
 import 'package:flutter/material.dart';
 
-import '../../../services/ingredients_service.dart';
+
 
 class ProductionList extends StatefulWidget {
   ProductionList({
@@ -61,7 +63,7 @@ class _ProductionListState extends State<ProductionList> {
   void _handleEdit(Production production) {
     showDialog(
       context: context,
-      builder: (context) => Text('ToDo'),
+      builder: (context) => ProductionDialog(ProductionData: production.toJson(),isEdit: true,),
     );
   }
 

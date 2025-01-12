@@ -39,7 +39,7 @@ class ProductionDialog extends StatelessWidget {
   Future<void> _handleSubmit(BuildContext context, Production production) async {
     try {
       if (isEdit) {
-        //await ProductService.updateProduct(product.Id, product);
+        await ProductionService.updateProduction(production.Id, production);
 
         onEdit?.call(production.toJson());
       } else {

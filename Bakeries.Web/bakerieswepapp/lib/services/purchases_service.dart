@@ -20,7 +20,7 @@ class PurchasesService {
         throw Exception('Error fetching purchases: $e');
       }
 
-      await Future.delayed(const Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 5));
     }
   }
 

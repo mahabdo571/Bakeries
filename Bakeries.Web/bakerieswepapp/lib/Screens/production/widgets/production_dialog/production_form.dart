@@ -37,8 +37,9 @@ class _ProductionFormState extends State<ProductionForm> {
   void _initializeFormData() {
     final data = widget.ProductionData!;
     _notesController.text = data['Notes'] ?? '';
-    _quantityProduced = 0;
-    _quantityDamaged = 0;
+    _quantityProduced = data['QuantityProduced'] ??0;;
+    _quantityDamaged = data['QuantityDamaged'] ?? 0;
+    _selectedItemId = data['ProductId'] ?? 0;
   }
 
   @override

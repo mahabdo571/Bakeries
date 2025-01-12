@@ -20,6 +20,21 @@ class ProductService {
     }
   }
 
+  static Future<List<Product>> GetProductsWithComponents() async {
+    try {
+      final response =
+          await http.get(Uri.parse(ApiConfig.GetProductsWithComponents));
+      if (response.statusCode == 200) {
+        List jsonResponse = json.decode(response.body);
+        return jsonResponse.map((data) => Product.fromJson(data)).toList();
+      } else {
+        throw Exception('Failed to load stock items');
+      }
+    } catch (e) {
+      throw Exception('Error fetching stock items: $e');
+    }
+  }
+
   static Stream<List<Product>> getStockStream() async* {
     while (true) {
       try {
@@ -35,7 +50,7 @@ class ProductService {
         throw Exception('Error fetching stock items: $e');
       }
 
-      await Future.delayed(const Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 5));
     }
   }
 

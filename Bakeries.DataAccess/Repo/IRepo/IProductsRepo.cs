@@ -9,6 +9,7 @@ namespace Bakeries.DataAccess.Repo.IRepo
 {
     public interface IProductsRepo : IRepoBase<ProductsModel>
     {
+        Task<IEnumerable<ProductsModel>> GetProductsWithComponents();
 
     }
 }

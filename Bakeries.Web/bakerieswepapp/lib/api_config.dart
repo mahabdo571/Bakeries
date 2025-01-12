@@ -14,6 +14,7 @@ class ApiConfig {
   static const String Products = '$baseUrl/Product';
   static const String ProductAll = '$Products/All';
   static const String ProductById = '$Products/';
+  static const String GetProductsWithComponents = '$Products/GetProductsWithComponents';
 
   //ProductIngredient
   static const String ProductIngredient = '$baseUrl/ProductIngredient';
