@@ -1,4 +1,4 @@
-import 'package:bakerieswepapp/models/production.dart';
+import '../../../models/production.dart';
 import 'package:flutter/material.dart';
 import '../../Product/widgets/product_detail_item.dart';
 

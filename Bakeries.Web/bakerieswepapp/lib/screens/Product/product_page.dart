@@ -1,9 +1,8 @@
+import 'package:flutter/material.dart';
 
 import '../../Screens/product/widgets/product_dialog/product_dialog.dart';
-import 'widgets/product_list.dart';
-import 'package:flutter/material.dart';
 import '../../components/app_bar/app_bar_for_all_page.dart';
-
+import 'widgets/product_list.dart';
 
 class ProductScreens extends StatelessWidget {
   const ProductScreens({Key? key}) : super(key: key);
@@ -27,7 +26,7 @@ class ProductScreens extends StatelessWidget {
       builder: (context) => ProductDialog(
         isEdit: false,
         onAdd: (newStock) {
-          // Handle add callback
+           
         },
       ),
     );

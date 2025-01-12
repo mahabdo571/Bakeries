@@ -36,6 +36,7 @@ class ProductDialog extends StatelessWidget {
   }
 
   Future<void> _handleSubmit(BuildContext context, Product product) async {
+    
     try {
       if (isEdit) {
         await ProductService.updateProduct(product.Id, product);

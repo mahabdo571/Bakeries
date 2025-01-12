@@ -1,5 +1,7 @@
-import 'package:bakerieswepapp/Screens/production/widgets/production_dialog/production_form.dart';
-import 'package:bakerieswepapp/models/production.dart';
+import 'package:bakerieswepapp/services/production_service.dart';
+
+import '../../../../Screens/production/widgets/production_dialog/production_form.dart';
+import '../../../../models/production.dart';
 import 'package:flutter/material.dart';
 
 class ProductionDialog extends StatelessWidget {
@@ -34,19 +36,19 @@ class ProductionDialog extends StatelessWidget {
     );
   }
 
-  Future<void> _handleSubmit(BuildContext context, Production product) async {
+  Future<void> _handleSubmit(BuildContext context, Production production) async {
     try {
       if (isEdit) {
         //await ProductService.updateProduct(product.Id, product);
 
-        onEdit?.call(product.toJson());
+        onEdit?.call(production.toJson());
       } else {
-        // final newProduct = await ProductService.addProduct(product);
-        //  onAdd?.call(newProduct.toJson());
+         final newProduct = await ProductionService.addProduction(production);
+          onAdd?.call(newProduct.toJson());
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('تم ${isEdit ? "تعديل" : "إضافة"} منتج  بنجاح')),
+        SnackBar(content: Text('تم ${isEdit ? "تعديل" : "إضافة"} عملية  بنجاح')),
       );
       Navigator.of(context).pop();
     } catch (e) {

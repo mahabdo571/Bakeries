@@ -1,8 +1,7 @@
-import 'package:bakerieswepapp/models/production.dart';
-import 'package:bakerieswepapp/screens/production/widgets/production_card.dart';
-import 'package:bakerieswepapp/services/production_service.dart';
+import '../../../models/production.dart';
+import 'production_card.dart';
+import '../../../services/production_service.dart';
 import 'package:flutter/material.dart';
-
 
 import '../../../services/ingredients_service.dart';
 
@@ -68,7 +67,7 @@ class _ProductionListState extends State<ProductionList> {
 
   Future<void> _handleDelete(int id) async {
     try {
-      await IngredientsService.deleteProductIngredient(id);
+      await ProductionService.deleteProduction(id);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('تم حذف العنصر بنجاح')),
       );

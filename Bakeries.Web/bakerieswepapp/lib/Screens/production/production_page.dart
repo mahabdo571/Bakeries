@@ -1,5 +1,5 @@
-import 'package:bakerieswepapp/Screens/production/widgets/production_dialog/production_dialog.dart';
-import 'package:bakerieswepapp/Screens/production/widgets/production_list.dart';
+import '../../Screens/production/widgets/production_dialog/production_dialog.dart';
+import '../../Screens/production/widgets/production_list.dart';
 import 'package:flutter/material.dart';
 import '../../components/app_bar/app_bar_for_all_page.dart';
 

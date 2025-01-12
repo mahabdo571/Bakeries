@@ -47,7 +47,8 @@ class StatusSection extends StatelessWidget {
               );
             }).toList(),
             onChanged: (value) => onStatusChanged(value!),
-            validator: (value) => value == null ? 'يجب اختيار حالة الفاتورة' : null,
+            validator: (value) =>
+                value == null ? 'يجب اختيار حالة الفاتورة' : null,
           ),
         ),
       ],

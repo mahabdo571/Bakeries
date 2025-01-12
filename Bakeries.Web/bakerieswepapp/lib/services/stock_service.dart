@@ -36,7 +36,7 @@ class StockService {
         throw Exception('Error fetching stock items: $e');
       }
 
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 10));
     }
   }
 

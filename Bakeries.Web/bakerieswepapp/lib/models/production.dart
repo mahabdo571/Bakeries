@@ -1,5 +1,3 @@
-import 'product.dart';
-
 class Production {
   final int Id;
   final String Notes;
@@ -24,6 +22,7 @@ class Production {
       'QuantityDamaged': QuantityDamaged ?? 0.0,
       'ProductId': ProductId ?? 0,
       'Notes': Notes ?? '',
+      'ProductName': '',
     }..removeWhere((key, value) => value == null);
   }
 

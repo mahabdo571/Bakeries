@@ -1,3 +1,3 @@
 # bakerieswepapp
 
-A new Flutter project.
+Bakery management software.

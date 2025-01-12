@@ -1,4 +1,6 @@
-import 'package:bakerieswepapp/Screens/production/production_page.dart';
+import '../Screens/production/production_page.dart';
+import '../screens/settings/setting_page.dart';
+import 'package:flutter/material.dart';
 
 import '../models/navigation_item.dart';
 import '../screens/Product/product_page.dart';
@@ -26,5 +28,10 @@ final List<NavigationItem> navigationItems = [
   NavigationItem(
     title: 'عمليات الانتاج',
     route: ProductionScreen(), // Replace with actual Production page
+  ),
+  NavigationItem(
+    title: 'الاعدادات',
+    route: SettingsScreens(),
+    // Replace with actual Production page
   ),
 ];

@@ -1,9 +1,9 @@
-import 'package:bakerieswepapp/models/Stock.dart';
-import 'package:bakerieswepapp/models/product.dart';
-import 'package:bakerieswepapp/models/production.dart';
-import 'package:bakerieswepapp/services/product_service.dart';
-import 'package:bakerieswepapp/services/production_service.dart';
-import 'package:bakerieswepapp/services/stock_service.dart';
+import '../../../../models/Stock.dart';
+import '../../../../models/product.dart';
+import '../../../../models/production.dart';
+import '../../../../services/product_service.dart';
+import '../../../../services/production_service.dart';
+import '../../../../services/stock_service.dart';
 
 import 'package:flutter/material.dart';
 

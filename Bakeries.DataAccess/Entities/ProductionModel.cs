@@ -20,6 +20,6 @@ namespace Bakeries.DataAccess.Entities
         [Required]
         [ForeignKey("Product")]
         public int ProductId { get; set; }
-        public virtual ProductsModel Product { get; set; }
+        public  ProductsModel Product { get; set; }
     }
 }

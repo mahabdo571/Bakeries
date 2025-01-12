@@ -19,7 +19,7 @@ class AppBarForAllPage extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        'المخبز - $pageName',
+        pageName,
         style: const TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,

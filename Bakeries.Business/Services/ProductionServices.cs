@@ -33,12 +33,15 @@ namespace Bakeries.Business.Services
 
         public async Task<int> AddAsync(ProductionDTO model)
         {
-            var newModel = _mapper.Map<ProductionModel>(model);
+           
+                var newModel = _mapper.Map<ProductionModel>(model);
 
-            var newId = await _productionRepo.AddAsync(newModel);
-            await DeductStockForProductionAsync(newId);
+                var newId = await _productionRepo.AddAsync(newModel);
 
-            return newId;
+                await DeductStockForProductionAsync(newId);
+                return newId;
+            
+         
 
         }
 
@@ -166,9 +169,11 @@ namespace Bakeries.Business.Services
                 {
                     // في حالة حدوث خطأ، قم بعمل Rollback للمعاملة
                     await transaction.RollbackAsync();
+                    Console.WriteLine($"33333 {ex.Message}");
 
+                   await DeleteAsync(productionId);
                     // إلقاء الاستثناء مرة أخرى ليتعامل معه الكود في الطبقات الأعلى
-                    throw new Exception("An error occurred while processing the production. All changes have been rolled back.", ex);
+                    throw new Exception($"An error occurred while processing the production. All changes have been rolled back. {ex.Message}", ex);
                 }
             }
         }

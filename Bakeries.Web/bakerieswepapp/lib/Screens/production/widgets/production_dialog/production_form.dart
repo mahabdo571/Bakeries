@@ -1,5 +1,5 @@
-import 'package:bakerieswepapp/Screens/production/widgets/production_dialog/product_item_section.dart';
-import 'package:bakerieswepapp/models/production.dart';
+import '../../../../Screens/production/widgets/production_dialog/product_item_section.dart';
+import '../../../../models/production.dart';
 import 'package:flutter/material.dart';
 
 class ProductionForm extends StatefulWidget {
@@ -21,6 +21,8 @@ class ProductionForm extends StatefulWidget {
 class _ProductionFormState extends State<ProductionForm> {
   final _formKey = GlobalKey<FormState>();
   int? _selectedItemId;
+  double _quantityProduced = 0;
+  double _quantityDamaged = 0;
 
   final TextEditingController _notesController = TextEditingController();
 
@@ -35,10 +37,14 @@ class _ProductionFormState extends State<ProductionForm> {
   void _initializeFormData() {
     final data = widget.ProductionData!;
     _notesController.text = data['Notes'] ?? '';
+    _quantityProduced = 0;
+    _quantityDamaged = 0;
   }
 
   @override
   void dispose() {
+    _notesController.dispose();
+
     _notesController.dispose();
 
     super.dispose();
@@ -48,11 +54,11 @@ class _ProductionFormState extends State<ProductionForm> {
     if (_formKey.currentState?.validate() ?? false) {
       final product = Production(
         Id: widget.isEdit ? widget.ProductionData!['Id'] : 0,
-        QuantityProduced: 11,
-        QuantityDamaged: 12,
+        QuantityProduced: _quantityProduced ?? 0,
+        QuantityDamaged: _quantityDamaged ?? 0,
         Notes: _notesController.text,
-        ProductId: 8,
-        ProductName: '',
+        ProductId: _selectedItemId ?? 0,
+        ProductName: null,
       );
 
       widget.onSubmit(product);
@@ -70,6 +76,44 @@ class _ProductionFormState extends State<ProductionForm> {
             ProductItemSection(
               selectedItemId: _selectedItemId,
               onItemSelected: (id) => setState(() => _selectedItemId = id),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              initialValue: _quantityProduced.toString(),
+              keyboardType: TextInputType.numberWithOptions(
+                  decimal: true), // لتمكين إدخال الأرقام العشرية
+              decoration: const InputDecoration(
+                  labelText: '(1.4) الكمية المنتجة- بالكيلو غرام'),
+              onChanged: (val) {
+                _quantityProduced = double.tryParse(val) ?? 0;
+              }, // استخدام double بدلاً من int
+              validator: (value) {
+                if (value?.isEmpty ?? true) return 'يجب إدخال الكمية';
+                if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value!))
+                  return 'أدخل رقم صحيح';
+                return null;
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              initialValue: _quantityDamaged.toString(),
+              keyboardType: TextInputType.numberWithOptions(
+                  decimal: true), // لتمكين إدخال الأرقام العشرية
+              decoration: const InputDecoration(
+                  labelText: '(1.3) الكمية التالفة- بالكيلو غرام'),
+              onChanged: (val) {
+                _quantityDamaged = double.tryParse(val) ?? 0;
+              }, // استخدام double بدلاً من int
+              validator: (value) {
+                if (value?.isEmpty ?? true) return 'يجب إدخال الكمية';
+                if (!RegExp(r'^\d+(\.\d+)?$').hasMatch(value!))
+                  return 'أدخل رقم صحيح';
+                return null;
+              },
             ),
             SizedBox(
               height: 10,

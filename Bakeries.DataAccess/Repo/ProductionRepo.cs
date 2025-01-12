@@ -25,9 +25,15 @@ namespace Bakeries.DataAccess.Repo
         }
         public async Task<int> AddAsync(ProductionModel model)
         {
-            await _dbContext.Production.AddAsync(model);
-            await _dbContext.SaveChangesAsync();
-            return model.Id;
+            try
+            {
+                await _dbContext.Production.AddAsync(model);
+                await _dbContext.SaveChangesAsync();
+                return model.Id;
+            }catch(Exception ex)
+            {
+                return 0;
+            }
         }
 
 
@@ -83,10 +89,7 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<IEnumerable<ProductionModel>> ProductionProcessWithAssociatedProductAsync()
         {
-            //var model =  await _dbContext.ProductIngredient.WhereNotDeleted().Where((pI)=>pI.ProductId ==productId).ToListAsync();
-
-
-            //return model;
+      
 
             return await _dbContext.Production
         .WhereNotDeleted()

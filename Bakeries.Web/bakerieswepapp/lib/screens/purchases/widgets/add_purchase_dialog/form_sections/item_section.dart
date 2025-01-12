@@ -1,5 +1,6 @@
-import '../../../../../models/Stock.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../models/Stock.dart';
 import '../../../../../services/stock_service.dart';
 
 class ItemSection extends StatefulWidget {

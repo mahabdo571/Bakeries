@@ -1,20 +1,17 @@
 import 'dart:convert';
 
-import 'package:bakerieswepapp/models/production.dart';
+import '../models/production.dart';
 import 'package:http/http.dart' as http;
 
 import '../api_config.dart';
 import '../models/product.dart';
 
-
 class ProductionService {
-
-
-
   static Stream<List<Production>> getProductionStream() async* {
     while (true) {
       try {
-        final response = await http.get(Uri.parse(ApiConfig.ProductionProcessWithAssociatedProduct));
+        final response = await http
+            .get(Uri.parse(ApiConfig.ProductionProcessWithAssociatedProduct));
 
         if (response.statusCode == 200) {
           List jsonResponse = json.decode(response.body);
@@ -26,13 +23,13 @@ class ProductionService {
         throw Exception('Error fetching stock items: $e');
       }
 
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 10));
     }
   }
 
   static Future<void> deleteProduction(int id) async {
     final response = await http.delete(
-      Uri.parse('${ApiConfig.ProductById}$id'),
+      Uri.parse('${ApiConfig.ProductionById}$id'),
     );
 
     if (response.statusCode != 200) {
@@ -40,58 +37,57 @@ class ProductionService {
     }
   }
 
-
-
-  static Future<Product> addProduction(Product productData) async {
-    final response = await http.post(Uri.parse(ApiConfig.Products),
+  static Future<Production> addProduction(Production productionData) async {
+    final response = await http.post(Uri.parse(ApiConfig.Production),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(productData.toJson()));
+        body: jsonEncode(productionData.toJson()));
 
     if (response.statusCode == 201) {
-      return Product.fromJson(json.decode(response.body));
+      return Production.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to add purchase');
+      throw Exception('Failed to add Production');
     }
   }
 
-  static Future<Product> updateProduction(int id, Product productData) async {
+  static Future<Production> updateProduction(
+      int id, Production productionData) async {
     final response = await http.put(
-      Uri.parse('${ApiConfig.ProductById}$id'),
+      Uri.parse('${ApiConfig.ProductionById}$id'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(productData.toJson()),
+      body: jsonEncode(productionData.toJson()),
     );
 
     if (response.statusCode == 200) {
-      return Product.fromJson(json.decode(response.body));
+      return Production.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to update purchase');
     }
   }
 
+  static Future<Production> getProductionById(int id) async {
+    try {
+      // إرسال الطلب إلى الـ API
+      final response =
+          await http.get(Uri.parse('${ApiConfig.ProductionById}$id'));
 
-  static Future<Product> getProductionById(int id) async {
-  try {
-    // إرسال الطلب إلى الـ API
-    final response = await http.get(Uri.parse('${ApiConfig.ProductById}$id'));
+      // تحقق إذا كانت الاستجابة ناجحة
+      if (response.statusCode == 200) {
+        // فك التشفير وتحويل البيانات إلى كائن Product
+        final data = json.decode(response.body);
 
-    // تحقق إذا كانت الاستجابة ناجحة
-    if (response.statusCode == 200) {
-      // فك التشفير وتحويل البيانات إلى كائن Product
-      final data = json.decode(response.body);
-      
-      if (data is Map<String, dynamic>) {
-        return Product.fromJson(data); // إرجاع الكائن المطلوب
+        if (data is Map<String, dynamic>) {
+          return Production.fromJson(data); // إرجاع الكائن المطلوب
+        } else {
+          throw Exception('Unexpected response format');
+        }
       } else {
-        throw Exception('Unexpected response format');
+        // إذا لم تكن حالة الاستجابة 200
+        throw Exception(
+            'Failed to load product. Status code: ${response.statusCode}');
       }
-    } else {
-      // إذا لم تكن حالة الاستجابة 200
-      throw Exception('Failed to load product. Status code: ${response.statusCode}');
+    } catch (e) {
+      // معالجة أي خطأ يحدث أثناء الطلب
+      throw Exception('Error fetching product: $e');
     }
-  } catch (e) {
-    // معالجة أي خطأ يحدث أثناء الطلب
-    throw Exception('Error fetching product: $e');
   }
-}
-
 }

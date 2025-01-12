@@ -20,7 +20,7 @@ class PurchasesService {
         throw Exception('Error fetching purchases: $e');
       }
 
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 10));
     }
   }
 
@@ -35,7 +35,6 @@ class PurchasesService {
   }
 
   static Future<Purchase> addPurchase(Purchase purchaseData) async {
-    
     final response = await http.post(Uri.parse(ApiConfig.purchases),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(purchaseData.toJson()));
@@ -48,14 +47,13 @@ class PurchasesService {
   }
 
   static Future<Purchase> updatePurchase(int id, Purchase purchaseData) async {
-      
-    final response = await http.put(Uri.parse('${ApiConfig.purchasesById}$id'),
+    final response = await http.put(
+      Uri.parse('${ApiConfig.purchasesById}$id'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(purchaseData.toJson()),
     );
 
     if (response.statusCode == 200) {
-     
       return Purchase.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to update purchase');
