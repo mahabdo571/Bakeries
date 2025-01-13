@@ -10,6 +10,6 @@ namespace Bakeries.DataAccess.Repo.IRepo
     public interface IPurchasesRepo : IRepoBase<PurchasesModel>
     {
         Task<StockModel> GetStockDetailsFromItemId(int itemId, clsDbContext dbContext);
-
+        Task UpdateStockOnPurchase(int stockId, float Quantity);
     }
 }

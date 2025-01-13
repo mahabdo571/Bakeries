@@ -32,7 +32,7 @@ else
 builder.Services.AddDbContext<clsDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("ConnectionToDB")
-    ), ServiceLifetime.Transient
+    ), ServiceLifetime.Scoped
 );
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -56,6 +56,7 @@ builder.Services.AddScoped<IStockRepo, StockRepo>();
 builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
 builder.Services.AddScoped<IProductIngredientRepo, ProductIngredientRepo>();
 builder.Services.AddScoped<IProductionRepo, ProductionRepo>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //Services
 builder.Services.AddScoped<IPurchasesServices, PurchasesServices>();

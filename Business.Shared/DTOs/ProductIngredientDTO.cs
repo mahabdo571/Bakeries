@@ -17,8 +17,8 @@ namespace Business.Shared.DTOs
 
 
         [Required]
-        [Range(0, double.MaxValue)]
-        public double Quantity { get; set; }
+        [Range(0, float.MaxValue)]
+        public float Quantity { get; set; }
 
         [Required]
         [StringLength(50)]

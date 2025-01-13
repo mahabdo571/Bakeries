@@ -12,7 +12,7 @@ namespace Bakeries.DataAccess.Repo.IRepo
 
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
-        Task<int> AddAsync(T model);
+        Task AddAsync(T model);
         Task UpdateAsync(T model);
         Task DeleteAsync(int id);
     }

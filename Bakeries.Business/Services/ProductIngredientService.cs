@@ -33,7 +33,9 @@ namespace Bakeries.Business.Services
             if (await CheckTheProductComponentIfItExists(model)) {
                 return -2;
             }
-            return await _productIngredientRepo.AddAsync(newModel);
+             await _productIngredientRepo.AddAsync(newModel);
+            return newModel.Id;
+
         }
 
         private async Task<bool> CheckTheProductComponentIfItExists(ProductIngredientAddUpdateDTO model)

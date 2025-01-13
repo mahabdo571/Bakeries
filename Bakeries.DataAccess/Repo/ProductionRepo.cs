@@ -11,29 +11,29 @@ using System.Threading.Tasks;
 
 namespace Bakeries.DataAccess.Repo
 {
-    public class ProductionRepo(clsDbContext _dbContext) : IProductionRepo
+    public class ProductionRepo(clsDbContext context) : IProductionRepo
     {
         public async Task<IEnumerable<ProductionModel>> GetAllAsync()
         {
-            return await _dbContext.Production.WhereNotDeleted().ToListAsync();
+            return await context.Production.WhereNotDeleted().ToListAsync();
         }
 
         public async Task<ProductionModel> GetByIdAsync(int id)
         {
-            return await _dbContext.Production.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            return await context.Production.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
 
         }
-        public async Task<int> AddAsync(ProductionModel model)
+        public async Task AddAsync(ProductionModel model)
         {
             try
             {
-                await _dbContext.Production.AddAsync(model);
-                await _dbContext.SaveChangesAsync();
-                return model.Id;
+                await context.Production.AddAsync(model);
+                await context.SaveChangesAsync();
+              //  return model.Id;
             }catch(Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                return 0;
+             //   return 0;
             }
         }
 
@@ -42,26 +42,26 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task UpdateAsync(ProductionModel model)
         {
-            _dbContext.Production.Update(model);
-            await _dbContext.SaveChangesAsync();
+            context.Production.Update(model);
+            await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var model = await _dbContext.Production.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            var model = await context.Production.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
             if (model is not null)
             {
                 model.DeletedAt = DateTime.Now;
 
-                _dbContext.Update(model);
-                await _dbContext.SaveChangesAsync();
+                context.Update(model);
+                await context.SaveChangesAsync();
             }
         }
 
 
         public async Task<ProductionModel> GetProductionWithProductAndIngredientsAsync(int productionId)
         {
-            return await _dbContext.Production.WhereNotDeleted()
+            return await context.Production.WhereNotDeleted()
                 .Include(p => p.Product)
                     .ThenInclude(p => p.Ingredients)
                 .FirstOrDefaultAsync(p => p.Id == productionId);
@@ -70,31 +70,31 @@ namespace Bakeries.DataAccess.Repo
         public async Task<StockModel> GetStockItemAsync(int stockId)
         {
        
-                return await _dbContext.Stock.WhereNotDeleted().FirstOrDefaultAsync(s => s.Id == stockId);
+                return await context.Stock.WhereNotDeleted().FirstOrDefaultAsync(s => s.Id == stockId);
             
         }
 
         public async Task UpdateStockAsync(StockModel stockItems)
         {
-            _dbContext.Stock.Update(stockItems);
-           await _dbContext.SaveChangesAsync();
+            context.Stock.Update(stockItems);
+           await context.SaveChangesAsync();
         }
 
         public async Task SaveChangesAsync()
         {
-            await _dbContext.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
-            return await _dbContext.Database.BeginTransactionAsync();
+            return await context.Database.BeginTransactionAsync();
         }
 
         public async Task<IEnumerable<ProductionModel>> ProductionProcessWithAssociatedProductAsync()
         {
       
 
-            return await _dbContext.Production
+            return await context.Production
         .WhereNotDeleted()
         .Include(pI => pI.Product)
         .ToListAsync();

@@ -16,11 +16,11 @@ namespace Bakeries.DataAccess.Repo
         _dbContext = dbContext;
         
         }
-        public async  Task<int> AddAsync(StockModel model)
+        public async  Task AddAsync(StockModel model)
         {
             await _dbContext.Stock.AddAsync(model);
             await _dbContext.SaveChangesAsync();
-            return model .Id;
+            //return model .Id;
         }
 
         public async Task DeleteAsync(int id)

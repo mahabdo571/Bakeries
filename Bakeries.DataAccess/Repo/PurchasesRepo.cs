@@ -10,19 +10,12 @@ using System.Threading.Tasks;
 
 namespace Bakeries.DataAccess.Repo
 {
-    public class PurchasesRepo : IPurchasesRepo
+    public class PurchasesRepo(clsDbContext context) : IPurchasesRepo
     {
-        private readonly clsDbContext _dbContext;
    
-       
-        public PurchasesRepo(clsDbContext dbContext)
-        {
-            _dbContext = dbContext;
-
-        }
 
  
-        public async Task<int> AddAsync(PurchasesModel model)
+        public async Task AddAsync(PurchasesModel model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
@@ -30,38 +23,32 @@ namespace Bakeries.DataAccess.Repo
             if (model.Quantity <= 0)
                 throw new ArgumentException("Quantity must be greater than zero.");
 
-            using var transaction = await _dbContext.Database.BeginTransactionAsync();
-
-            try
-            {
+         
                
-                await _dbContext.Purchases.AddAsync(model);
-                await _dbContext.SaveChangesAsync();
-
-            
-                await _dbContext.Database.ExecuteSqlRawAsync(
-                    "EXEC UpdateStockOnPurchase @p0, @p1",
-                    parameters: new object[] { model.ItemId, model.Quantity }
-                );
-
-                await transaction.CommitAsync();
-                return model.Id;
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+                await context.Purchases.AddAsync(model);
+              
+          
         }
+
+        public async Task UpdateStockOnPurchase(int stockId,float Quantity)
+        {
+            await context.Database.ExecuteSqlRawAsync(
+                "EXEC UpdateStockOnPurchase @p0, @p1",
+                parameters: new object[] { stockId, Quantity }
+            );
+        }
+
+
+
 
         public async Task DeleteAsync(int id)
         {
-            var model = await _dbContext.Purchases.WhereNotDeleted().FirstOrDefaultAsync(p=>p.Id==id);
+            var model = await context.Purchases.WhereNotDeleted().FirstOrDefaultAsync(p=>p.Id==id);
 
             model.DeletedAt = DateTime.Now;
 
-            _dbContext.Update(model);
-           await _dbContext.SaveChangesAsync();
+            context.Update(model);
+           await context.SaveChangesAsync();
 
           
 
@@ -69,7 +56,7 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<IEnumerable<PurchasesModel>> GetAllAsync()
         {
-            var model =  await _dbContext.Purchases.WhereNotDeleted().ToListAsync();
+            var model =  await context.Purchases.WhereNotDeleted().ToListAsync();
 
          
         return model;
@@ -87,13 +74,13 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<PurchasesModel> GetByIdAsync(int id)
         {
-           return await _dbContext.Purchases.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+           return await context.Purchases.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task UpdateAsync(PurchasesModel model)
         {
-            _dbContext.Update(model);
-            await _dbContext.SaveChangesAsync();
+            context.Update(model);
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -27,7 +27,8 @@ namespace Bakeries.Business.Services
         {
             var newModel = _mapper.Map<StockModel>(model);
 
-            return await _stockRepo.AddAsync(newModel);
+             await _stockRepo.AddAsync(newModel);
+            return newModel.Id;
         }
 
         public async Task DeleteAsync(int id)

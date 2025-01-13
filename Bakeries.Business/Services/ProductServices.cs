@@ -15,12 +15,12 @@ namespace Bakeries.Business.Services
 {
     public class ProductServices : IProductServices
     {
-        private readonly IProductsRepo _productsRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ProductServices(IProductsRepo productsRepo, IMapper mapper)
+        public ProductServices(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _productsRepo = productsRepo;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -29,17 +29,31 @@ namespace Bakeries.Business.Services
         {
             var newModel = _mapper.Map<ProductsModel>(model);
 
-            return await _productsRepo.AddAsync(newModel);
+             await _unitOfWork.ProductRepository.AddAsync(newModel);
+            return newModel.Id;
         }
 
         public async Task DeleteAsync(int id)
         {
-         await _productsRepo.DeleteAsync(id);
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                await _unitOfWork.ProductRepository.DeleteAsync(id);
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitAsync();
+
+           
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAllAsync()
         {
-            var model = await _productsRepo.GetAllAsync(); ;
+            var model = await _unitOfWork.ProductRepository.GetAllAsync(); ;
 
             var newModel = _mapper.Map<IEnumerable<ProductDTO>>(model);
 
@@ -49,17 +63,17 @@ namespace Bakeries.Business.Services
 
         public async Task<ProductDTO> GetByIdAsync(int id)
         {
-            return _mapper.Map<ProductDTO>(await _productsRepo.GetByIdAsync(id));
+            return _mapper.Map<ProductDTO>(await _unitOfWork.ProductRepository.GetByIdAsync(id));
 
         }
 
         public async Task UpdateAsync(ProductDTO model)
         {
-            await _productsRepo.UpdateAsync(_mapper.Map<ProductsModel>(model));
+            await _unitOfWork.ProductRepository.UpdateAsync(_mapper.Map<ProductsModel>(model));
         }
         public async Task<IEnumerable<ProductDTO>> GetProductsWithComponentsServes() {
 
-            var model = await _productsRepo.GetProductsWithComponents(); ;
+            var model = await _unitOfWork.ProductRepository.GetProductsWithComponents(); ;
 
             var newModel = _mapper.Map<IEnumerable<ProductDTO>>(model);
 

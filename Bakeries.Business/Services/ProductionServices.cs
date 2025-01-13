@@ -36,10 +36,10 @@ namespace Bakeries.Business.Services
            
                 var newModel = _mapper.Map<ProductionModel>(model);
 
-                var newId = await _productionRepo.AddAsync(newModel);
+                await _productionRepo.AddAsync(newModel);
 
-                await DeductStockForProductionAsync(newId);
-                return newId;
+                await DeductStockForProductionAsync(newModel.Id);
+                return newModel.Id;
             
          
 
@@ -169,7 +169,7 @@ namespace Bakeries.Business.Services
                 {
                     // في حالة حدوث خطأ، قم بعمل Rollback للمعاملة
                     await transaction.RollbackAsync();
-                    Console.WriteLine($"33333 {ex.Message}");
+                   
 
                   // await DeleteAsync(productionId);
                     // إلقاء الاستثناء مرة أخرى ليتعامل معه الكود في الطبقات الأعلى

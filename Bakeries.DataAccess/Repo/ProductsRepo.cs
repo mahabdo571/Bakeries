@@ -10,32 +10,24 @@ using System.Threading.Tasks;
 namespace Bakeries.DataAccess.Repo
 {
 
-    public class ProductsRepo : IProductsRepo
+    public class ProductsRepo(clsDbContext context) : IProductsRepo
     {
 
-        private readonly clsDbContext _dbContext;
+     
 
-        public ProductsRepo(clsDbContext dbContext)
+        public async  Task AddAsync(ProductsModel model)
         {
-            _dbContext = dbContext;
-        }
-
-        public async  Task<int> AddAsync(ProductsModel model)
-        {
-            await _dbContext.product.AddAsync(model);
-            await _dbContext.SaveChangesAsync();
-            return model.Id;
+            await context.product.AddAsync(model);
+            await context.SaveChangesAsync();
+           // return model.Id;
         }
 
         public async Task DeleteAsync(int id)
         {
-            // Start a database transaction
-            using var transaction = await _dbContext.Database.BeginTransactionAsync();
+           
 
-            try
-            {
-                // Fetch the product to be deleted
-                var product = await _dbContext.product
+
+                var product = await context.product
                     .WhereNotDeleted()
                     .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -44,54 +36,43 @@ namespace Bakeries.DataAccess.Repo
                     throw new KeyNotFoundException($"Product with ID {id} not found.");
                 }
 
-                // Fetch all related ingredients
-                var ingredients = await _dbContext.ProductIngredient
+
+                var ingredients = await context.ProductIngredient
                     .WhereNotDeleted()
                     .Where(i => i.ProductId == id)
                     .ToListAsync();
 
-                // Mark the product as deleted
+          
                 product.DeletedAt = DateTime.UtcNow;
 
-                // Mark all related ingredients as deleted
                 foreach (var ingredient in ingredients)
                 {
                     ingredient.DeletedAt = DateTime.UtcNow;
-                }
 
-                // Save changes in a single transaction
-                await _dbContext.SaveChangesAsync();
+            }
 
-                // Commit the transaction
-                await transaction.CommitAsync();
-            }
-            catch (Exception ex)
-            {
-                // Rollback the transaction in case of an error
-                await transaction.RollbackAsync();
-                throw new Exception("Error occurred while deleting the product and its ingredients.", ex);
-            }
+
         }
 
         public async Task<IEnumerable<ProductsModel>> GetAllAsync()
         {
-            return await _dbContext.product.WhereNotDeleted().ToListAsync();
+            return await context.product.WhereNotDeleted().ToListAsync();
         }
 
         public async Task<ProductsModel> GetByIdAsync(int id)
         {
-            return await _dbContext.product.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            return await context.product.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task UpdateAsync(ProductsModel model)
         {
-            _dbContext.product.Update(model);
-            await _dbContext.SaveChangesAsync();
+            context.product.Update(model);
+            await context.SaveChangesAsync();
         }
 
         public  async Task<IEnumerable<ProductsModel>> GetProductsWithComponents()
         {
-            var products = await _dbContext.product
+            var products = await context.product
     .FromSqlRaw("EXEC GetProductsWithComponents")
     .ToListAsync();
 
