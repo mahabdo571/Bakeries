@@ -30,9 +30,9 @@ namespace Bakeries.DataAccess.Repo
                 await context.Production.AddAsync(model);
                 await context.SaveChangesAsync();
               //  return model.Id;
-            }catch(Exception ex)
+            }catch
             {
-                Console.WriteLine(ex.ToString());
+                throw;
              //   return 0;
             }
         }
@@ -77,7 +77,7 @@ namespace Bakeries.DataAccess.Repo
         public async Task UpdateStockAsync(StockModel stockItems)
         {
             context.Stock.Update(stockItems);
-           await context.SaveChangesAsync();
+         //  await context.SaveChangesAsync();
         }
 
         public async Task SaveChangesAsync()

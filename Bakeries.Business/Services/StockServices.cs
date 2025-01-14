@@ -12,22 +12,15 @@ using System.Threading.Tasks;
 
 namespace Bakeries.Business.Services
 {
-    public class StockServices : IStockServices
+    public class StockServices(IUnitOfWork unitOfWork, IMapper mapper) : IStockServices
     {
-        private readonly IStockRepo _stockRepo;
-        private readonly IMapper _mapper;
-
-        public StockServices(IStockRepo stockRepo, IMapper mapper)
-        {
-            _stockRepo = stockRepo;
-            _mapper = mapper;
-        }
+     
 
         public async Task<int> AddAsync(StockDTO model)
         {
-            var newModel = _mapper.Map<StockModel>(model);
+            var newModel = mapper.Map<StockModel>(model);
 
-             await _stockRepo.AddAsync(newModel);
+             await unitOfWork.StockRepository.AddAsync(newModel);
             return newModel.Id;
         }
 
@@ -35,19 +28,19 @@ namespace Bakeries.Business.Services
         {
             try
             {
-                await _stockRepo.DeleteAsync(id);
-            }catch(Exception e)
+                await unitOfWork.StockRepository.DeleteAsync(id);
+            }catch
             {
-                throw e;
+                throw ;
             }
 
             }
 
         public async Task<IEnumerable<StockDTO>> GetAllAsync()
         {
-            var model = await _stockRepo.GetAllAsync(); ;
+            var model = await unitOfWork.StockRepository.GetAllAsync(); ;
 
-            var newModel = _mapper.Map<IEnumerable<StockDTO>>(model);
+            var newModel = mapper.Map<IEnumerable<StockDTO>>(model);
 
 
             return newModel;
@@ -55,12 +48,12 @@ namespace Bakeries.Business.Services
 
         public async Task<StockDTO> GetByIdAsync(int id)
         {
-            return _mapper.Map<StockDTO>(await _stockRepo.GetByIdAsync(id));
+            return mapper.Map<StockDTO>(await unitOfWork.StockRepository.GetByIdAsync(id));
         }
 
         public async Task UpdateAsync(StockDTO model)
         {
-            await _stockRepo.UpdateAsync(_mapper.Map<StockModel>(model));
+            await unitOfWork.StockRepository.UpdateAsync(mapper.Map<StockModel>(model));
         }
     }
 }
