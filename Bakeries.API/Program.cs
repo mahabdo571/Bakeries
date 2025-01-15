@@ -34,14 +34,21 @@ builder.Services.AddDbContext<clsDbContext>(options =>
         builder.Configuration.GetConnectionString("ConnectionToDB")
     ), ServiceLifetime.Scoped
 );
+//builder.WebHost.ConfigureKestrel(options =>
+//{
+//    options.Listen(System.Net.IPAddress.Parse("0.0.0.0"), 5000); // HTTP
+//    options.Listen(System.Net.IPAddress.Parse("0.0.0.0"), 5001, listenOptions =>
+//    {
+//        listenOptions.UseHttps(); // HTTPS
+//    });
+//});
+
+
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Listen(System.Net.IPAddress.Parse("0.0.0.0"), 5000); // HTTP
-    options.Listen(System.Net.IPAddress.Parse("0.0.0.0"), 5001, listenOptions =>
-    {
-        listenOptions.UseHttps(); // HTTPS
-    });
+    options.ListenAnyIP(8080);  // فقط HTTP
 });
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {

@@ -18,7 +18,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://0.0.0.0:5000"
+      "applicationUrl": "http://0.0.0.0:5001"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -37,7 +37,7 @@
         "ASPNETCORE_HTTP_PORTS": "8080"
       },
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL":false
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
