@@ -77,6 +77,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -99,4 +103,11 @@ app.UseCors(policy => policy
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<clsDbContext>();
+    context.Database.Migrate(); // لتطبيق الميجريشن
+    context.EnsureStoredProcedure(); // لتأكد من وجود الستورد بروسيجر
+}
 app.Run();

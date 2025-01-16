@@ -1,4 +1,5 @@
-﻿using Bakeries.DataAccess.Entities;
+﻿using Bakeries.DataAccess.Data;
+using Bakeries.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,17 @@ namespace Bakeries.DataAccess
                 .HasIndex(p => p.Name)
                 .HasDatabaseName("IX_Products_Name");
         }
+        public void EnsureStoredProcedure()
+        {
 
+            StoredProcedure.UpdateStockOnPurchase(this);
+            StoredProcedure.GetProductsWithComponents(this);
+
+
+       
+        }
+
+        
 
     }
 }

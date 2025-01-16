@@ -1,5 +1,5 @@
 class ApiConfig {
-  static const String baseUrl = 'http://localhost:5000/api';
+  static const String baseUrl = 'http://localhost:8080/api';
   //Stocks
   static const String stock = '$baseUrl/Stock';
   static const String stockAll = '$stock/All';
