@@ -1,6 +1,6 @@
 class ApiConfig {
-
-  static const String baseUrl = 'http://s1.everything.ps:8080/api';
+  // static const String baseUrl = 'http://s1.everything.ps:8080/api';
+  static const String baseUrl = 'http://localhost:8080/api';
 
   //Stocks
   static const String stock = '$baseUrl/Stock';
@@ -16,7 +16,8 @@ class ApiConfig {
   static const String Products = '$baseUrl/Product';
   static const String ProductAll = '$Products/All';
   static const String ProductById = '$Products/';
-  static const String GetProductsWithComponents = '$Products/GetProductsWithComponents';
+  static const String GetProductsWithComponents =
+      '$Products/GetProductsWithComponents';
 
   //ProductIngredient
   static const String ProductIngredient = '$baseUrl/ProductIngredient';
