@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business.Shared.DTOs
 {
-    public class ProductIngredientDTO 
+    public record ProductIngredientDTO 
     {
 
 

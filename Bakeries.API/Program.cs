@@ -29,10 +29,11 @@ else
 
 
 
-builder.Services.AddDbContext<clsDbContext>(options =>
+builder.Services.AddDbContext<clsDbContext>(options => 
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("ConnectionToDB")
     ), ServiceLifetime.Scoped
+
 );
 //builder.WebHost.ConfigureKestrel(options =>
 //{

@@ -48,7 +48,7 @@ namespace Bakeries.DataAccess.Repo
             model.DeletedAt = DateTime.Now;
 
             context.Update(model);
-           await context.SaveChangesAsync();
+         //  await context.SaveChangesAsync();
 
           
 
@@ -74,13 +74,13 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<PurchasesModel> GetByIdAsync(int id)
         {
-           return await context.Purchases.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+           return await context.Purchases.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task UpdateAsync(PurchasesModel model)
         {
             context.Update(model);
-            await context.SaveChangesAsync();
+           // await context.SaveChangesAsync();
         }
     }
 }

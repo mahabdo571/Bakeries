@@ -1,6 +1,7 @@
 ﻿using Bakeries.DataAccess.Data;
 using Bakeries.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,20 @@ namespace Bakeries.DataAccess
         public DbSet<ProductionModel> Production { get; set; }
         public clsDbContext(DbContextOptions op) : base(op)
         {
+         
 
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+      
+                optionsBuilder.EnableSensitiveDataLogging(); // تفعيل تسجيل البيانات الحساسة
+            }
+        }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

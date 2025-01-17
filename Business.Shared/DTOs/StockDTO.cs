@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business.Shared.DTOs
 {
-    public class StockDTO
+    public record StockDTO
     {
         public int Id { get; set; }
         [Required]

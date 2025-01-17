@@ -22,9 +22,13 @@ namespace Bakeries.DataAccess
 
         public async Task BeginTransactionAsync()
         {
-            _transaction = await context.Database.BeginTransactionAsync();
+            if (context.Database.CurrentTransaction is null)  
+                 _transaction = await context.Database.BeginTransactionAsync() ;
+
+
         }
 
+        
         public async Task CommitAsync()
         {
             if (_transaction != null)

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Business.Shared.DTOs
 {
-    public class PurchasesDTO 
+    public record PurchasesDTO 
     {
         public int Id { get; set; }
 

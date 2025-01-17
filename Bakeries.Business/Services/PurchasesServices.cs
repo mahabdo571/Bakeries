@@ -23,7 +23,7 @@ namespace Bakeries.Business.Services
         private readonly IStockServices _stockServices;
         private readonly IMapper _mapper;
 
-        public PurchasesServices(IUnitOfWork unitOfWork, IServiceProvider serviceProvider, IMapper mapper,IStockServices stockServices)
+        public PurchasesServices(IUnitOfWork unitOfWork, IServiceProvider serviceProvider, IMapper mapper, IStockServices stockServices)
         {
             this.unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -41,34 +41,56 @@ namespace Bakeries.Business.Services
             {
                 await unitOfWork.PurchasesRepository.AddAsync(newModel);
 
-           
 
-             
 
-                await unitOfWork.PurchasesRepository.UpdateStockOnPurchase(model.ItemId,model.Quantity);
+
+
+                await unitOfWork.PurchasesRepository.UpdateStockOnPurchase(model.ItemId, model.Quantity);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
-               
+
                 return newModel.Id;
 
             }
             catch
             {
-               await unitOfWork.RollbackAsync();
+                await unitOfWork.RollbackAsync();
                 throw;
             }
-        
+
 
         }
 
         public async Task DeleteAsync(int id)
         {
-           await unitOfWork.PurchasesRepository.DeleteAsync(id);
+            var model = await GetByIdAsync(id);
+            await unitOfWork.BeginTransactionAsync();
+     
+            try
+            {
+                // تحديث الكمية في المخزون بناءً على التغيرات في حالة الفاتورة
+                await UpdateInventoryQuantityBasedOnDeleteInInvoiceStatusAsync(model);
+
+                await unitOfWork.PurchasesRepository.DeleteAsync(id);
+
+
+                // حفظ التغييرات
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await unitOfWork.RollbackAsync();
+                // سجل الخطأ (يمكن استخدام logging frameworks مثل Serilog أو NLog)
+                throw;
+            }
+
+
         }
 
         public async Task<IEnumerable<PurchasesDTO>> GetAllAsync()
         {
-            var newModel = _mapper.Map<IEnumerable<PurchasesDTO>>( await unitOfWork.PurchasesRepository.GetAllAsync());
+            var newModel = _mapper.Map<IEnumerable<PurchasesDTO>>(await unitOfWork.PurchasesRepository.GetAllAsync());
             return newModel;
         }
 
@@ -102,8 +124,8 @@ namespace Bakeries.Business.Services
             return newModel;
         }
 
-   
-  
+
+
 
 
 
@@ -114,42 +136,99 @@ namespace Bakeries.Business.Services
 
         public async Task UpdateAsync(PurchasesDTO model)
         {
+            if (model is null)
+                throw new NullReferenceException("null model");
+
+            await unitOfWork.BeginTransactionAsync();
+
             try
             {
-                await updateInventoryQuantityBasedOnChangesInInvoiceStatus(model);
-                await unitOfWork.PurchasesRepository.UpdateAsync(_mapper.Map<PurchasesModel>(model));
+                // تحديث الكمية في المخزون بناءً على التغيرات في حالة الفاتورة
+                await DeductTheQuantityFromTheWarehouseIfTheInvoiceStatusIsCancelled(model);
 
-            }catch(Exception ex)
+                // تحديث بيانات الشراء
+                var purchaseModel = _mapper.Map<PurchasesModel>(model);
+                await unitOfWork.PurchasesRepository.UpdateAsync(purchaseModel);
+
+                // حفظ التغييرات
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitAsync();
+            }
+            catch 
             {
+                await unitOfWork.RollbackAsync();
                 throw;
             }
         }
 
-        private async Task updateInventoryQuantityBasedOnChangesInInvoiceStatus (PurchasesDTO model)
+        private async Task DeductTheQuantityFromTheWarehouseIfTheInvoiceStatusIsCancelled(PurchasesDTO model)
         {
-           var oldInventory = await GetByIdAsync(model.Id);
 
-            float oldQuantity = oldInventory is not null ? oldInventory.Quantity: throw new NullReferenceException("oldInventory is not Found") ;
+            if (model is null)
+                throw new NullReferenceException("null model");
 
-            float quantityDifference = model.Quantity - oldQuantity;
 
-            var stockModel =await _stockServices.GetByIdAsync(model.ItemId);
+            switch (model.Status)
+            {
+                case "ملغي":
+                    await UpdateInventoryQuantityBasedOnDeleteInInvoiceStatusAsync(model);
+                    return;
 
-            if (stockModel is null) {
-                throw new NullReferenceException("Stock id is not fuond");
+                default:
+                    await UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(model);
+                    return;
+
             }
-            stockModel.AvailableQuantity = quantityDifference;
-
-            await _stockServices.UpdateAsync(stockModel);
-
-
-
-
-
-
 
         }
 
+        private async Task UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(PurchasesDTO model)
+        {
+            // جلب الفاتورة القديمة
+            var oldPurchase = await GetByIdAsync(model.Id);
+            if (oldPurchase == null)
+            {
+                throw new NullReferenceException("Old purchase not found.");
+            }
+
+            // حساب الفرق في الكمية
+            float quantityDifference = model.Quantity - oldPurchase.Quantity;
+
+            // جلب بيانات المخزون
+            var stockModel = await _stockServices.GetByIdAsync(model.ItemId);
+            Console.WriteLine(stockModel.Id);
+
+            if (stockModel == null)
+            {
+
+                throw new NullReferenceException("Stock item not found.");
+            }
+
+            // تعديل الكمية المتاحة
+            stockModel.AvailableQuantity += quantityDifference;
+
+            // تحديث المخزون
+            await _stockServices.UpdateAsync(stockModel);
+        }
+
+        private async Task UpdateInventoryQuantityBasedOnDeleteInInvoiceStatusAsync(PurchasesDTO model)
+        {
+
+            var stockModel = await _stockServices.GetByIdAsync(model.ItemId);
+            Console.WriteLine(stockModel.Id);
+
+            if (stockModel == null)
+            {
+
+                throw new NullReferenceException("Stock item not found.");
+            }
+
+            // تعديل الكمية المتاحة
+            stockModel.AvailableQuantity -= model.Quantity;
+
+            // تحديث المخزون
+            await _stockServices.UpdateAsync(stockModel);
+        }
 
     }
 }

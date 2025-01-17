@@ -1,6 +1,6 @@
 class ApiConfig {
-  // static const String baseUrl = 'http://s1.everything.ps:8080/api';
-  static const String baseUrl = 'http://localhost:8080/api';
+  // static const String baseUrl = 'http://s1.everything.ps:8080/api'; //Publishing
+  static const String baseUrl = 'http://localhost:8080/api'; //development
 
   //Stocks
   static const String stock = '$baseUrl/Stock';

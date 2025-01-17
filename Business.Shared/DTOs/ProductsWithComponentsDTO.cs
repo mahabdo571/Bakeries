@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business.Shared.DTOs
 {
-    public class ProductsWithComponentsDTO
+    public record ProductsWithComponentsDTO
     {
         public int Id { get; set; }
 

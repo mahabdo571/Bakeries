@@ -46,14 +46,15 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<StockModel> GetByIdAsync(int id)
         {
-            return await _dbContext.Stock.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbContext.Stock.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
 
         }
 
         public async Task UpdateAsync(StockModel model)
         {
+            Console.WriteLine(model.Notes);
             _dbContext.Stock.Update(model);
-            await _dbContext.SaveChangesAsync();
+           // await _dbContext.SaveChangesAsync();
         }
     }
 }

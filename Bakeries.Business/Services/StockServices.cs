@@ -53,7 +53,20 @@ namespace Bakeries.Business.Services
 
         public async Task UpdateAsync(StockDTO model)
         {
-            await unitOfWork.StockRepository.UpdateAsync(mapper.Map<StockModel>(model));
+           await unitOfWork.BeginTransactionAsync();
+            try
+            {
+                await unitOfWork.StockRepository.UpdateAsync(mapper.Map<StockModel>(model));
+
+                await unitOfWork.SaveChangesAsync();
+
+                await unitOfWork.CommitAsync();
+            }
+            catch
+            {
+             await   unitOfWork.RollbackAsync();
+                throw;
+            }
         }
     }
 }
