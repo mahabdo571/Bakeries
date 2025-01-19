@@ -5,27 +5,37 @@ using Microsoft.Extensions.Configuration;
 
 namespace DAevthERP
 {
+#if DEBUG
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<clsDbContext>
     {
+
+            
+
         public clsDbContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<clsDbContext>();
+           
+
+                var optionsBuilder = new DbContextOptionsBuilder<clsDbContext>();
 
 
             var configuration = new ConfigurationBuilder()
                
-             // .SetBasePath("C:\\Programming works\\Bakeries\\Bakeries.API\\")//Directory.GetCurrentDirectory()
-              .SetBasePath("C:\\devlop\\Bakeries\\Bakeries.API")//Directory.GetCurrentDirectory()
+              .SetBasePath("C:\\Programming works\\Bakeries\\Bakeries.API\\")//Directory.GetCurrentDirectory()
+            //  .SetBasePath("C:\\devlop\\Bakeries\\Bakeries.API")//Directory.GetCurrentDirectory()
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var connectionString = configuration.GetConnectionString("ConnectionToDB");
+            var connectionString = configuration.GetConnectionString("ConnectionToDB-DEV");
 
             optionsBuilder.UseSqlServer(connectionString);
 
             return new clsDbContext(optionsBuilder.Options);
         }
-    }
+
+
+
+}
+#endif
 }
 
 

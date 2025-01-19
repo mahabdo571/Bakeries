@@ -25,27 +25,50 @@ builder.Services.AddLogging(); // تأكد من إضافة خدمة ILogger
 //}
 
 
-
+#if DEBUG
 builder.Services.AddDbContext<clsDbContext>(options => 
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("ConnectionToDB")
+        builder.Configuration.GetConnectionString("ConnectionToDB-DEV")
     ), ServiceLifetime.Scoped
 
 );
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5000);  // فقط HTTP
+});
+
+
+#else
+
+builder.Services.AddDbContext<clsDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ConnectionToDB"),
+        sqlServerOptions =>
+        {
+            sqlServerOptions.EnableRetryOnFailure(
+                maxRetryCount: 5, // عدد المحاولات قبل الفشل
+                maxRetryDelay: TimeSpan.FromSeconds(10), // المدة بين كل محاولة وأخرى
+                errorNumbersToAdd: null // أرقام الأخطاء الإضافية التي يجب إعادة المحاولة عند حدوثها (اختياري)
+            );
+        }
+    ),
+    ServiceLifetime.Scoped
+);
+
+
+
+#endif
+
+
 //builder.WebHost.ConfigureKestrel(options =>
 //{
-//    options.Listen(System.Net.IPAddress.Parse("0.0.0.0"), 5000); // HTTP
-//    options.Listen(System.Net.IPAddress.Parse("0.0.0.0"), 5001, listenOptions =>
+//    options.Listen(System.Net.IPAddress.Parse("0.0.0.0"), 8080); // HTTP
+//    options.Listen(System.Net.IPAddress.Parse("0.0.0.0"), 8081, listenOptions =>
 //    {
 //        listenOptions.UseHttps(); // HTTPS
 //    });
 //});
-
-
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenAnyIP(8080);  // فقط HTTP
-});
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -84,8 +107,17 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<clsDbContext>();
+        context.Database.Migrate(); // لتطبيق الميجريشن
+        context.EnsureStoredProcedure(); // لتأكد من وجود الستورد بروسيجر
+    }
+
     app.UseSwagger();
     app.UseSwaggerUI();
+
 
 }
 
@@ -102,10 +134,5 @@ app.UseCors(policy => policy
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<clsDbContext>();
-    context.Database.Migrate(); // لتطبيق الميجريشن
-    context.EnsureStoredProcedure(); // لتأكد من وجود الستورد بروسيجر
-}
+
 app.Run();
