@@ -43,15 +43,16 @@ builder.WebHost.ConfigureKestrel(options =>
 
 builder.Services.AddDbContext<clsDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("ConnectionToDB"),
-        sqlServerOptions =>
-        {
-            sqlServerOptions.EnableRetryOnFailure(
-                maxRetryCount: 5, // عدد المحاولات قبل الفشل
-                maxRetryDelay: TimeSpan.FromSeconds(10), // المدة بين كل محاولة وأخرى
-                errorNumbersToAdd: null // أرقام الأخطاء الإضافية التي يجب إعادة المحاولة عند حدوثها (اختياري)
-            );
-        }
+        builder.Configuration.GetConnectionString("ConnectionToDB")
+        //sqlServerOptions =>
+        //{
+        //    sqlServerOptions.EnableRetryOnFailure(
+        //        maxRetryCount: 5, // عدد المحاولات قبل الفشل
+        //        maxRetryDelay: TimeSpan.FromSeconds(10), // المدة بين كل محاولة وأخرى
+        //        errorNumbersToAdd: null // أرقام الأخطاء الإضافية التي يجب إعادة المحاولة عند حدوثها (اختياري)
+
+        //    );
+        //}
     ),
     ServiceLifetime.Scoped
 );

@@ -55,7 +55,7 @@ namespace Bakeries.DataAccess.Data
     FROM 
         product P
     INNER JOIN 
-        ProductIngredient PC ON P.Id = PC.ProductID;
+        ProductIngredient PC ON P.Id = PC.ProductID AND  P.DeletedAt is NULL;
             
             END;
         ");

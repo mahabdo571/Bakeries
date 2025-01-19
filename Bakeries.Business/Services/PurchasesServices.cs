@@ -44,7 +44,6 @@ namespace Bakeries.Business.Services
 
 
 
-
                 await unitOfWork.PurchasesRepository.UpdateStockOnPurchase(model.ItemId, model.Quantity);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
