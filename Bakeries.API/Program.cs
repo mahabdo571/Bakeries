@@ -4,11 +4,8 @@ using Bakeries.DataAccess;
 using Bakeries.DataAccess.Repo;
 using Bakeries.DataAccess.Repo.IRepo;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using Serilog.Events;
-using Microsoft.Extensions.Hosting;
-using Serilog.Sinks.Syslog;
-using System.Runtime.InteropServices;
+
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,15 +14,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();  // إزالة المزودات الافتراضية
 builder.Services.AddLogging(); // تأكد من إضافة خدمة ILogger
-if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-{
-    builder.Logging.AddEventLog(); // إضافة Event Log كمزود للتسجيلات
+//if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+//{
+//    builder.Logging.AddEventLog(); // إضافة Event Log كمزود للتسجيلات
 
-}
-else
-{
-  builder.Logging.AddSerilog();
-}
+//}
+//else
+//{
+//  builder.Logging.AddSerilog();
+//}
 
 
 
