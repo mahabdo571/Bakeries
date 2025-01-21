@@ -1,5 +1,6 @@
 class ApiConfig {
-  static const String baseUrl = 'https://rahaftec.runasp.net/api'; 
+  // static const String baseUrl = 'https://rahaftec.runasp.net/api';
+  static const String baseUrl = 'http://localhost:5000/api';
 
   //Stocks
   static const String stock = '$baseUrl/Stock';

@@ -143,7 +143,8 @@ namespace Bakeries.Business.Services
             try
             {
                 // تحديث الكمية في المخزون بناءً على التغيرات في حالة الفاتورة
-                await DeductTheQuantityFromTheWarehouseIfTheInvoiceStatusIsCancelled(model);
+
+              await UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(model);
 
                 // تحديث بيانات الشراء
                 var purchaseModel = _mapper.Map<PurchasesModel>(model);
@@ -160,42 +161,35 @@ namespace Bakeries.Business.Services
             }
         }
 
-        private async Task DeductTheQuantityFromTheWarehouseIfTheInvoiceStatusIsCancelled(PurchasesDTO model)
-        {
-
-            if (model is null)
-                throw new NullReferenceException("null model");
-
-
-            switch (model.Status)
-            {
-                case "ملغي":
-                    await UpdateInventoryQuantityBasedOnDeleteInInvoiceStatusAsync(model);
-                    return;
-
-                default:
-                    await UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(model);
-                    return;
-
-            }
-
-        }
 
         private async Task UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(PurchasesDTO model)
         {
             // جلب الفاتورة القديمة
-            var oldPurchase = await GetByIdAsync(model.Id);
+            var oldPurchase = await this.GetByIdAsync(model.Id);
             if (oldPurchase == null)
             {
                 throw new NullReferenceException("Old purchase not found.");
             }
+            float quantityDifference;
 
-            // حساب الفرق في الكمية
-            float quantityDifference = model.Quantity - oldPurchase.Quantity;
+            if (model.Status.Equals("ملغي") && oldPurchase.Status.Equals("ملغي"))
+            {
+                quantityDifference = -model.Quantity;
+
+            }
+            else if (!model.Status.Equals("ملغي") && !oldPurchase.Status.Equals("ملغي"))
+            {
+                quantityDifference = model.Quantity;
+            }
+            else
+            {
+                // حساب الفرق في الكمية
+                quantityDifference = model.Quantity - oldPurchase.Quantity;
+            }
+
 
             // جلب بيانات المخزون
             var stockModel = await _stockServices.GetByIdAsync(model.ItemId);
-            Console.WriteLine(stockModel.Id);
 
             if (stockModel == null)
             {
