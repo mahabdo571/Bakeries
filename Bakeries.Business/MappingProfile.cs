@@ -9,11 +9,12 @@ namespace Bakeries.Business
     {
         public MappingProfile()
         {
-            CreateMap<PurchasesModel, PurchasesDTO>().ReverseMap();
+            CreateMap<PurchaseModel, PurchasesDTO>().ReverseMap();
             CreateMap<StockModel, StockDTO>().ReverseMap();
-            CreateMap<ProductsModel, ProductDTO>().ReverseMap();
+            CreateMap<ProductModel, ProductDTO>().ReverseMap();
             CreateMap<ProductIngredientModel, ProductIngredientDTO>().ReverseMap();
             CreateMap<ProductIngredientModel, ProductIngredientAddUpdateDTO>().ReverseMap();
+            CreateMap<ProductionProcessDetailModel, ProductionProcessDetailDTO>().ReverseMap();
             //CreateMap<ProductionModel, ProductionDTO>().ReverseMap()
             CreateMap<ProductionModel, ProductionDTO>()
            .ReverseMap()

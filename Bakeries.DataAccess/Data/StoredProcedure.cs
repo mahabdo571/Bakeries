@@ -17,9 +17,9 @@ namespace Bakeries.DataAccess.Data
     @Quantity INT
             AS
             BEGIN
-              IF EXISTS (SELECT 1 FROM Stock WHERE Id = @ItemId)
+              IF EXISTS (SELECT 1 FROM Stocks WHERE Id = @ItemId)
     BEGIN
-        UPDATE Stock
+        UPDATE Stocks
         SET AvailableQuantity = AvailableQuantity + @Quantity,
             UpdatedAt = GETDATE()
         WHERE Id = @ItemId;
@@ -27,7 +27,7 @@ namespace Bakeries.DataAccess.Data
     ELSE
     BEGIN
 
-        INSERT INTO Stock (Id, ItemName, AvailableQuantity, UpdatedAt)
+        INSERT INTO Stocks (Id, ItemName, AvailableQuantity, UpdatedAt)
         VALUES (@ItemId, 'Unknown Item', @Quantity, GETDATE());
     END
 
@@ -53,9 +53,9 @@ namespace Bakeries.DataAccess.Data
         P.DeletedAt,
         P.Notes
     FROM 
-        product P
+        Products P
     INNER JOIN 
-        ProductIngredient PC ON P.Id = PC.ProductID AND  P.DeletedAt is NULL;
+        ProductIngredients PC ON P.Id = PC.ProductID AND  P.DeletedAt is NULL;
             
             END;
         ");

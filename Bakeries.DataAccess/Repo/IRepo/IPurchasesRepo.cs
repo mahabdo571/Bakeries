@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bakeries.DataAccess.Repo.IRepo
 {
-    public interface IPurchasesRepo : IRepoBase<PurchasesModel>
+    public interface IPurchasesRepo : IRepoBase<PurchaseModel>
     {
         Task<StockModel> GetStockDetailsFromItemId(int itemId, clsDbContext dbContext);
         Task UpdateStockOnPurchase(int stockId, float Quantity);

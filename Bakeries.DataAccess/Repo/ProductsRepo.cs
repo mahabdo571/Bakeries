@@ -15,9 +15,9 @@ namespace Bakeries.DataAccess.Repo
 
      
 
-        public async  Task AddAsync(ProductsModel model)
+        public async  Task AddAsync(ProductModel model)
         {
-            await context.product.AddAsync(model);
+            await context.Products.AddAsync(model);
             await context.SaveChangesAsync();
            // return model.Id;
         }
@@ -27,7 +27,7 @@ namespace Bakeries.DataAccess.Repo
            
 
 
-                var product = await context.product
+                var product = await context.Products
                     .WhereNotDeleted()
                     .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -37,7 +37,7 @@ namespace Bakeries.DataAccess.Repo
                 }
 
 
-                var ingredients = await context.ProductIngredient
+                var ingredients = await context.ProductIngredients
                     .WhereNotDeleted()
                     .Where(i => i.ProductId == id)
                     .ToListAsync();
@@ -54,25 +54,25 @@ namespace Bakeries.DataAccess.Repo
 
         }
 
-        public async Task<IEnumerable<ProductsModel>> GetAllAsync()
+        public async Task<IEnumerable<ProductModel>> GetAllAsync()
         {
-            return await context.product.WhereNotDeleted().ToListAsync();
+            return await context.Products.WhereNotDeleted().ToListAsync();
         }
 
-        public async Task<ProductsModel> GetByIdAsync(int id)
+        public async Task<ProductModel> GetByIdAsync(int id)
         {
-            return await context.product.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            return await context.Products.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task UpdateAsync(ProductsModel model)
+        public async Task UpdateAsync(ProductModel model)
         {
-            context.product.Update(model);
+            context.Products.Update(model);
             await context.SaveChangesAsync();
         }
 
-        public  async Task<IEnumerable<ProductsModel>> GetProductsWithComponents()
+        public  async Task<IEnumerable<ProductModel>> GetProductsWithComponents()
         {
-            var products = await context.product
+            var products = await context.Products
     .FromSqlRaw("EXEC GetProductsWithComponents")
     .ToListAsync();
 

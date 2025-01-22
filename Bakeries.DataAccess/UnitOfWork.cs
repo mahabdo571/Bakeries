@@ -6,7 +6,13 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Bakeries.DataAccess
 {
-    public class UnitOfWork(clsDbContext context, IProductsRepo productRepository, IProductionRepo productionRepository, IStockRepo stockRepository, IProductIngredientRepo productIngredientRepository, IPurchasesRepo purchasesRepository) : IUnitOfWork
+    public class UnitOfWork
+        (clsDbContext context, IProductsRepo productRepository,
+        IProductionRepo productionRepository, IStockRepo stockRepository,
+        IProductIngredientRepo productIngredientRepository, IPurchasesRepo purchasesRepository,
+        IProductionProcessDetailRepo productionProcessDetailRepo
+        
+        ) : IUnitOfWork
     {
 
        
@@ -19,6 +25,7 @@ namespace Bakeries.DataAccess
         public IStockRepo StockRepository { get; } = stockRepository;
         public IProductIngredientRepo ProductIngredientRepository { get; } = productIngredientRepository;
         public IPurchasesRepo PurchasesRepository { get; } = purchasesRepository;
+        public IProductionProcessDetailRepo ProductionProcessDetailRepository { get; } = productionProcessDetailRepo;
 
         public async Task BeginTransactionAsync()
         {

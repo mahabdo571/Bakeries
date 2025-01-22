@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bakeries.DataAccess.Repo.IRepo
 {
-    public interface IProductsRepo : IRepoBase<ProductModel>
+    public  interface IProductionProcessDetailRepo :IRepoBase<ProductionProcessDetailModel>
     {
-        Task<IEnumerable<ProductModel>> GetProductsWithComponents();
-
     }
 }

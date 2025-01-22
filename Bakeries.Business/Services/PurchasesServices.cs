@@ -35,13 +35,20 @@ namespace Bakeries.Business.Services
 
         public async Task<int> AddAsync(PurchasesDTO model)
         {
-            var newModel = _mapper.Map<PurchasesModel>(model);
+            if (model is null) throw new ArgumentNullException("model is null");    
+
+     
+
+            var newModel = _mapper.Map<PurchaseModel>(model);
             await unitOfWork.BeginTransactionAsync();
             try
             {
                 await unitOfWork.PurchasesRepository.AddAsync(newModel);
 
-
+                if (model.Status.Equals("ملغي"))
+                {
+                    model.Quantity = 0;
+                }
 
 
                 await unitOfWork.PurchasesRepository.UpdateStockOnPurchase(model.ItemId, model.Quantity);
@@ -67,8 +74,13 @@ namespace Bakeries.Business.Services
      
             try
             {
-                // تحديث الكمية في المخزون بناءً على التغيرات في حالة الفاتورة
-                await UpdateInventoryQuantityBasedOnDeleteInInvoiceStatusAsync(model);
+                if (!model.Status.Equals("ملغي"))
+                {
+                    // تحديث الكمية في المخزون بناءً على التغيرات في حالة الفاتورة
+                    await UpdateInventoryQuantityBasedOnDeleteInInvoiceStatusAsync(model);
+                }
+       
+              
 
                 await unitOfWork.PurchasesRepository.DeleteAsync(id);
 
@@ -147,7 +159,7 @@ namespace Bakeries.Business.Services
               await UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(model);
 
                 // تحديث بيانات الشراء
-                var purchaseModel = _mapper.Map<PurchasesModel>(model);
+                var purchaseModel = _mapper.Map<PurchaseModel>(model);
                 await unitOfWork.PurchasesRepository.UpdateAsync(purchaseModel);
 
                 // حفظ التغييرات
@@ -170,21 +182,26 @@ namespace Bakeries.Business.Services
             {
                 throw new NullReferenceException("Old purchase not found.");
             }
-            float quantityDifference;
+            float quantityDifference=0;
 
-            if (model.Status.Equals("ملغي") && oldPurchase.Status.Equals("ملغي"))
+            if (model.Status.Equals("ملغي") && !oldPurchase.Status.Equals("ملغي"))
             {
                 quantityDifference = -model.Quantity;
 
             }
-            else if (!model.Status.Equals("ملغي") && !oldPurchase.Status.Equals("ملغي"))
+          
+            else if(!model.Status.Equals("ملغي"))
             {
-                quantityDifference = model.Quantity;
-            }
-            else
-            {
-                // حساب الفرق في الكمية
-                quantityDifference = model.Quantity - oldPurchase.Quantity;
+                if (oldPurchase.Status.Equals("ملغي"))
+                {
+                    quantityDifference = model.Quantity;
+                }
+                else
+                {
+                    // حساب الفرق في الكمية
+                    quantityDifference = model.Quantity - oldPurchase.Quantity;
+                }
+            
             }
 
 
@@ -206,6 +223,10 @@ namespace Bakeries.Business.Services
 
         private async Task UpdateInventoryQuantityBasedOnDeleteInInvoiceStatusAsync(PurchasesDTO model)
         {
+            if(model is null) throw new ArgumentNullException(nameof(model));
+
+        
+
 
             var stockModel = await _stockServices.GetByIdAsync(model.ItemId);
             Console.WriteLine(stockModel.Id);

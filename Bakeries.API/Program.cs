@@ -86,6 +86,7 @@ builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
 builder.Services.AddScoped<IProductIngredientRepo, ProductIngredientRepo>();
 builder.Services.AddScoped<IProductionRepo, ProductionRepo>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IProductionProcessDetailRepo, ProductionProcessDetailRepo>();
 
 //Services
 builder.Services.AddScoped<IPurchasesServices, PurchasesServices>();
@@ -93,6 +94,7 @@ builder.Services.AddScoped<IStockServices, StockServices>();
 builder.Services.AddScoped<IProductServices, ProductServices>();
 builder.Services.AddScoped<IProductIngredientService, ProductIngredientService>();
 builder.Services.AddScoped<IProductionServices, ProductionServices>();
+builder.Services.AddScoped<IProductionProcessDetailService, ProductionProcessDetailServices>();
 
 
 builder.Services.AddControllers();

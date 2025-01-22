@@ -15,19 +15,19 @@ namespace Bakeries.DataAccess.Repo
     {
         public async Task<IEnumerable<ProductionModel>> GetAllAsync()
         {
-            return await context.Production.WhereNotDeleted().ToListAsync();
+            return await context.Productions.WhereNotDeleted().ToListAsync();
         }
 
         public async Task<ProductionModel> GetByIdAsync(int id)
         {
-            return await context.Production.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            return await context.Productions.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
 
         }
         public async Task AddAsync(ProductionModel model)
         {
             try
             {
-                await context.Production.AddAsync(model);
+                await context.Productions.AddAsync(model);
                 await context.SaveChangesAsync();
               //  return model.Id;
             }catch
@@ -42,13 +42,13 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task UpdateAsync(ProductionModel model)
         {
-            context.Production.Update(model);
+            context.Productions.Update(model);
             await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var model = await context.Production.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            var model = await context.Productions.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
             if (model is not null)
             {
                 model.DeletedAt = DateTime.Now;
@@ -61,7 +61,7 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<ProductionModel> GetProductionWithProductAndIngredientsAsync(int productionId)
         {
-            return await context.Production.WhereNotDeleted()
+            return await context.Productions.WhereNotDeleted()
                 .Include(p => p.Product)
                     .ThenInclude(p => p.Ingredients)
                 .FirstOrDefaultAsync(p => p.Id == productionId);
@@ -70,13 +70,13 @@ namespace Bakeries.DataAccess.Repo
         public async Task<StockModel> GetStockItemAsync(int stockId)
         {
        
-                return await context.Stock.WhereNotDeleted().FirstOrDefaultAsync(s => s.Id == stockId);
+                return await context.Stocks.WhereNotDeleted().FirstOrDefaultAsync(s => s.Id == stockId);
             
         }
 
         public async Task UpdateStockAsync(StockModel stockItems)
         {
-            context.Stock.Update(stockItems);
+            context.Stocks.Update(stockItems);
          //  await context.SaveChangesAsync();
         }
 
@@ -94,7 +94,7 @@ namespace Bakeries.DataAccess.Repo
         {
       
 
-            return await context.Production
+            return await context.Productions
         .WhereNotDeleted()
         .Include(pI => pI.Product)
         .ToListAsync();

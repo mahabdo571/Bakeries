@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Bakeries.Business.Services.IServices;
 using Bakeries.DataAccess.Entities;
-using Bakeries.DataAccess.Migrations;
 using Bakeries.DataAccess.Repo;
 using Bakeries.DataAccess.Repo.IRepo;
 using Business.Shared.DTOs;
@@ -27,7 +26,7 @@ namespace Bakeries.Business.Services
 
         public async Task<int> AddAsync(ProductDTO model)
         {
-            var newModel = _mapper.Map<ProductsModel>(model);
+            var newModel = _mapper.Map<ProductModel>(model);
 
              await _unitOfWork.ProductRepository.AddAsync(newModel);
             return newModel.Id;
@@ -69,7 +68,7 @@ namespace Bakeries.Business.Services
 
         public async Task UpdateAsync(ProductDTO model)
         {
-            await _unitOfWork.ProductRepository.UpdateAsync(_mapper.Map<ProductsModel>(model));
+            await _unitOfWork.ProductRepository.UpdateAsync(_mapper.Map<ProductModel>(model));
         }
         public async Task<IEnumerable<ProductDTO>> GetProductsWithComponentsServes() {
 

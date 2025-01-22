@@ -15,25 +15,25 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task AddAsync(ProductIngredientModel model)
         {
-            await context.ProductIngredient.AddAsync(model);
+            await context.ProductIngredients.AddAsync(model);
             await context.SaveChangesAsync();
             //return model.Id;
         }
 
         public async Task DeleteAsync(int id)
         {
-            var model = await context.ProductIngredient.WhereNotDeleted().FirstOrDefaultAsync(s => s.Id == id);
+            var model = await context.ProductIngredients.WhereNotDeleted().FirstOrDefaultAsync(s => s.Id == id);
 
 
             model.DeletedAt = DateTime.Now;
 
-            context.ProductIngredient.Update(model);
+            context.ProductIngredients.Update(model);
             await context.SaveChangesAsync();
         }  
         
         public async Task<bool> IsIngredientAlreadyAddedAsync(int productId,int stockId)
         {
-            var exists = await context.ProductIngredient.WhereNotDeleted().AnyAsync(x => x.ProductId == productId && x.stockId == stockId);
+            var exists = await context.ProductIngredients.WhereNotDeleted().AnyAsync(x => x.ProductId == productId && x.stockId == stockId);
             return exists;
            
             
@@ -43,14 +43,14 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<IEnumerable<ProductIngredientModel>> GetAllAsync()
         {
-            return await context.ProductIngredient.WhereNotDeleted().ToListAsync();
+            return await context.ProductIngredients.WhereNotDeleted().ToListAsync();
         }
 
         public async Task<IEnumerable<ProductIngredientModel>> GetAllByProductIdAsync(int productId)
         {
         
 
-            return await context.ProductIngredient
+            return await context.ProductIngredients
         .WhereNotDeleted()
         .Where(pI => pI.ProductId == productId)
         .Include(pI => pI.stock) 
@@ -63,12 +63,12 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<ProductIngredientModel> GetByIdAsync(int id)
         {
-            return await context.ProductIngredient.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            return await context.ProductIngredients.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task UpdateAsync(ProductIngredientModel model)
         {
-            context.ProductIngredient.Update(model);
+            context.ProductIngredients.Update(model);
             await context.SaveChangesAsync();
         }
     }

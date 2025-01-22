@@ -25,8 +25,9 @@ namespace Bakeries.DataAccess.Entities
 
         public string Location { get; set; }
 
-        public ICollection<PurchasesModel> Purchases { get; set; }
+        public ICollection<PurchaseModel> Purchases { get; set; }
 
+        public ICollection<ProductionProcessDetailModel> Details { get; set; } = new List<ProductionProcessDetailModel>();
 
 
 

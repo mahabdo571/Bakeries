@@ -12,11 +12,12 @@ namespace Bakeries.DataAccess
 {
     public class clsDbContext : DbContext
     {
-        public DbSet<PurchasesModel> Purchases { get; set; }
-        public DbSet<StockModel> Stock { get; set; }
-        public DbSet<ProductsModel> product { get; set; }
-        public DbSet<ProductIngredientModel> ProductIngredient { get; set; }
-        public DbSet<ProductionModel> Production { get; set; }
+        public DbSet<PurchaseModel> Purchases { get; set; }
+        public DbSet<StockModel> Stocks { get; set; }
+        public DbSet<ProductModel> Products { get; set; }
+        public DbSet<ProductIngredientModel> ProductIngredients { get; set; }
+        public DbSet<ProductionModel> Productions { get; set; }
+        public DbSet<ProductionProcessDetailModel> ProductionProcessDetails { get; set; }
         public clsDbContext(DbContextOptions op) : base(op)
         {
          
@@ -58,9 +59,22 @@ namespace Bakeries.DataAccess
                 .HasDatabaseName("IX_Stock_ItemName");
 
             // إضافة فهرس على Name في جدول ProductsModel
-            modelBuilder.Entity<ProductsModel>()
+            modelBuilder.Entity<ProductModel>()
                 .HasIndex(p => p.Name)
                 .HasDatabaseName("IX_Products_Name");
+
+  
+            modelBuilder.Entity<ProductionModel>()
+                .HasMany(p => p.Details)
+                .WithOne(s => s.Production)
+                .HasForeignKey(s => s.ProductionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ProductionProcessDetailModel>()
+      .HasOne(ps => ps.Stock)
+      .WithMany(p => p.Details)
+      .HasForeignKey(ps => ps.stockId)
+      .OnDelete(DeleteBehavior.Restrict); // منع حذف المنتج إذا كانت هناك خطوات مرتبطة
         }
         public void EnsureStoredProcedure()
         {

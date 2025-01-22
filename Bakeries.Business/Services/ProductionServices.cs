@@ -43,6 +43,20 @@ namespace Bakeries.Business.Services
                
             //await unitOfWork.SaveChangesAsync();
                 await DeductStockForProductionAsync(newModel.Id);
+                foreach(var item in newModel.Product.Ingredients)
+                {
+                    await unitOfWork.ProductionProcessDetailRepository.AddAsync(new ProductionProcessDetailModel
+                    {
+                        Quantity = ((newModel.QuantityProduced + newModel.QuantityDamaged)*item.Quantity),
+                        stockId =item.stockId,
+                        ProductionId = newModel.Id,
+                        
+
+                });
+                }
+
+            
+
                 await unitOfWork.SaveChangesAsync();
                 // إذا تمت العملية بنجاح، قم بعمل Commit للمعاملة
                 await unitOfWork.CommitAsync();

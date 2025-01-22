@@ -17,7 +17,7 @@ namespace Bakeries.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -64,46 +64,10 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("stockId")
                         .HasDatabaseName("IX_ProductIngredient_StockId");
 
-                    b.ToTable("ProductIngredient");
+                    b.ToTable("ProductIngredients");
                 });
 
-            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("QuantityDamaged")
-                        .HasColumnType("real");
-
-                    b.Property<float>("QuantityProduced")
-                        .HasColumnType("real");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Production");
-                });
-
-            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductsModel", b =>
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -146,10 +110,84 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_Products_Name");
 
-                    b.ToTable("product");
+                    b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchasesModel", b =>
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("QuantityDamaged")
+                        .HasColumnType("real");
+
+                    b.Property<float>("QuantityProduced")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Productions");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionProcessDetailModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductionId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Quantity")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("stockId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductionId");
+
+                    b.HasIndex("stockId");
+
+                    b.ToTable("ProductionProcessDetails");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,12 +296,12 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("ItemName")
                         .HasDatabaseName("IX_Stock_ItemName");
 
-                    b.ToTable("Stock");
+                    b.ToTable("Stocks");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductIngredientModel", b =>
                 {
-                    b.HasOne("Bakeries.DataAccess.Entities.ProductsModel", "Product")
+                    b.HasOne("Bakeries.DataAccess.Entities.ProductModel", "Product")
                         .WithMany("Ingredients")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -282,7 +320,7 @@ namespace Bakeries.DataAccess.Migrations
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionModel", b =>
                 {
-                    b.HasOne("Bakeries.DataAccess.Entities.ProductsModel", "Product")
+                    b.HasOne("Bakeries.DataAccess.Entities.ProductModel", "Product")
                         .WithMany("Production")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -291,7 +329,26 @@ namespace Bakeries.DataAccess.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchasesModel", b =>
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionProcessDetailModel", b =>
+                {
+                    b.HasOne("Bakeries.DataAccess.Entities.ProductionModel", "Production")
+                        .WithMany("Details")
+                        .HasForeignKey("ProductionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bakeries.DataAccess.Entities.StockModel", "Stock")
+                        .WithMany("Details")
+                        .HasForeignKey("stockId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Production");
+
+                    b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseModel", b =>
                 {
                     b.HasOne("Bakeries.DataAccess.Entities.StockModel", "Item")
                         .WithMany("Purchases")
@@ -302,15 +359,22 @@ namespace Bakeries.DataAccess.Migrations
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductsModel", b =>
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductModel", b =>
                 {
                     b.Navigation("Ingredients");
 
                     b.Navigation("Production");
                 });
 
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionModel", b =>
+                {
+                    b.Navigation("Details");
+                });
+
             modelBuilder.Entity("Bakeries.DataAccess.Entities.StockModel", b =>
                 {
+                    b.Navigation("Details");
+
                     b.Navigation("Purchases");
                 });
 #pragma warning restore 612, 618

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bakeries.DataAccess.Entities
 {
-    public class ProductsModel :clsBaseEntities
+    public class ProductModel :clsBaseEntities
     {
         [Required]
         [MaxLength(100)]

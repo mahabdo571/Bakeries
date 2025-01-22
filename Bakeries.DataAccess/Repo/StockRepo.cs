@@ -9,51 +9,48 @@ using System.Threading.Tasks;
 
 namespace Bakeries.DataAccess.Repo
 {
-    public class StockRepo : IStockRepo
+    public class StockRepo(clsDbContext context) : IStockRepo
     {
-        private readonly clsDbContext _dbContext;
-        public StockRepo(clsDbContext dbContext) { 
-        _dbContext = dbContext;
+    
         
-        }
         public async  Task AddAsync(StockModel model)
         {
-            await _dbContext.Stock.AddAsync(model);
-            await _dbContext.SaveChangesAsync();
+            await context.Stocks.AddAsync(model);
+            await context.SaveChangesAsync();
             //return model .Id;
         }
 
         public async Task DeleteAsync(int id)
         {
-            var model = await _dbContext.Stock.WhereNotDeleted().FirstOrDefaultAsync(s=>s.Id == id);
+            var model = await context.Stocks.WhereNotDeleted().FirstOrDefaultAsync(s=>s.Id == id);
 
-            var purchases = await _dbContext.Purchases.WhereNotDeleted().FirstOrDefaultAsync((p) => p.ItemId == model.Id);
+            var purchases = await context.Purchases.WhereNotDeleted().FirstOrDefaultAsync((p) => p.ItemId == model.Id);
 
             if (purchases is not null)
                 throw new Exception("Item associated with purchases cannot be deleted - delete associated purchases first");
 
             model.DeletedAt  = DateTime.Now;
 
-            _dbContext.Stock.Update(model);
-            await _dbContext.SaveChangesAsync();
+            context.Stocks.Update(model);
+            await context.SaveChangesAsync();
 
         }
 
         public async Task<IEnumerable<StockModel>> GetAllAsync()
         {
-          return  await _dbContext.Stock.WhereNotDeleted().ToListAsync();
+          return  await context.Stocks.WhereNotDeleted().ToListAsync();
         }
 
         public async Task<StockModel> GetByIdAsync(int id)
         {
-            return await _dbContext.Stock.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            return await context.Stocks.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
 
         }
 
         public async Task UpdateAsync(StockModel model)
         {
             Console.WriteLine(model.Notes);
-            _dbContext.Stock.Update(model);
+            context.Stocks.Update(model);
            // await _dbContext.SaveChangesAsync();
         }
     }

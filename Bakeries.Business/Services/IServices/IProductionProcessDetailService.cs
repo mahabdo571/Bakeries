@@ -1,15 +1,15 @@
 ﻿using Bakeries.DataAccess.Entities;
+using Business.Shared.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bakeries.DataAccess.Repo.IRepo
+namespace Bakeries.Business.Services.IServices
 {
-    public interface IProductsRepo : IRepoBase<ProductModel>
+    public  interface IProductionProcessDetailService :  IServices<ProductionProcessDetailDTO>
     {
-        Task<IEnumerable<ProductModel>> GetProductsWithComponents();
 
     }
 }

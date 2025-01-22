@@ -15,7 +15,7 @@ namespace Bakeries.DataAccess.Repo
    
 
  
-        public async Task AddAsync(PurchasesModel model)
+        public async Task AddAsync(PurchaseModel model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
@@ -54,7 +54,7 @@ namespace Bakeries.DataAccess.Repo
 
         }
 
-        public async Task<IEnumerable<PurchasesModel>> GetAllAsync()
+        public async Task<IEnumerable<PurchaseModel>> GetAllAsync()
         {
             var model =  await context.Purchases.WhereNotDeleted().ToListAsync();
 
@@ -64,7 +64,7 @@ namespace Bakeries.DataAccess.Repo
         public async Task<StockModel> GetStockDetailsFromItemId(int itemId, clsDbContext dbContext)
         {
        
-           return await dbContext.Stock.FirstOrDefaultAsync(i => i.Id == itemId);
+           return await dbContext.Stocks.FirstOrDefaultAsync(i => i.Id == itemId);
 
 
         
@@ -72,12 +72,12 @@ namespace Bakeries.DataAccess.Repo
       
         }
 
-        public async Task<PurchasesModel> GetByIdAsync(int id)
+        public async Task<PurchaseModel> GetByIdAsync(int id)
         {
            return await context.Purchases.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task UpdateAsync(PurchasesModel model)
+        public async Task UpdateAsync(PurchaseModel model)
         {
             context.Update(model);
            // await context.SaveChangesAsync();
