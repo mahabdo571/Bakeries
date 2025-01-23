@@ -36,45 +36,34 @@ namespace Bakeries.Business.Services
             await unitOfWork.BeginTransactionAsync();
 
             var newModel = mapper.Map<ProductionModel>(model);
-            try { 
-                await unitOfWork.ProductionRepository.AddAsync(newModel);
+            try
+            {
 
-         
-               
-            //await unitOfWork.SaveChangesAsync();
+                await unitOfWork.ProductionRepository.AddAsync(newModel);
                 await DeductStockForProductionAsync(newModel.Id);
-                foreach(var item in newModel.Product.Ingredients)
+                foreach (var item in newModel.Product.Ingredients)
                 {
                     await unitOfWork.ProductionProcessDetailRepository.AddAsync(new ProductionProcessDetailModel
                     {
-                        Quantity = ((newModel.QuantityProduced + newModel.QuantityDamaged)*item.Quantity),
-                        stockId =item.stockId,
+                        Quantity = ((newModel.QuantityProduced + newModel.QuantityDamaged) * item.Quantity),
+                        stockId = item.stockId,
                         ProductionId = newModel.Id,
                         
 
-                });
+                    });
                 }
-
-            
-
                 await unitOfWork.SaveChangesAsync();
-                // إذا تمت العملية بنجاح، قم بعمل Commit للمعاملة
                 await unitOfWork.CommitAsync();
                 return newModel.Id;
             }
-                catch (Exception ex)
-                {
-                    // في حالة حدوث خطأ، قم بعمل Rollback للمعاملة
-                    await unitOfWork.RollbackAsync();
-                   
-                Console.WriteLine(ex.Message.ToString());
-                  // await DeleteAsync(productionId);
-                    // إلقاء الاستثناء مرة أخرى ليتعامل معه الكود في الطبقات الأعلى
-                    throw new Exception($"An error occurred while processing the production. All changes have been rolled back. {ex.Message}", ex);
-    }
+            catch (Exception ex)
+            {
+                await unitOfWork.RollbackAsync();
+                throw new Exception($"An error occurred while processing the production. All changes have been rolled back. {ex.Message}", ex);
+            }
 
 
-}
+        }
 
         public async Task UpdateAsync(ProductionDTO model)
         {
@@ -83,7 +72,10 @@ namespace Bakeries.Business.Services
 
         public async Task DeleteAsync(int id)
         {
+
             await unitOfWork.ProductionRepository.DeleteAsync(id);
+
+
         }
 
 
@@ -92,66 +84,69 @@ namespace Bakeries.Business.Services
         public async Task DeductStockForProductionAsync(int productionId)
         {
 
-          //  await unitOfWork.BeginTransactionAsync();
-            
-                try
+       
+
+            try
+            {
+                var production = await unitOfWork.ProductionRepository.GetProductionWithProductAndIngredientsAsync(productionId);
+
+                if (production == null)
+                    throw new Exception($"Production with ID {productionId} not found.");
+
+                var product = production.Product;
+
+                if (product == null || product.Ingredients == null || !product.Ingredients.Any())
+                    throw new Exception("Product or its ingredients not found.");
+
+                var totalQuantity = production.QuantityProduced + production.QuantityDamaged;
+
+                var stockUpdates = new Dictionary<int, float>();
+
+                foreach (var ingredient in product.Ingredients)
                 {
-                    var production = await unitOfWork.ProductionRepository.GetProductionWithProductAndIngredientsAsync(productionId);
+                    var requiredQuantity = ingredient.Quantity * totalQuantity;
 
-                    if (production == null)
-                        throw new Exception($"Production with ID {productionId} not found.");
-
-                    var product = production.Product;
-
-                    if (product == null || product.Ingredients == null || !product.Ingredients.Any())
-                        throw new Exception("Product or its ingredients not found.");
-
-                    var totalQuantity = production.QuantityProduced + production.QuantityDamaged;
-
-                    var stockUpdates = new Dictionary<int, float>();
-
-                    foreach (var ingredient in product.Ingredients)
+                    if (stockUpdates.ContainsKey(ingredient.stockId))
                     {
-                        var requiredQuantity = ingredient.Quantity * totalQuantity;
+                        stockUpdates[ingredient.stockId] += requiredQuantity;
 
-                        if (stockUpdates.ContainsKey(ingredient.stockId))
-                        {
-                            stockUpdates[ingredient.stockId] += requiredQuantity;
-                  
-                        }
-                        else
-                        {
-                            stockUpdates[ingredient.stockId] = requiredQuantity;
-                        }
                     }
-
-                    // تحديث المخزون في المعاملة
-                    foreach (var stockUpdate in stockUpdates)
+                    else
                     {
-                        var stockItem = await unitOfWork.ProductionRepository.GetStockItemAsync(stockUpdate.Key);
+                        stockUpdates[ingredient.stockId] = requiredQuantity;
+                    }
+                }
 
-                        if (stockItem == null)
-                            throw new Exception($"Stock item with ID {stockUpdate.Key} not found.");
+                // تحديث المخزون في المعاملة
+                foreach (var stockUpdate in stockUpdates)
+                {
+                    var stockItem = await unitOfWork.ProductionRepository.GetStockItemAsync(stockUpdate.Key);
 
-                        if (stockItem.AvailableQuantity < stockUpdate.Value)
-                            throw new Exception($"Insufficient stock for item {stockItem.ItemName}. Required: {stockUpdate.Value}, Available: {stockItem.AvailableQuantity}");
+                    if (stockItem == null)
+                        throw new Exception($"Stock item with ID {stockUpdate.Key} not found.");
 
-                        // خصم الكمية
-                        stockItem.AvailableQuantity -= stockUpdate.Value;
-             
+                    if (stockItem.AvailableQuantity < stockUpdate.Value)
+                        throw new Exception($"Insufficient stock for item {stockItem.ItemName}. Required: {stockUpdate.Value}, Available: {stockItem.AvailableQuantity}");
+
+                    // خصم الكمية
+                    stockItem.AvailableQuantity -= stockUpdate.Value;
+
                     // تحديث المخزون في قاعدة البيانات
                     await unitOfWork.ProductionRepository.UpdateStockAsync(stockItem);
-                    }
-             //   throw new Exception();
-            }
-                catch (Exception ex)
-                {
-                Console.WriteLine(ex.Message);
-    
-                    throw new Exception($"An error occurred while processing the production. All changes have been rolled back. {ex.Message}", ex);
                 }
+                await unitOfWork.SaveChangesAsync();
+
+                await unitOfWork.CommitAsync();
+
             }
-        
+            catch (Exception ex)
+            {
+              await unitOfWork.RollbackAsync();
+
+                throw new Exception($"An error occurred while processing the production. All changes have been rolled back. {ex.Message}", ex);
+            }
+        }
+
 
 
         public async Task<IEnumerable<ProductionDTO>> ProductionProcessWithAssociatedProductAsync()
