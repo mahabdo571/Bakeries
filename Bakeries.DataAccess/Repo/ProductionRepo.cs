@@ -43,7 +43,7 @@ namespace Bakeries.DataAccess.Repo
         public async Task UpdateAsync(ProductionModel model)
         {
             context.Productions.Update(model);
-            await context.SaveChangesAsync();
+         //   await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -54,7 +54,7 @@ namespace Bakeries.DataAccess.Repo
                 model.DeletedAt = DateTime.Now;
 
                 context.Update(model);
-                await context.SaveChangesAsync();
+               // await context.SaveChangesAsync();
             }
         }
 

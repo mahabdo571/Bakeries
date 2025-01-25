@@ -34,6 +34,35 @@ namespace Bakeries.DataAccess.Repo
 
         }
 
+        public async Task DeleteWhereProductionIdAsync(int productionId)
+        {
+            var model =await  context.ProductionProcessDetails.WhereNotDeleted().Where(s => s.ProductionId == productionId).ToListAsync();
+
+            if (model is not null)
+            {
+                foreach(var item in model)
+                {
+                    item.DeletedAt = DateTime.Now;
+                }
+
+              // await context.SaveChangesAsync();
+
+            }
+            else
+            {
+                throw new NullReferenceException("MODEL IS NULL");
+            }
+
+        }
+
+
+        public async Task<IEnumerable<ProductionProcessDetailModel>> GetAllWhereProductionId(int productionId)
+        {
+            return await context.ProductionProcessDetails.WhereNotDeleted().Where(s => s.ProductionId == productionId).ToListAsync();
+     
+
+        }
+
         public async Task<IEnumerable<ProductionProcessDetailModel>> GetAllAsync()
         {
             return await context.ProductionProcessDetails.WhereNotDeleted().ToListAsync();

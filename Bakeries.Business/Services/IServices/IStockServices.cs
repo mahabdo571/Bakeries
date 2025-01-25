@@ -9,6 +9,7 @@ namespace Bakeries.Business.Services.IServices
 {
     public interface IStockServices : IServices<StockDTO>
     {
-      
+         Task UpdateStockAfterDeleteProductionProcess(int productionProcessId);
+
     }
 }

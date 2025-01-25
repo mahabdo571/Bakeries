@@ -6,14 +6,16 @@ using Bakeries.DataAccess.Repo;
 using Bakeries.DataAccess.Repo.IRepo;
 using Business.Shared.DTOs;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Bakeries.Business.Services
 {
-    public class ProductionServices(IUnitOfWork unitOfWork, IMapper mapper) : IProductionServices
+    public class ProductionServices(IUnitOfWork unitOfWork, IMapper mapper, IStockServices stockServices) : IProductionServices
     {
 
         public async Task<IEnumerable<ProductionDTO>> GetAllAsync()
@@ -36,11 +38,13 @@ namespace Bakeries.Business.Services
             await unitOfWork.BeginTransactionAsync();
 
             var newModel = mapper.Map<ProductionModel>(model);
+
+
             try
             {
 
                 await unitOfWork.ProductionRepository.AddAsync(newModel);
-                await DeductStockForProductionAsync(newModel.Id);
+                await UpdateStockAvailability(newModel.Id,false);
                 foreach (var item in newModel.Product.Ingredients)
                 {
                     await unitOfWork.ProductionProcessDetailRepository.AddAsync(new ProductionProcessDetailModel
@@ -48,7 +52,7 @@ namespace Bakeries.Business.Services
                         Quantity = ((newModel.QuantityProduced + newModel.QuantityDamaged) * item.Quantity),
                         stockId = item.stockId,
                         ProductionId = newModel.Id,
-                        
+
 
                     });
                 }
@@ -56,10 +60,10 @@ namespace Bakeries.Business.Services
                 await unitOfWork.CommitAsync();
                 return newModel.Id;
             }
-            catch (Exception ex)
+            catch
             {
                 await unitOfWork.RollbackAsync();
-                throw new Exception($"An error occurred while processing the production. All changes have been rolled back. {ex.Message}", ex);
+                throw;// new Exception($"An error occurred while processing the production. All changes have been rolled back. {ex.Message}", ex);
             }
 
 
@@ -67,24 +71,61 @@ namespace Bakeries.Business.Services
 
         public async Task UpdateAsync(ProductionDTO model)
         {
-            await unitOfWork.ProductionRepository.UpdateAsync(mapper.Map<ProductionModel>(model));
+            await unitOfWork.BeginTransactionAsync();
+            try
+            {
+                var newModel = mapper.Map<ProductionModel>(model);
+
+                await unitOfWork.ProductionRepository.UpdateAsync(newModel);
+
+                newModel =await unitOfWork.ProductionRepository.GetProductionWithProductAndIngredientsAsync(model.Id);
+
+                foreach (var item in newModel.Product.Ingredients)
+                {
+                    await unitOfWork.ProductionProcessDetailRepository.UpdateAsync(new ProductionProcessDetailModel
+                    {
+                        Quantity = ((newModel.QuantityProduced + newModel.QuantityDamaged) * item.Quantity),
+                        stockId = item.stockId,
+                        ProductionId = newModel.Id,
+
+
+                    });
+                }
+                await UpdateStockAvailability(newModel.Id,true);
+
+
+                await unitOfWork.SaveChangesAsync();
+                    await unitOfWork.CommitAsync();
+                
+            }
+            catch { 
+                await unitOfWork.RollbackAsync();
+                throw;}
         }
 
         public async Task DeleteAsync(int id)
         {
+            await unitOfWork.BeginTransactionAsync();
 
-            await unitOfWork.ProductionRepository.DeleteAsync(id);
-
-
+            try
+            {
+                await stockServices.UpdateStockAfterDeleteProductionProcess(id);
+                await unitOfWork.ProductionProcessDetailRepository.DeleteWhereProductionIdAsync(id);
+                await unitOfWork.ProductionRepository.DeleteAsync(id);
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await unitOfWork.RollbackAsync();
+                throw;
+            }
         }
 
-
-
-
-        public async Task DeductStockForProductionAsync(int productionId)
+        public async Task UpdateStockAvailability(int productionId,bool isTheProcessUpdated)
         {
 
-       
+
 
             try
             {
@@ -128,8 +169,10 @@ namespace Bakeries.Business.Services
                     if (stockItem.AvailableQuantity < stockUpdate.Value)
                         throw new Exception($"Insufficient stock for item {stockItem.ItemName}. Required: {stockUpdate.Value}, Available: {stockItem.AvailableQuantity}");
 
-                    // خصم الكمية
+               if(!isTheProcessUpdated)
                     stockItem.AvailableQuantity -= stockUpdate.Value;
+               else
+                    stockItem.AvailableQuantity += stockUpdate.Value;
 
                     // تحديث المخزون في قاعدة البيانات
                     await unitOfWork.ProductionRepository.UpdateStockAsync(stockItem);
@@ -139,14 +182,13 @@ namespace Bakeries.Business.Services
                 await unitOfWork.CommitAsync();
 
             }
-            catch (Exception ex)
+            catch
             {
-              await unitOfWork.RollbackAsync();
+                await unitOfWork.RollbackAsync();
 
-                throw new Exception($"An error occurred while processing the production. All changes have been rolled back. {ex.Message}", ex);
+                throw;// new Exception($"An error occurred while processing the production. All changes have been rolled back. {ex.Message}", ex);
             }
         }
-
 
 
         public async Task<IEnumerable<ProductionDTO>> ProductionProcessWithAssociatedProductAsync()

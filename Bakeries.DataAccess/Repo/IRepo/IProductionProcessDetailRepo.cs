@@ -9,5 +9,9 @@ namespace Bakeries.DataAccess.Repo.IRepo
 {
     public  interface IProductionProcessDetailRepo :IRepoBase<ProductionProcessDetailModel>
     {
+        
+
+             Task DeleteWhereProductionIdAsync(int id);
+        Task<IEnumerable<ProductionProcessDetailModel>> GetAllWhereProductionId(int productionId);
     }
 }

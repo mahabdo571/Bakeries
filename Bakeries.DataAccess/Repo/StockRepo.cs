@@ -49,9 +49,7 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task UpdateAsync(StockModel model)
         {
-            Console.WriteLine(model.Notes);
             context.Stocks.Update(model);
-           // await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -5,6 +5,7 @@ using Bakeries.DataAccess.Repo;
 using Bakeries.DataAccess.Repo.IRepo;
 using Business.Shared.DTOs;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -68,5 +69,45 @@ namespace Bakeries.Business.Services
                 throw;
             }
         }
+
+        public async Task UpdateStockAfterDeleteProductionProcess(int productionProcessId)
+        {
+            
+    
+            await unitOfWork.BeginTransactionAsync();
+            try
+            {
+
+            var model =  await unitOfWork.ProductionProcessDetailRepository.GetAllWhereProductionId(productionProcessId);
+
+
+                foreach (var item in model) {
+  
+
+                    var modelStock = await unitOfWork.StockRepository.GetByIdAsync(item.stockId);                    Console.WriteLine("UpdateStockAfterDeleteProductionProcess" + item.stockId); Console.WriteLine("UpdateStockAfterDeleteProductionProcess" + item.stockId);
+
+                    modelStock.AvailableQuantity += item.Quantity;
+
+                    await unitOfWork.StockRepository.UpdateAsync(modelStock);
+
+                 
+                }
+
+
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await unitOfWork.RollbackAsync();
+                throw;
+            }
+
+
+        }
+
+
+    
+
     }
 }
