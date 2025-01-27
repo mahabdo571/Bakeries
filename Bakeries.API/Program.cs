@@ -1,4 +1,5 @@
-﻿using Bakeries.Business.Services;
+﻿
+using Bakeries.Business.Services;
 using Bakeries.Business.Services.IServices;
 using Bakeries.DataAccess;
 using Bakeries.DataAccess.Repo;
@@ -26,12 +27,12 @@ builder.Services.AddLogging(); // تأكد من إضافة خدمة ILogger
 
 
 #if DEBUG
-builder.Services.AddDbContext<clsDbContext>(options => 
+builder.Services.AddDbContext<clsDbContext>(options =>
     options
     .EnableSensitiveDataLogging()
     .UseSqlServer(
         builder.Configuration.GetConnectionString("ConnectionToDB-DEV")
-       
+
     ), ServiceLifetime.Scoped
 
 );
@@ -100,6 +101,11 @@ builder.Services.AddScoped<IProductionServices, ProductionServices>();
 builder.Services.AddScoped<IProductionProcessDetailService, ProductionProcessDetailServices>();
 
 
+//Event
+builder.Services.AddSingleton<StockEventHandler>();
+builder.Services.AddSingleton<ProductionEventsHelpers>();
+
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -109,7 +115,8 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
-
+var serviceProvider = app.Services;
+serviceProvider.GetRequiredService<StockEventHandler>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -127,7 +134,7 @@ if (app.Environment.IsDevelopment())
 
 }
 
-     //app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 
 

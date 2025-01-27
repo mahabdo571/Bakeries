@@ -15,13 +15,13 @@ namespace Bakeries.Business.Services
 {
     public class StockServices(IUnitOfWork unitOfWork, IMapper mapper) : IStockServices
     {
-     
+
 
         public async Task<int> AddAsync(StockDTO model)
         {
             var newModel = mapper.Map<StockModel>(model);
 
-             await unitOfWork.StockRepository.AddAsync(newModel);
+            await unitOfWork.StockRepository.AddAsync(newModel);
             return newModel.Id;
         }
 
@@ -30,12 +30,13 @@ namespace Bakeries.Business.Services
             try
             {
                 await unitOfWork.StockRepository.DeleteAsync(id);
-            }catch
+            }
+            catch
             {
-                throw ;
+                throw;
             }
 
-            }
+        }
 
         public async Task<IEnumerable<StockDTO>> GetAllAsync()
         {
@@ -54,7 +55,7 @@ namespace Bakeries.Business.Services
 
         public async Task UpdateAsync(StockDTO model)
         {
-           await unitOfWork.BeginTransactionAsync();
+            await unitOfWork.BeginTransactionAsync();
             try
             {
                 await unitOfWork.StockRepository.UpdateAsync(mapper.Map<StockModel>(model));
@@ -65,32 +66,34 @@ namespace Bakeries.Business.Services
             }
             catch
             {
-             await   unitOfWork.RollbackAsync();
+                await unitOfWork.RollbackAsync();
                 throw;
             }
         }
 
         public async Task UpdateStockAfterDeleteProductionProcess(int productionProcessId)
         {
-            
-    
+
+
             await unitOfWork.BeginTransactionAsync();
             try
             {
 
-            var model =  await unitOfWork.ProductionProcessDetailRepository.GetAllWhereProductionId(productionProcessId);
+                var model = await unitOfWork.ProductionProcessDetailRepository.GetAllWhereProductionId(productionProcessId);
 
 
-                foreach (var item in model) {
-  
+                foreach (var item in model)
+                {
 
-                    var modelStock = await unitOfWork.StockRepository.GetByIdAsync(item.stockId);                    Console.WriteLine("UpdateStockAfterDeleteProductionProcess" + item.stockId); Console.WriteLine("UpdateStockAfterDeleteProductionProcess" + item.stockId);
+
+                    var modelStock = await unitOfWork.StockRepository.GetByIdAsync(item.stockId); 
+            
 
                     modelStock.AvailableQuantity += item.Quantity;
 
                     await unitOfWork.StockRepository.UpdateAsync(modelStock);
 
-                 
+
                 }
 
 
@@ -107,7 +110,7 @@ namespace Bakeries.Business.Services
         }
 
 
-    
+
 
     }
 }
