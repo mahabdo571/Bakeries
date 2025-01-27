@@ -44,7 +44,7 @@ namespace Bakeries.Business.Services
             {
 
                 await unitOfWork.ProductionRepository.AddAsync(newModel);
-                await UpdateStockAvailability(newModel.Id,false);
+                await UpdateStockAvailabilityAfterNew(newModel.Id);
                 foreach (var item in newModel.Product.Ingredients)
                 {
                     await unitOfWork.ProductionProcessDetailRepository.AddAsync(new ProductionProcessDetailModel
@@ -79,28 +79,33 @@ namespace Bakeries.Business.Services
                 await unitOfWork.ProductionRepository.UpdateAsync(newModel);
 
                 newModel =await unitOfWork.ProductionRepository.GetProductionWithProductAndIngredientsAsync(model.Id);
-
-                foreach (var item in newModel.Product.Ingredients)
-                {
-                    await unitOfWork.ProductionProcessDetailRepository.UpdateAsync(new ProductionProcessDetailModel
+           
+                    foreach (var item in newModel.Product.Ingredients)
                     {
-                        Quantity = ((newModel.QuantityProduced + newModel.QuantityDamaged) * item.Quantity),
-                        stockId = item.stockId,
-                        ProductionId = newModel.Id,
+                    var PPDM = await unitOfWork.ProductionProcessDetailRepository.GetByStockIdAndProductionIdAsync(newModel.Id, item.stockId);
+
+                    await unitOfWork.ProductionProcessDetailRepository.UpdateAsync(new ProductionProcessDetailModel
+                        {
+                            Id = PPDM.Id,
+                            Quantity = ((newModel.QuantityProduced + newModel.QuantityDamaged) * item.Quantity),
+                            stockId = item.stockId,
+                            ProductionId = newModel.Id,
 
 
-                    });
-                }
-                await UpdateStockAvailability(newModel.Id,true);
-
-
-                await unitOfWork.SaveChangesAsync();
+                        });
+                    }
+                    await unitOfWork.SaveChangesAsync();
                     await unitOfWork.CommitAsync();
+            
+
+
+           
                 
             }
             catch { 
                 await unitOfWork.RollbackAsync();
-                throw;}
+                throw;
+            }
         }
 
         public async Task DeleteAsync(int id)
@@ -122,7 +127,7 @@ namespace Bakeries.Business.Services
             }
         }
 
-        public async Task UpdateStockAvailability(int productionId,bool isTheProcessUpdated)
+        public async Task UpdateStockAvailabilityAfterNew(int productionId)
         {
 
 
@@ -169,10 +174,9 @@ namespace Bakeries.Business.Services
                     if (stockItem.AvailableQuantity < stockUpdate.Value)
                         throw new Exception($"Insufficient stock for item {stockItem.ItemName}. Required: {stockUpdate.Value}, Available: {stockItem.AvailableQuantity}");
 
-               if(!isTheProcessUpdated)
+           
                     stockItem.AvailableQuantity -= stockUpdate.Value;
-               else
-                    stockItem.AvailableQuantity += stockUpdate.Value;
+           
 
                     // تحديث المخزون في قاعدة البيانات
                     await unitOfWork.ProductionRepository.UpdateStockAsync(stockItem);
@@ -190,7 +194,10 @@ namespace Bakeries.Business.Services
             }
         }
 
-
+        public async Task UpdateStockAvailabilityAfterUpdate()
+        {
+            // TODO : 
+        }
         public async Task<IEnumerable<ProductionDTO>> ProductionProcessWithAssociatedProductAsync()
         {
             var model = await unitOfWork.ProductionRepository.ProductionProcessWithAssociatedProductAsync();

@@ -13,5 +13,6 @@ namespace Bakeries.DataAccess.Repo.IRepo
 
              Task DeleteWhereProductionIdAsync(int id);
         Task<IEnumerable<ProductionProcessDetailModel>> GetAllWhereProductionId(int productionId);
+        Task<ProductionProcessDetailModel> GetByStockIdAndProductionIdAsync(int productionId, int stockId);
     }
 }

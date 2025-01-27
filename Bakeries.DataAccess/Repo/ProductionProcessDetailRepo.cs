@@ -71,6 +71,11 @@ namespace Bakeries.DataAccess.Repo
         public async Task<ProductionProcessDetailModel> GetByIdAsync(int id)
         {
             return await context.ProductionProcessDetails.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+        }  
+        
+        public async Task<ProductionProcessDetailModel> GetByStockIdAndProductionIdAsync(int productionId,int stockId)
+        {
+            return await context.ProductionProcessDetails.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.ProductionId == productionId && p.stockId == stockId);
         }
 
         public async Task UpdateAsync(ProductionProcessDetailModel model)

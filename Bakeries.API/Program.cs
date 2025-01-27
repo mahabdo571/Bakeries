@@ -27,8 +27,11 @@ builder.Services.AddLogging(); // تأكد من إضافة خدمة ILogger
 
 #if DEBUG
 builder.Services.AddDbContext<clsDbContext>(options => 
-    options.UseSqlServer(
+    options
+    .EnableSensitiveDataLogging()
+    .UseSqlServer(
         builder.Configuration.GetConnectionString("ConnectionToDB-DEV")
+       
     ), ServiceLifetime.Scoped
 
 );
