@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '/models/product.dart';
+import '/models/purchase.dart';
 
 class DeleteConfirmationDialog extends StatelessWidget {
-  final Product product;
+  final Purchase purchase;
   final VoidCallback onConfirm;
 
   const DeleteConfirmationDialog({
     Key? key,
-    required this.product,
+    required this.purchase,
     required this.onConfirm,
   }) : super(key: key);
 
@@ -16,7 +16,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text('تأكيد الحذف'),
-      content: Text('هل أنت متأكد أنك تريد حذف ${product.itemName}؟'),
+      content: Text('هل أنت متأكد أنك تريد حذف عملية شراء ${purchase.itemName}؟'),
       actions: [
         TextButton(
           child: Text('إلغاء'),

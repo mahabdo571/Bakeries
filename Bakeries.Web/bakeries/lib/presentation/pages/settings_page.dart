@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '/bloc/settings/settings_bloc.dart';
-import '/models/settings.dart';
 
 class SettingsPage extends StatefulWidget {
   @override

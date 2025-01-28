@@ -1,19 +1,58 @@
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
+
+import 'package:http/http.dart' as http;
+
 import '/models/purchase.dart';
 
 class PurchasesRepository {
+  final String baseUrl = 'http://localhost:5000/api/Purchases';
+
   Future<List<Purchase>> getPurchases() async {
-    await Future.delayed(Duration(seconds: 1));
-    final jsonString = await rootBundle.loadString('assets/json/purchases.json');
-    final jsonData = json.decode(jsonString) as List;
-    return jsonData.map((json) => Purchase.fromJson(json)).toList();
+    final response = await http.get(Uri.parse('$baseUrl/All'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      return jsonData.map((json) => Purchase.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load purchases');
+    }
   }
 
   Future<void> addPurchase(Purchase purchase) async {
-    await Future.delayed(Duration(seconds: 1));
-    // In a real app, you would add the purchase to the database
-    print('Adding purchase: ${purchase.toJson()}');
+    final response = await http.post(
+      Uri.parse(baseUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(purchase.toJson()),
+    );
+
+    if (response.statusCode != 201) {
+      throw Exception('Failed to add purchase');
+    }
+  }
+
+  Future<void> updatePurchase(Purchase purchase) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/${purchase.id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(purchase.toJson()),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update purchase');
+    }
+  }
+
+  Future<void> deletePurchase(int purchaseId) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/$purchaseId'),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete purchase');
+    }
   }
 }
-

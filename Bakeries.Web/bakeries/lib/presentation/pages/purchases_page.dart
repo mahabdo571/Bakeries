@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '/bloc/purchases/purchases_bloc.dart';
+import '/models/product.dart';
 import '/models/purchase.dart';
+import '/presentation/widgets/purchases/add_edit_purchase_dialog.dart';
+import '/presentation/widgets/purchases/delete_confirmation_dialog.dart';
+import '/presentation/widgets/purchases/purchase_details_dialog.dart';
+import '/presentation/widgets/purchases/purchases_list.dart';
 
 class PurchasesPage extends StatefulWidget {
   @override
@@ -27,23 +33,14 @@ class _PurchasesPageState extends State<PurchasesPage> {
           if (state is PurchasesLoading) {
             return Center(child: CircularProgressIndicator());
           } else if (state is PurchasesLoaded) {
-            return ListView.builder(
-              itemCount: state.purchases.length,
-              itemBuilder: (context, index) {
-                final purchase = state.purchases[index];
-                return Card(
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: ListTile(
-                    title: Text('منتج: ${purchase.productId}'),
-                    subtitle: Text('الكمية: ${purchase.quantity}'),
-                    trailing: Text('السعر: ${purchase.totalPrice} ريال'),
-                    onTap: () {
-                      // Open purchase details page
-                    },
-                  ),
-                );
-              },
-            );
+            return state.purchases.isEmpty
+                ? Center(child: Text('لا توجد مشتريات'))
+                : PurchasesList(
+                    purchases: state.purchases,
+                    onEdit: (purchase) => _showEditPurchaseDialog(context, purchase, state.products),
+                    onDelete: (purchase) => _showDeleteConfirmationDialog(context, purchase),
+                    onTap: (purchase) => _showPurchaseDetails(context, purchase),
+                  );
           } else if (state is PurchasesError) {
             return Center(child: Text('حدث خطأ: ${state.message}'));
           }
@@ -51,11 +48,65 @@ class _PurchasesPageState extends State<PurchasesPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Open add purchase dialog
-        },
+        onPressed: () => _showAddPurchaseDialog(context),
         child: Icon(Icons.add),
       ),
     );
   }
+
+  void _showAddPurchaseDialog(BuildContext context) {
+    final state = context.read<PurchasesBloc>().state;
+    if (state is PurchasesLoaded) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AddEditPurchaseDialog(
+            products: state.products,
+            onSave: (purchase) {
+              context.read<PurchasesBloc>().add(AddPurchase(purchase));
+            },
+          );
+        },
+      );
+    }
+  }
+
+  void _showEditPurchaseDialog(BuildContext context, Purchase purchase, List<Product> products) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AddEditPurchaseDialog(
+          purchase: purchase,
+          products: products,
+          onSave: (updatedPurchase) {
+            context.read<PurchasesBloc>().add(UpdatePurchase(updatedPurchase));
+          },
+        );
+      },
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, Purchase purchase) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DeleteConfirmationDialog(
+          purchase: purchase,
+          onConfirm: () {
+            context.read<PurchasesBloc>().add(DeletePurchase(purchase.id));
+          },
+        );
+      },
+    );
+  }
+
+  void _showPurchaseDetails(BuildContext context, Purchase purchase) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PurchaseDetailsDialog(purchase: purchase);
+      },
+    );
+  }
 }
+

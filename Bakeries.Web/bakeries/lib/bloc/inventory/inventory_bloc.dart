@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '/domain/repositories/i_inventory_repository.dart';
 import '/models/product.dart';
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '/models/product.dart';
 import '/presentation/widgets/inventory/product_list_item.dart';
 import '/utils/responsive_sizes.dart';
