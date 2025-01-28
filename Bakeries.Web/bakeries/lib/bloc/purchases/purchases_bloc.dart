@@ -48,6 +48,10 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
   final PurchasesRepository purchasesRepository;
   final IInventoryRepository inventoryRepository;
 
+  // تخزين مؤقت للبيانات
+  List<Purchase>? _cachedPurchases;
+  List<Product>? _cachedProducts;
+
   PurchasesBloc({
     required this.purchasesRepository,
     required this.inventoryRepository,
@@ -55,8 +59,15 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
     on<LoadPurchases>((event, emit) async {
       emit(PurchasesLoading());
       try {
-        final purchases = await purchasesRepository.getPurchases();
-        final products = await inventoryRepository.getProducts();
+        // استخدام البيانات المخزنة مؤقتاً إذا كانت متوفرة
+        final purchases =
+            _cachedPurchases ?? await purchasesRepository.getPurchases();
+        final products =
+            _cachedProducts ?? await inventoryRepository.getProducts();
+
+        _cachedPurchases = purchases;
+        _cachedProducts = products;
+
         emit(PurchasesLoaded(purchases, products));
       } catch (e) {
         emit(PurchasesError(e.toString()));
@@ -76,6 +87,7 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
     });
 
     on<AddPurchase>((event, emit) async {
+      _cachedPurchases = null;
       emit(PurchasesLoading());
       try {
         await purchasesRepository.addPurchase(event.purchase);
@@ -88,6 +100,7 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
     });
 
     on<UpdatePurchase>((event, emit) async {
+      _cachedPurchases = null;
       emit(PurchasesLoading());
       try {
         await purchasesRepository.updatePurchase(event.purchase);
@@ -100,6 +113,7 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
     });
 
     on<DeletePurchase>((event, emit) async {
+      _cachedPurchases = null;
       emit(PurchasesLoading());
       try {
         await purchasesRepository.deletePurchase(event.purchaseId);
@@ -112,4 +126,3 @@ class PurchasesBloc extends Bloc<PurchasesEvent, PurchasesState> {
     });
   }
 }
-

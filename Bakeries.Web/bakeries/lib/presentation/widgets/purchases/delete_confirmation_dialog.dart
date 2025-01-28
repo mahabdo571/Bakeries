@@ -16,7 +16,8 @@ class DeleteConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text('تأكيد الحذف'),
-      content: Text('هل أنت متأكد أنك تريد حذف عملية شراء ${purchase.itemName}؟'),
+      content:
+          Text('هل أنت متأكد أنك تريد حذف عملية شراء ${purchase.itemName}؟'),
       actions: [
         TextButton(
           child: Text('إلغاء'),
@@ -33,4 +34,3 @@ class DeleteConfirmationDialog extends StatelessWidget {
     );
   }
 }
-

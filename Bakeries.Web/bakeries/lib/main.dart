@@ -100,6 +100,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               title: 'لوحة التحكم',
               theme: state.themeData,
+              debugShowCheckedModeBanner: false,
               home: HomePage(),
             );
           },
@@ -108,4 +109,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

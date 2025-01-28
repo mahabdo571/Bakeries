@@ -55,11 +55,11 @@ class ProductListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: Icon(Icons.edit, color: Colors.blue),
                     onPressed: onEdit,
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: Icon(Icons.delete, color: Colors.red),
                     onPressed: onDelete,
                   ),
                 ],
@@ -76,7 +76,8 @@ class ProductListItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(
         title: Text(product.itemName),
-        subtitle: Text('الكمية: ${product.availableQuantity} ${product.unitOfMeasure}'),
+        subtitle: Text(
+            'الكمية: ${product.availableQuantity} ${product.unitOfMeasure}'),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -95,4 +96,3 @@ class ProductListItem extends StatelessWidget {
     );
   }
 }
-

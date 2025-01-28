@@ -73,7 +73,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           width: 24,
                           height: 24,
                           decoration: BoxDecoration(
-                            color: Color(int.parse(state.settings.primaryColor)),
+                            color:
+                                Color(int.parse(state.settings.primaryColor)),
                             border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -98,4 +99,3 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
-

@@ -77,7 +77,7 @@ namespace Bakeries.Business.Operations
 
         public static async Task UpdateStockAvailabilityAfterUpdate(IUnitOfWork unitOfWork, ProductionModel model)
         {
-            // TODO
+ 
             var oldModel =await unitOfWork.ProductionRepository.GetByIdAsync(model.Id);
             var oldIngredient = await unitOfWork.ProductIngredientRepository.GetAllByProductIdAsync(oldModel.ProductId);  
             var oldQuantity = new Dictionary<int, decimal>();
@@ -96,7 +96,7 @@ namespace Bakeries.Business.Operations
                 {
                     oldQuantity[item.stockId] = quantity;
                  
-                }
+                }  
             }
 
             foreach (var item in model.Product.Ingredients)

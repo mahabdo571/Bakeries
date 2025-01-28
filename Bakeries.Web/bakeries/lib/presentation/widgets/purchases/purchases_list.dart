@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '/models/purchase.dart';
 import '/presentation/widgets/purchases/purchase_list_item.dart';
+import '/utils/responsive_sizes.dart';
 
 class PurchasesList extends StatelessWidget {
   final List<Purchase> purchases;
@@ -18,11 +19,45 @@ class PurchasesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    if (ResponsiveSizes.isDesktop(context)) {
+      return _buildDesktopView();
+    } else {
+      return _buildMobileTabletView(context);
+    }
+  }
+
+  Widget _buildDesktopView() {
+    return GridView.builder(
+      padding: EdgeInsets.all(16),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+      ),
+      cacheExtent: 500,
       itemCount: purchases.length,
       itemBuilder: (context, index) {
         final purchase = purchases[index];
         return PurchaseListItem(
+          key: ValueKey(purchase.id),
+          purchase: purchase,
+          onEdit: () => onEdit(purchase),
+          onDelete: () => onDelete(purchase),
+          onTap: () => onTap(purchase),
+        );
+      },
+    );
+  }
+
+  Widget _buildMobileTabletView(BuildContext context) {
+    return ListView.builder(
+      itemCount: purchases.length,
+      cacheExtent: 500,
+      itemBuilder: (context, index) {
+        final purchase = purchases[index];
+        return PurchaseListItem(
+          key: ValueKey(purchase.id),
           purchase: purchase,
           onEdit: () => onEdit(purchase),
           onDelete: () => onDelete(purchase),
@@ -32,4 +67,3 @@ class PurchasesList extends StatelessWidget {
     );
   }
 }
-
