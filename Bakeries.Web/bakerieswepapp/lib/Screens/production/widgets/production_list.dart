@@ -51,6 +51,7 @@ class _ProductionListState extends State<ProductionList> {
                   production: snapshot.data![index],
                   onEdit: () => _handleEdit(snapshot.data![index]),
                   onDelete: () => _handleDelete(snapshot.data![index].Id),
+                  onDetails: ()=>_handleDetails(snapshot.data![index]),
                 ),
               );
             },
@@ -61,6 +62,12 @@ class _ProductionListState extends State<ProductionList> {
   }
 
   void _handleEdit(Production production) {
+    showDialog(
+      context: context,
+      builder: (context) => ProductionDialog(ProductionData: production.toJson(),isEdit: true,),
+    );
+  }
+  void _handleDetails(Production production) {
     showDialog(
       context: context,
       builder: (context) => ProductionDialog(ProductionData: production.toJson(),isEdit: true,),

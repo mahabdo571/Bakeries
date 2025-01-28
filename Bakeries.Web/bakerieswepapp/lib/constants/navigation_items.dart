@@ -22,11 +22,15 @@ final List<NavigationItem> navigationItems = [
     route: StockScreens(),
   ),
   NavigationItem(
-    title: 'المنتجات',
+    title: 'قواعد الانتاج',
     route: ProductScreens(), // Replace with actual Products page
   ),
   NavigationItem(
     title: 'عمليات الانتاج',
+    route: ProductionScreen(), // Replace with actual Production page
+  ),
+  NavigationItem(
+    title: 'مبيعات',
     route: ProductionScreen(), // Replace with actual Production page
   ),
   NavigationItem(

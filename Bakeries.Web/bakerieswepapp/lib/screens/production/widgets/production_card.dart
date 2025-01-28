@@ -6,6 +6,7 @@ import '../../Product/widgets/product_detail_item.dart';
 class ProductionCard extends StatelessWidget {
   final Production production;
   final VoidCallback onEdit;
+  final VoidCallback onDetails;
   final VoidCallback onDelete;
 
   const ProductionCard({
@@ -13,6 +14,7 @@ class ProductionCard extends StatelessWidget {
     required this.production,
     required this.onEdit,
     required this.onDelete,
+    required this.onDetails,
   }) : super(key: key);
 
   @override
@@ -56,7 +58,7 @@ class ProductionCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                production.ProductName??'',
+                production.ProductName ?? '',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -104,6 +106,19 @@ class ProductionCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        ElevatedButton.icon(
+          onPressed: onDetails,
+          icon: const Icon(Icons.edit, color: Colors.white),
+          label: const Text('تفاصيل'),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            backgroundColor: Colors.green,
+          ),
+        ),
+        const SizedBox(width: 8),
         ElevatedButton.icon(
           onPressed: onEdit,
           icon: const Icon(Icons.edit, color: Colors.white),

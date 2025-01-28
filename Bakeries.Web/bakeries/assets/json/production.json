@@ -1,0 +1,25 @@
+[
+    {
+      "id": "1",
+      "productId": "1",
+      "quantity": 50,
+      "date": "2023-05-15T08:00:00Z",
+      "components": ["component1", "component2"]
+    },
+    {
+      "id": "2",
+      "productId": "2",
+      "quantity": 30,
+      "date": "2023-05-16T09:30:00Z",
+      "components": ["component2", "component3"]
+    },
+    {
+      "id": "3",
+      "productId": "3",
+      "quantity": 40,
+      "date": "2023-05-17T11:15:00Z",
+      "components": ["component1", "component3", "component4"]
+    }
+  ]
+  
+  

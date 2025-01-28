@@ -1,0 +1,13 @@
+{
+    "siteName": "لوحة التحكم",
+    "language": "ar",
+    "weights": {
+      "kg": 1,
+      "g": 0.001,
+      "lb": 0.45359237
+    },
+    "paymentMethods": ["نقدي", "بطاقة ائتمان", "تحويل بنكي"],
+    "primaryColor": "0xFF2196F3"
+  }
+  
+  

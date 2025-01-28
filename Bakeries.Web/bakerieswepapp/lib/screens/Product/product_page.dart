@@ -10,7 +10,7 @@ class ProductScreens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarForAllPage(pageName: 'المنتجات'),
+      appBar: const AppBarForAllPage(pageName: 'قواعد الانتاج'),
       body: const ProductList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddStockDialog(context),
@@ -25,9 +25,7 @@ class ProductScreens extends StatelessWidget {
       context: context,
       builder: (context) => ProductDialog(
         isEdit: false,
-        onAdd: (newStock) {
-           
-        },
+        onAdd: (newStock) {},
       ),
     );
   }
