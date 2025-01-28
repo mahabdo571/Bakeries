@@ -16,8 +16,8 @@ namespace Bakeries.DataAccess.Entities
         public virtual ProductModel Product { get; set; }
 
         [Required]
-        [Range(0, double.MaxValue)]
-        public float Quantity { get; set; } // الكمية المطلوبة من المكون لإنتاج المنتج
+       
+        public decimal Quantity { get; set; } // الكمية المطلوبة من المكون لإنتاج المنتج
    
         [Required]
         [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف

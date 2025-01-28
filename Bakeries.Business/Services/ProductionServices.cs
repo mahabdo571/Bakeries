@@ -71,15 +71,17 @@ namespace Bakeries.Business.Services
             await unitOfWork.BeginTransactionAsync();
             try
             {
-                var newModel = mapper.Map<ProductionModel>(model);
+                var orginalModel = mapper.Map<ProductionModel>(model);
 
-                await unitOfWork.ProductionRepository.UpdateAsync(newModel);
+             
 
-                newModel =await unitOfWork.ProductionRepository.GetProductionWithProductAndIngredientsAsync(model.Id);
-           
+                await unitOfWork.ProductionRepository.UpdateAsync(orginalModel);
+                var  newModel = await unitOfWork.ProductionRepository.GetProductionWithProductAndIngredientsAsync(model.Id);
+
                 await productionEventsHelpers.RaiseProductionUpdatedEvent(unitOfWork, newModel);
-         
-                    await unitOfWork.SaveChangesAsync();
+             
+
+                await unitOfWork.SaveChangesAsync();
                     await unitOfWork.CommitAsync();
             
 

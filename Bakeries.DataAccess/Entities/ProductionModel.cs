@@ -11,10 +11,10 @@ namespace Bakeries.DataAccess.Entities
     public class ProductionModel : clsBaseEntities
     {
         [Required]
-        public float QuantityProduced { get; set; }
+        public decimal QuantityProduced { get; set; }
 
         [Required]
-        public float QuantityDamaged { get; set; }
+        public decimal QuantityDamaged { get; set; }
 
 
         [Required]

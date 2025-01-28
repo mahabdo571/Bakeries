@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 public  class ProductionEventsHelpers 
 {
     public  event Func<IUnitOfWork, ProductionModel, Task> OnProductionAdded;
-    public  event Func<IUnitOfWork, ProductionModel, Task> OnProductionUpdated;
+    public  event Func<IUnitOfWork, ProductionModel , Task> OnProductionUpdated;
     public  async Task RaiseProductionAddedEvent(IUnitOfWork unitOfWork, ProductionModel model)
     {
 
@@ -27,9 +27,9 @@ public  class ProductionEventsHelpers
        
     }
 
-        public  async Task RaiseProductionUpdatedEvent(IUnitOfWork unitOfWork, ProductionModel model)
+        public  async Task RaiseProductionUpdatedEvent(IUnitOfWork unitOfWork, ProductionModel NewModel)
         {
-        await (OnProductionUpdated?.Invoke(unitOfWork, model) ?? Task.CompletedTask);
+        await (OnProductionUpdated?.Invoke(unitOfWork, NewModel) ?? Task.CompletedTask);
 
      
         }

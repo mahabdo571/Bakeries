@@ -24,14 +24,16 @@ public class StockEventHandler
        await GenralOperations.AddingTheQuantitiesConsumedInTheProductionProcess(unitOfWork, model);
     }
 
-    private async Task HandleProductionUpdated(IUnitOfWork unitOfWork, ProductionModel model)
+    private async Task HandleProductionUpdated(IUnitOfWork unitOfWork, ProductionModel newModel)
     {
-        await GenralOperations.UpdatingTheQuantitiesConsumedInTheProductionProcess(unitOfWork, model);
 
-        await StockOperation.UpdateStockAvailabilityAfterUpdate(unitOfWork, model);
+        await StockOperation.UpdateStockAvailabilityAfterUpdate(unitOfWork, newModel);
+
+        await GenralOperations.UpdatingTheQuantitiesConsumedInTheProductionProcess(unitOfWork, newModel);
+
     }
 
-  
+
 
 
 }

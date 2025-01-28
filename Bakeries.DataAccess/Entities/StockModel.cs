@@ -14,7 +14,7 @@ namespace Bakeries.DataAccess.Entities
         public string ItemName { get; set; }
 
         [Required]
-        public float AvailableQuantity { get; set; }
+        public decimal AvailableQuantity { get; set; }
 
         [StringLength(50,ErrorMessage ="lenght max 50")]
         public string UnitOfMeasure { get; set; }

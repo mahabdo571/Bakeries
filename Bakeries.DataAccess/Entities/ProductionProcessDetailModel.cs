@@ -13,8 +13,8 @@ namespace Bakeries.DataAccess.Entities
 
 
         [Required]
-        [Range(0, double.MaxValue)]
-        public float Quantity { get; set; } // الكمية المطلوبة من المكون لإنتاج المنتج
+   
+        public decimal Quantity { get; set; } // الكمية المطلوبة من المكون لإنتاج المنتج
 
 
 
