@@ -29,7 +29,7 @@ namespace Bakeries.DataAccess
             if (!optionsBuilder.IsConfigured)
             {
       
-                optionsBuilder.EnableSensitiveDataLogging(); // تفعيل تسجيل البيانات الحساسة
+               // optionsBuilder.EnableSensitiveDataLogging(); // تفعيل تسجيل البيانات الحساسة
             }
         }
 
@@ -38,10 +38,11 @@ namespace Bakeries.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-          //  modelBuilder.Entity<ProductIngredientModel>()
-          //.HasIndex(e => e.stockId)
-          //.IsUnique()
-          //.HasDatabaseName("IX_ProductIngredient_StockId");
+            //  modelBuilder.Entity<ProductIngredientModel>()
+            //.HasIndex(e => e.stockId)
+            //.IsUnique()
+            //.HasDatabaseName("IX_ProductIngredient_StockId");
+
 
             // إضافة فهرس على ProductId في جدول ProductIngredientModel
             modelBuilder.Entity<ProductIngredientModel>()
@@ -56,7 +57,9 @@ namespace Bakeries.DataAccess
             // إضافة فهرس على ItemName في جدول StockModel
             modelBuilder.Entity<StockModel>()
                 .HasIndex(s => s.ItemName)
-                .HasDatabaseName("IX_Stock_ItemName");
+                .HasDatabaseName("IX_Stock_ItemName")
+                
+                ;
 
             // إضافة فهرس على Name في جدول ProductsModel
             modelBuilder.Entity<ProductModel>()

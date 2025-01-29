@@ -16,7 +16,7 @@ namespace Bakeries.DataAccess.Entities
         public virtual ProductModel Product { get; set; }
 
         [Required]
-       
+        [Column(TypeName = "decimal(18,4)")]
         public decimal Quantity { get; set; } // الكمية المطلوبة من المكون لإنتاج المنتج
    
         [Required]

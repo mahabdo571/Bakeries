@@ -11,9 +11,11 @@ namespace Bakeries.DataAccess.Entities
     public class ProductionModel : clsBaseEntities
     {
         [Required]
+        [Column(TypeName = "decimal(18,4)")]
         public decimal QuantityProduced { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,4)")]
         public decimal QuantityDamaged { get; set; }
 
 

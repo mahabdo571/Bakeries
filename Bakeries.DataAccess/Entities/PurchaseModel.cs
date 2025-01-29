@@ -24,6 +24,7 @@ namespace Bakeries.DataAccess.Entities
     
 
         [Required]
+        [Column(TypeName = "decimal(18,4)")]
         public decimal Quantity { get; set; } // الكمية
 
         [Required]
@@ -31,13 +32,11 @@ namespace Bakeries.DataAccess.Entities
         public string UnitOfMeasure { get; set; } // وحدة القياس
 
         [Required]
-        [Range(0.01, double.MaxValue)] // التأكد من أن السعر أكبر من 0
-        [Column(TypeName = "decimal(18, 3)")]
+        [Column(TypeName = "decimal(18,4)")]
         public decimal UnitPrice { get; set; } // سعر الوحدة
 
         [Required]
-        [Range(0.01, double.MaxValue)] // التأكد من أن السعر الإجمالي أكبر من 0
-        [Column(TypeName = "decimal(18, 3)")]
+        [Column(TypeName = "decimal(18,4)")]
         public decimal TotalPrice { get; set; } // إجمالي السعر      
 
  

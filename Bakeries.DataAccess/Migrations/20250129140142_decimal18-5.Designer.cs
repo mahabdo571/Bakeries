@@ -4,6 +4,7 @@ using Bakeries.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bakeries.DataAccess.Migrations
 {
     [DbContext(typeof(clsDbContext))]
-    partial class clsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250129140142_decimal18-5")]
+    partial class decimal185
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,7 +263,7 @@ namespace Bakeries.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("AvailableQuantity")
-                        .HasColumnType("decimal(18,4)");
+                        .HasColumnType("decimal(18,5)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
