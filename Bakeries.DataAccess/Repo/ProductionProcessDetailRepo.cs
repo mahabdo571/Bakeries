@@ -36,7 +36,7 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task DeleteWhereProductionIdAsync(int productionId)
         {
-            var model =await  context.ProductionProcessDetails.WhereNotDeleted().Where(s => s.ProductionId == productionId).ToListAsync();
+            var model =await  context.ProductionProcessDetails.WhereNotDeleted().AsNoTracking().Where(s => s.ProductionId == productionId).ToListAsync();
 
             if (model is not null)
             {
@@ -58,8 +58,12 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<IEnumerable<ProductionProcessDetailModel>> GetAllWhereProductionId(int productionId)
         {
-            return await context.ProductionProcessDetails.WhereNotDeleted().Where(s => s.ProductionId == productionId).ToListAsync();
-     
+            return await context.ProductionProcessDetails
+                .WhereNotDeleted().AsNoTracking()
+                .Include(s => s.Stock)
+                .Where(s => s.ProductionId == productionId)
+                .ToListAsync();
+
 
         }
 

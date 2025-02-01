@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace Bakeries.Business.Services.IServices
 {
-    public  interface IProductionProcessDetailService :  IServices<ProductionProcessDetailDTO>
+    public  interface IProductionProcessDetailService 
     {
+        Task<IEnumerable<ProductionProcessDetailDTO>> GetAllByProductionIdAsync(int productionId);
+
 
     }
 }

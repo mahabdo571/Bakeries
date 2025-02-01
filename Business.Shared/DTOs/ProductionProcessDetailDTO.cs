@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,14 +12,12 @@ namespace Business.Shared.DTOs
     {
         public int Id { get; set; }
 
-        [Required]
-        [Range(0, double.MaxValue)]
-        public float Quantity { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Quantity { get; set; }
+        public string UnitOfMeasure { get; set; }
 
-        public int stockId { get; set; }
+        public string ItemName { get; set; }
 
-        public int ProductionId { get; set; }
-
-        public string? Notes { get; set; }
+     
     }
 }

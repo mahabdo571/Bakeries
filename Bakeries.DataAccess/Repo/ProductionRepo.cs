@@ -48,7 +48,7 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task DeleteAsync(int id)
         {
-            var model = await context.Productions.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            var model = await context.Productions.WhereNotDeleted().AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
             if (model is not null)
             {
                 model.DeletedAt = DateTime.Now;

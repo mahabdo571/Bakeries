@@ -1,6 +1,6 @@
 class ApiConfig {
-   //static const String baseUrl = 'https://rahaftec.runasp.net/api';
-  //static const String baseUrl = 'https://altawfiqbakery-production.runasp.net/api';
+  //static const String baseUrl = 'https://rahaftec.runasp.net/api'; //devlopmint
+  //static const String baseUrl =    'https://altawfiqbakery-production.runasp.net/api'; //production
   static const String baseUrl = 'http://localhost:5000/api';
 
   //Stocks
@@ -33,4 +33,8 @@ class ApiConfig {
   static const String ProductionById = '$Production/';
   static const String ProductionProcessWithAssociatedProduct =
       '$Production/ProductionProcessWithAssociatedProduct';
+
+//ProductionProcessDetail
+  static const String ProductionProcessDetailByPruductionId =
+      '$baseUrl/ProductionProcessDetail';
 }

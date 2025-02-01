@@ -12,51 +12,22 @@ using System.Threading.Tasks;
 
 namespace Bakeries.Business.Services
 {
-    public class ProductionProcessDetailServices(IUnitOfWork unitOfWork , IMapper mapper) : IProductionProcessDetailService
+    public class ProductionProcessDetailServices(IUnitOfWork unitOfWork, IMapper mapper) : IProductionProcessDetailService
     {
-        public async Task<int> AddAsync(ProductionProcessDetailDTO model)
+      
+        public async Task<IEnumerable<ProductionProcessDetailDTO>> GetAllByProductionIdAsync(int productionId)
         {
-            if (model is null) throw new ArgumentNullException("model is null");
-
-            var newModel = mapper.Map<ProductionProcessDetailModel>(model);
-
-            await unitOfWork.BeginTransactionAsync();
-            try
+            var model = await unitOfWork.ProductionProcessDetailRepository.GetAllWhereProductionId(productionId);
+            foreach (var item in model)
             {
-
-               await unitOfWork.ProductionProcessDetailRepository.AddAsync(newModel);
-
-                      await unitOfWork.SaveChangesAsync();
-                await unitOfWork.CommitAsync();
-
-                return model.Id;
-
+                Console.WriteLine(item.Stock.ItemName);
+                Console.WriteLine(item.Quantity);
             }
-            catch
-            {
-                await unitOfWork.RollbackAsync();
-                throw;
-            }
-        }
+            return mapper.Map<IEnumerable<ProductionProcessDetailDTO>>(model);
+            
+             
 
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<IEnumerable<ProductionProcessDetailDTO>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ProductionProcessDetailDTO> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(ProductionProcessDetailDTO model)
-        {
-            throw new NotImplementedException();
         }
     }
 }
