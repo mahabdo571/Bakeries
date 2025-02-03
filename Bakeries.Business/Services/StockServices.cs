@@ -19,6 +19,9 @@ namespace Bakeries.Business.Services
 
         public async Task<int> AddAsync(StockDTO model)
         {
+            model.CreatedAt = DateTime.Now;
+            model.UpdatedAt = DateTime.Now;
+            
             var newModel = mapper.Map<StockModel>(model);
 
             await unitOfWork.StockRepository.AddAsync(newModel);
@@ -58,6 +61,9 @@ namespace Bakeries.Business.Services
             await unitOfWork.BeginTransactionAsync();
             try
             {
+                var old = await unitOfWork.StockRepository.GetByIdAsync(model.Id);
+                model.UpdatedAt = DateTime.Now;
+                model.CreatedAt = old.CreatedAt;
                 await unitOfWork.StockRepository.UpdateAsync(mapper.Map<StockModel>(model));
 
                 await unitOfWork.SaveChangesAsync();

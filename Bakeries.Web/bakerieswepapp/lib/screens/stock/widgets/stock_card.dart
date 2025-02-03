@@ -78,6 +78,16 @@ class StockCard extends StatelessWidget {
               label: 'الوحدة',
               value: stock.UnitOfMeasure,
             ),
+            StockDetailItem(
+              icon: Icons.date_range,
+              label: 'تاريخ اخر تحديث ',
+              value: stock.UpdatedAt.toString(),
+            ),
+            StockDetailItem(
+              icon: Icons.date_range,
+              label: 'تاريخ الاضافة',
+              value: stock.CreatedAt.toString(),
+            ),
           ],
         ),
       ],

@@ -67,6 +67,8 @@ class _StockFormState extends State<StockForm> {
         Location: _locationController.text,
         UnitOfMeasure: _unitOfMeasure!,
         ReorderLevel: int.tryParse(_reorderLevelController.text) ?? 0,
+        CreatedAt: DateTime.now(),
+        UpdatedAt: DateTime.now(),
       );
 
       widget.onSubmit(stock);

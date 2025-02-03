@@ -6,8 +6,12 @@ class Stock {
   final String Location;
   final String UnitOfMeasure;
   final int ReorderLevel;
+  final DateTime CreatedAt;
+  final DateTime UpdatedAt;
 
   Stock({
+    required this.CreatedAt,
+    required this.UpdatedAt,
     required this.Id,
     required this.AvailableQuantity,
     required this.ItemName,
@@ -18,6 +22,7 @@ class Stock {
   });
 
   Map<String, dynamic> toJson() {
+ 
     return {
       'Id': Id ?? 0,
       'ItemName': ItemName ?? '',
@@ -26,6 +31,8 @@ class Stock {
       'Location': Location ?? '',
       'UnitOfMeasure': UnitOfMeasure ?? '',
       'ReorderLevel': ReorderLevel ?? 0,
+      'CreatedAt': CreatedAt.toIso8601String(),
+      'UpdatedAt':  UpdatedAt.toIso8601String()
     }..removeWhere((key, value) => value == null);
   }
 
@@ -40,6 +47,8 @@ class Stock {
       Location: cleanedJson['Location'] ?? '',
       UnitOfMeasure: cleanedJson['UnitOfMeasure'] ?? '',
       ReorderLevel: cleanedJson['ReorderLevel'] ?? 0,
+      CreatedAt: DateTime.tryParse(cleanedJson['CreatedAt'])??DateTime.now(),
+      UpdatedAt: DateTime.tryParse(cleanedJson['UpdatedAt'])??DateTime.now()
     );
   }
 }

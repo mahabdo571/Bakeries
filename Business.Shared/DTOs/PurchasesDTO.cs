@@ -56,6 +56,10 @@ namespace Business.Shared.DTOs
         [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف
         public string Status { get; set; } // حالة العملية
 
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
+
 
 
     }

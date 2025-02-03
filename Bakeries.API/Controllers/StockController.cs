@@ -107,7 +107,7 @@ namespace Bakeries.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> UpdateStock([FromRoute] int Id, [FromBody] StockDTO model)
         {
-
+  
 
             try
             {
