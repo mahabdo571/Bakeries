@@ -1,10 +1,6 @@
 ﻿using Bakeries.DataAccess.Entities;
 using Bakeries.DataAccess.Repo.IRepo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Bakeries.Business.Operations
 {
@@ -13,20 +9,23 @@ namespace Bakeries.Business.Operations
 
         public static async Task AddingTheQuantitiesConsumedInTheProductionProcess(IUnitOfWork unitOfWork, ProductionModel newModel)
         {
-            foreach (var item in newModel.Product.Ingredients)
-            {
-                await unitOfWork.ProductionProcessDetailRepository.AddAsync(new ProductionProcessDetailModel
+
+
+            await unitOfWork.ProductionProcessDetailRepository.AddRangeAsync(
+                newModel.Product.Ingredients
+                .Where(item => item.DeletedAt is null)
+                .Select(item =>
+                new ProductionProcessDetailModel
                 {
-                    Quantity = ((newModel.QuantityProduced + newModel.QuantityDamaged) * item.Quantity),
+                    Quantity = (newModel.QuantityProduced + newModel.QuantityDamaged) * item.Quantity,
                     stockId = item.stockId,
-                    ProductionId = newModel.Id,
+                    ProductionId = newModel.Id
+                })
+                .ToList());
 
-
-                });
-            }
         }
-        
-        
+
+
         public static async Task UpdatingTheQuantitiesConsumedInTheProductionProcess(IUnitOfWork unitOfWork, ProductionModel newModel)
         {
             foreach (var item in newModel.Product.Ingredients)
@@ -43,6 +42,9 @@ namespace Bakeries.Business.Operations
 
                 });
             }
+
+
+
         }
     }
 }

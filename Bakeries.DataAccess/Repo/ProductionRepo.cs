@@ -62,8 +62,8 @@ namespace Bakeries.DataAccess.Repo
         public async Task<ProductionModel> GetProductionWithProductAndIngredientsAsync(int productionId)
         {
             return await context.Productions.WhereNotDeleted()
-                .Include(p => p.Product)
-                    .ThenInclude(p => p.Ingredients)
+               .Include(p => p.Product)
+                    .ThenInclude(p => p.Ingredients).WhereNotDeleted()
                 .FirstOrDefaultAsync(p => p.Id == productionId);
         }
 
@@ -96,7 +96,7 @@ namespace Bakeries.DataAccess.Repo
 
             return await context.Productions
         .WhereNotDeleted()
-        .Include(pI => pI.Product)
+        .Include(pI => pI.Product).WhereNotDeleted()
         .ToListAsync();
 
 

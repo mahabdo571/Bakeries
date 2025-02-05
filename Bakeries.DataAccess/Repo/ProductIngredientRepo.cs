@@ -53,8 +53,8 @@ namespace Bakeries.DataAccess.Repo
             return await context.ProductIngredients
         .WhereNotDeleted()
         .Where(pI => pI.ProductId == productId)
-        .Include(pI => pI.stock) 
-        .Include(pI => pI.Product) 
+        .Include(pI => pI.stock) .WhereNotDeleted()
+        .Include(pI => pI.Product) .WhereNotDeleted()
         .ToListAsync();
 
           

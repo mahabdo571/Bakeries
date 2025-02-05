@@ -78,6 +78,11 @@ namespace Bakeries.DataAccess
       .WithMany(p => p.Details)
       .HasForeignKey(ps => ps.stockId)
       .OnDelete(DeleteBehavior.Restrict); // منع حذف المنتج إذا كانت هناك خطوات مرتبطة
+
+            modelBuilder.Entity<ProductIngredientModel>().HasQueryFilter(i => i.DeletedAt == null);
+
+
+
         }
         public void EnsureStoredProcedure()
         {

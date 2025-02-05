@@ -94,5 +94,11 @@ namespace Bakeries.DataAccess.Repo
                 throw new ArgumentNullException(nameof(model));
             }
         }
+        public async Task AddRangeAsync(IEnumerable<ProductionProcessDetailModel> entities)
+        {
+            await context.ProductionProcessDetails.AddRangeAsync(entities);
+  
+        }
+   
     }
 }

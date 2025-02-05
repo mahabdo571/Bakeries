@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../models/Stock.dart';
 import 'stock_detail_item.dart';
@@ -81,12 +82,16 @@ class StockCard extends StatelessWidget {
             StockDetailItem(
               icon: Icons.date_range,
               label: 'تاريخ اخر تحديث ',
-              value: stock.UpdatedAt.toString(),
+              value: DateFormat('dd/MM/yyyy (HH:mm)')
+                  .format(stock.UpdatedAt ?? DateTime.now())
+                  .toString(),
             ),
             StockDetailItem(
               icon: Icons.date_range,
               label: 'تاريخ الاضافة',
-              value: stock.CreatedAt.toString(),
+              value: DateFormat('dd/MM/yyyy (HH:mm)')
+                  .format(stock.CreatedAt ?? DateTime.now())
+                  .toString(),
             ),
           ],
         ),
