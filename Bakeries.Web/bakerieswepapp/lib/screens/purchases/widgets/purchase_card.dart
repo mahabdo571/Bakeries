@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../models/Purchase.dart';
 import 'purchase_detail_item.dart';
@@ -95,9 +96,18 @@ class PurchaseCard extends StatelessWidget {
               value: purchase.SupplierName,
             ),
             PurchaseDetailItem(
+              icon: Icons.person,
+              label: 'اخر تحديث',
+              value: DateFormat('dd/MM/yyyy (HH:mm)')
+                  .format(purchase.UpdatedAt ?? DateTime.now())
+                  .toString(),
+            ),
+            PurchaseDetailItem(
               icon: Icons.receipt,
-              label: 'رقم الفاتورة',
-              value: purchase.SupplierInvoiceNumber,
+              label: 'تاريخ الاضافة',
+              value: DateFormat('dd/MM/yyyy (HH:mm)')
+                  .format(purchase.CreatedAt ?? DateTime.now())
+                  .toString(),
             ),
           ],
         ),

@@ -63,7 +63,9 @@ class _AddUpdateFormState extends State<AddUpdateForm> {
           product: null,
           stock: null,
           ProductId: widget.productId,
-          stockId: _itemSelected ?? 0);
+          stockId: _itemSelected ?? 0,
+          UpdatedAt: DateTime.now(),
+          CreatedAt: DateTime.now());
 
       widget.onSubmit(productIngredient);
     }

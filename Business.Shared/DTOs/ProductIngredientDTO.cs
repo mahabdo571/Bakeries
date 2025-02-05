@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business.Shared.DTOs
 {
-    public record ProductIngredientDTO 
+    public record ProductIngredientDTO
     {
 
 
@@ -28,7 +28,7 @@ namespace Business.Shared.DTOs
         public StockDTO? stock { get; set; }
         public ProductDTO? product { get; set; }
 
-                public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
 

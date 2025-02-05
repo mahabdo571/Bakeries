@@ -19,7 +19,9 @@ namespace Bakeries.Business.Operations
                 {
                     Quantity = (newModel.QuantityProduced + newModel.QuantityDamaged) * item.Quantity,
                     stockId = item.stockId,
-                    ProductionId = newModel.Id
+                    ProductionId = newModel.Id,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now ,
                 })
                 .ToList());
 
@@ -38,7 +40,8 @@ namespace Bakeries.Business.Operations
                     Quantity = ((newModel.QuantityProduced + newModel.QuantityDamaged) * item.Quantity),
                     stockId = item.stockId,
                     ProductionId = newModel.Id,
-
+                    UpdatedAt= DateTime.Now,
+                   CreatedAt= PPDM.CreatedAt,
 
                 });
             }

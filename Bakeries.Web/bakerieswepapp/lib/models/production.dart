@@ -5,7 +5,9 @@ class Production {
   final double QuantityProduced;
   final double QuantityDamaged;
   final int ProductId;
-
+  final DateTime? CreatedAt;
+  final DateTime? UpdatedAt;
+  
   Production({
     required this.Id,
     required this.QuantityProduced,
@@ -13,6 +15,8 @@ class Production {
     required this.ProductId,
     required this.Notes,
     required this.ProductName,
+        required this.CreatedAt,
+    required this.UpdatedAt,
   });
 
   Map<String, dynamic> toJson() {
@@ -36,6 +40,10 @@ class Production {
       QuantityDamaged: cleanedJson['QuantityDamaged'] ?? 0.0,
       ProductId: cleanedJson['ProductId'] ?? 0,
       ProductName: cleanedJson['ProductName'] ?? '',
+              CreatedAt:
+            DateTime.tryParse(json['CreatedAt'] ?? '1-1-1') ?? DateTime.now(),
+        UpdatedAt:
+            DateTime.tryParse(json['UpdatedAt'] ?? '1-1-1') ?? DateTime.now()
     );
   }
 }

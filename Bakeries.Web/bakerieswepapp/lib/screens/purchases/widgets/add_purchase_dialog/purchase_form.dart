@@ -69,20 +69,21 @@ class _PurchaseFormState extends State<PurchaseForm> {
   void _handleSubmit() {
     if (_formKey.currentState?.validate() ?? false) {
       final purchase = Purchase(
-        Id: widget.isEdit ? widget.purchaseData!['Id'] : 0,
-        ItemId: _selectedItemId!,
-        Quantity: _quantity,
-        UnitPrice: _unitPrice,
-        UnitOfMeasure: _selectedUnit!,
-        PaymentMethod: _selectedPaymentMethod!,
-        Status: _selectedStatus!,
-        Notes: _notesController.text,
-        TotalPrice: _quantity * _unitPrice,
-        ItemName: '',
-        ItemDescription: '',
-        SupplierName: _supplierNameController.text,
-        SupplierInvoiceNumber: _supplierInvoiceNumberController.text,
-      );
+          Id: widget.isEdit ? widget.purchaseData!['Id'] : 0,
+          ItemId: _selectedItemId!,
+          Quantity: _quantity,
+          UnitPrice: _unitPrice,
+          UnitOfMeasure: _selectedUnit!,
+          PaymentMethod: _selectedPaymentMethod!,
+          Status: _selectedStatus!,
+          Notes: _notesController.text,
+          TotalPrice: _quantity * _unitPrice,
+          ItemName: '',
+          ItemDescription: '',
+          SupplierName: _supplierNameController.text,
+          SupplierInvoiceNumber: _supplierInvoiceNumberController.text,
+          CreatedAt: DateTime.now(),
+          UpdatedAt: DateTime.now());
 
       widget.onSubmit(purchase);
     }

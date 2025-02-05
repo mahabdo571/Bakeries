@@ -25,7 +25,7 @@ namespace Business.Shared.DTOs
         [StringLength(50)]
         public string UnitOfMeasure { get; set; }
         public string Notes { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
     }

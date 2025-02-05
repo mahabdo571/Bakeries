@@ -1,18 +1,9 @@
 ﻿using AutoMapper;
-
 using Bakeries.Business.Services.IServices;
-using Bakeries.DataAccess;
 using Bakeries.DataAccess.Entities;
-using Bakeries.DataAccess.Repo;
 using Bakeries.DataAccess.Repo.IRepo;
 using Business.Shared.DTOs;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace Bakeries.Business.Services
 {
@@ -37,7 +28,8 @@ namespace Bakeries.Business.Services
         public async Task<int> AddAsync(ProductionDTO model)
         {
             await unitOfWork.BeginTransactionAsync();
-
+            model.CreatedAt = DateTime.Now;
+            model.UpdatedAt = DateTime.Now;
             var newModel = mapper.Map<ProductionModel>(model);
 
 
@@ -71,6 +63,7 @@ namespace Bakeries.Business.Services
             await unitOfWork.BeginTransactionAsync();
             try
             {
+                model.UpdatedAt=DateTime.Now;
                 var orginalModel = mapper.Map<ProductionModel>(model);
 
              

@@ -10,6 +10,8 @@ class ProductIngredient {
   final String Notes;
   final int stockId;
   final int ProductId;
+  final DateTime? CreatedAt;
+  final DateTime? UpdatedAt;
 
   ProductIngredient({
     required this.Id,
@@ -20,6 +22,8 @@ class ProductIngredient {
     required this.Notes,
     required this.stockId,
     required this.ProductId,
+          required this.CreatedAt,
+      required this.UpdatedAt
   });
 
   Map<String, dynamic> toJson() {
@@ -29,7 +33,7 @@ class ProductIngredient {
       'UnitOfMeasure': UnitOfMeasure ?? '',
       'Notes': Notes ?? '',
       'stockId': stockId ?? 0,
-      'ProductId': ProductId ?? 0,
+      'ProductId': ProductId ?? 0
     }..removeWhere((key, value) => value == null);
   }
 
@@ -49,6 +53,10 @@ class ProductIngredient {
       product: cleanedJson.containsKey('product')
           ? Product.fromJson(cleanedJson['product'])
           : null,
+                  CreatedAt:
+            DateTime.tryParse(json['CreatedAt'] ?? '1-1-1') ?? DateTime.now(),
+        UpdatedAt:
+            DateTime.tryParse(json['UpdatedAt'] ?? '1-1-1') ?? DateTime.now()
     );
   }
 }

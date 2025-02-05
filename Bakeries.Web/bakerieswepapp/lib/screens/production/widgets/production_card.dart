@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../models/production.dart';
 import '../../Product/widgets/product_detail_item.dart';
 
@@ -80,23 +81,47 @@ class ProductionCard extends StatelessWidget {
   }
 
   Widget _buildDetails() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-        ProductDetailItem(
-          icon: Icons.production_quantity_limits,
-          label: 'الكمية المنتجة',
-          value: production.QuantityProduced.toString(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ProductDetailItem(
+              icon: Icons.production_quantity_limits,
+              label: 'الكمية المنتجة',
+              value: production.QuantityProduced.toString(),
+            ),
+            ProductDetailItem(
+              icon: Icons.error,
+              label: 'الكمية التالفة',
+              value: production.QuantityDamaged.toString(),
+            ),
+            ProductDetailItem(
+              icon: Icons.category,
+              label: 'الوحدة',
+              value: 'كيلو غرام',
+            ),
+          ],
         ),
-        ProductDetailItem(
-          icon: Icons.error,
-          label: 'الكمية التالفة',
-          value: production.QuantityDamaged.toString(),
-        ),
-        ProductDetailItem(
-          icon: Icons.category,
-          label: 'الوحدة',
-          value: 'كيلو غرام',
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ProductDetailItem(
+              icon: Icons.production_quantity_limits,
+              label: 'تاريخ الانتاج',
+              value: DateFormat('dd/MM/yyyy (HH:mm)')
+                  .format(production.CreatedAt ?? DateTime.now())
+                  .toString(),
+            ),
+            ProductDetailItem(
+              icon: Icons.error,
+              label: 'تاريخ التعديل',
+              value: DateFormat('dd/MM/yyyy (HH:mm)')
+                  .format(production.UpdatedAt ?? DateTime.now())
+                  .toString(),
+            ),
+           
+          ],
         ),
       ],
     );

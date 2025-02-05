@@ -1,6 +1,7 @@
 import 'package:bakerieswepapp/models/production_process_detail.dart';
 import 'package:bakerieswepapp/services/production_process_detail_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DetailsDialog extends StatefulWidget {
   final int productionId;
@@ -21,7 +22,7 @@ class _DetailsDialogState extends State<DetailsDialog> {
 
   @override
   Widget build(BuildContext context) {
-        if (_isLoading) {
+    if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
     return Scaffold(
@@ -34,32 +35,98 @@ class _DetailsDialogState extends State<DetailsDialog> {
           title: Text('العناصر المستهلكة', textAlign: TextAlign.center),
           content: Container(
             width: double.maxFinite,
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemCount: _items.length,
-              separatorBuilder: (context, index) => Divider(),
-              itemBuilder: (BuildContext context, int index) {
-                final item = _items[index];
-                return Padding(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header Row
+                Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        _items[index].ItemName,
+                        'الاسم',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: Colors.blue, // يمكنك تغيير اللون
                         ),
                       ),
                       Text(
-                        '${_items[index].Quantity} ${_items[index].UnitOfMeasure}',
-                        style: TextStyle(fontSize: 16),
+                        'الكمية',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      Text(
+                        'تاريخ الإنشاء',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      Text(
+                        'تاريخ التعديل',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
                       ),
                     ],
                   ),
-                );
-              },
+                ),
+                Divider(thickness: 2), // خط فاصل تحت الهيدر
+                // ListView
+                Expanded(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: _items.length,
+                    separatorBuilder: (context, index) => Divider(),
+                    itemBuilder: (BuildContext context, int index) {
+                      final item = _items[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              item.ItemName,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '${item.Quantity} (${item.UnitOfMeasure})',
+                              style: TextStyle(fontSize: 22),
+                            ),
+                            Text(
+                              DateFormat('dd/MM/yyyy (HH:mm:ss)')
+                                  .format(item.CreatedAt ?? DateTime.now()),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              DateFormat('dd/MM/yyyy (HH:mm:ss)')
+                                  .format(item.UpdatedAt ?? DateTime.now()),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
           actions: <Widget>[

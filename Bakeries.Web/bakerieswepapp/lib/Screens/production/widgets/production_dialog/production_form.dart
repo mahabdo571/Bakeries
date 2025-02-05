@@ -60,6 +60,8 @@ class _ProductionFormState extends State<ProductionForm> {
         Notes: _notesController.text,
         ProductId: _selectedItemId ?? 0,
         ProductName: null,
+        CreatedAt: DateTime.now(),
+        UpdatedAt: DateTime.now()
       );
 
       widget.onSubmit(product);

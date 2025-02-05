@@ -9,6 +9,8 @@ namespace Bakeries.DataAccess.Data
 {
     public static class StoredProcedure
     {
+      //  SELECT DATEADD(HOUR, 2, GETUTCDATE()) AS CurrentTime_GMT_Plus2;
+
         public static void UpdateStockOnPurchase(clsDbContext dbContext)
         {
             dbContext.Database.ExecuteSqlRaw(@"
@@ -21,14 +23,14 @@ namespace Bakeries.DataAccess.Data
     BEGIN
         UPDATE Stocks
         SET AvailableQuantity = AvailableQuantity + @Quantity,
-            UpdatedAt = GETDATE()
+            UpdatedAt =DATEADD(HOUR, 2, GETUTCDATE())
         WHERE Id = @ItemId;
     END
     ELSE
     BEGIN
 
         INSERT INTO Stocks (Id, ItemName, AvailableQuantity, UpdatedAt)
-        VALUES (@ItemId, 'Unknown Item', @Quantity, GETDATE());
+        VALUES (@ItemId, 'Unknown Item', @Quantity, DATEADD(HOUR, 2, GETUTCDATE()));
     END
 
             END;

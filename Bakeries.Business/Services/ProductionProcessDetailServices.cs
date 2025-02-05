@@ -18,11 +18,7 @@ namespace Bakeries.Business.Services
         public async Task<IEnumerable<ProductionProcessDetailDTO>> GetAllByProductionIdAsync(int productionId)
         {
             var model = await unitOfWork.ProductionProcessDetailRepository.GetAllWhereProductionId(productionId);
-            foreach (var item in model)
-            {
-                Console.WriteLine(item.Stock.ItemName);
-                Console.WriteLine(item.Quantity);
-            }
+         
             return mapper.Map<IEnumerable<ProductionProcessDetailDTO>>(model);
             
              

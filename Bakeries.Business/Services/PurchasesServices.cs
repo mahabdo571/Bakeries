@@ -37,7 +37,8 @@ namespace Bakeries.Business.Services
         {
             if (model is null) throw new ArgumentNullException("model is null");    
 
-     
+     model.CreatedAt =DateTime.Now;
+            model.UpdatedAt =DateTime.Now;
 
             var newModel = _mapper.Map<PurchaseModel>(model);
             await unitOfWork.BeginTransactionAsync();
@@ -49,7 +50,7 @@ namespace Bakeries.Business.Services
                 {
                     model.Quantity = 0;
                 }
-
+              
 
                 await unitOfWork.PurchasesRepository.UpdateStockOnPurchase(model.ItemId, model.Quantity);
                 await unitOfWork.SaveChangesAsync();
@@ -64,7 +65,7 @@ namespace Bakeries.Business.Services
                 throw;
             }
 
-
+         
         }
 
         public async Task DeleteAsync(int id)
@@ -151,18 +152,16 @@ namespace Bakeries.Business.Services
                 throw new NullReferenceException("null model");
 
             await unitOfWork.BeginTransactionAsync();
+            model.UpdatedAt = DateTime.Now;
 
             try
             {
-                // تحديث الكمية في المخزون بناءً على التغيرات في حالة الفاتورة
 
               await UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(model);
 
-                // تحديث بيانات الشراء
                 var purchaseModel = _mapper.Map<PurchaseModel>(model);
                 await unitOfWork.PurchasesRepository.UpdateAsync(purchaseModel);
 
-                // حفظ التغييرات
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
             }
@@ -198,7 +197,6 @@ namespace Bakeries.Business.Services
                 }
                 else
                 {
-                    // حساب الفرق في الكمية
                     quantityDifference = model.Quantity - oldPurchase.Quantity;
                 }
             
@@ -229,7 +227,7 @@ namespace Bakeries.Business.Services
 
 
             var stockModel = await _stockServices.GetByIdAsync(model.ItemId);
-            Console.WriteLine(stockModel.Id);
+        
 
             if (stockModel == null)
             {

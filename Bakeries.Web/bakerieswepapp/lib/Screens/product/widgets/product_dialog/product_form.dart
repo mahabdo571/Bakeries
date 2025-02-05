@@ -58,13 +58,14 @@ class _ProductFormState extends State<ProductForm> {
   void _handleSubmit() {
     if (_formKey.currentState?.validate() ?? false) {
       final product = Product(
-        Id: widget.isEdit ? widget.productData!['Id'] : 0,
-        Name: _nameController.text,
-        Description: _descriptionController.text,
-        Notes: _notesController.text,
-        Price: _unitPrice,
-        Unit: _selectedUnit ?? '',
-      );
+          Id: widget.isEdit ? widget.productData!['Id'] : 0,
+          Name: _nameController.text,
+          Description: _descriptionController.text,
+          Notes: _notesController.text,
+          Price: _unitPrice,
+          Unit: _selectedUnit ?? '',
+          CreatedAt: DateTime.now(),
+          UpdatedAt: DateTime.now());
 
       widget.onSubmit(product);
     }

@@ -26,7 +26,7 @@ namespace Business.Shared.DTOs
         [MaxLength(50)]
         public string Unit { get; set; } // مثل "قطعة" أو "كيلوغرام"
         public string Notes { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
 

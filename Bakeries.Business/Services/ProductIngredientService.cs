@@ -15,29 +15,32 @@ namespace Bakeries.Business.Services
     public class ProductIngredientService(IUnitOfWork unitOfWork, IMapper mapper) : IProductIngredientService
     {
 
- 
+
 
         public async Task<int> add(ProductIngredientAddUpdateDTO model)
         {
+           
             var newModel = mapper.Map<ProductIngredientModel>(model);
-
-            if (await CheckTheProductComponentIfItExists(model)) {
+            newModel.CreatedAt = DateTime.Now;
+            newModel.UpdatedAt = DateTime.Now;
+            if (await CheckTheProductComponentIfItExists(model))
+            {
                 return -2;
             }
-             await unitOfWork.ProductIngredientRepository.AddAsync(newModel);
+            await unitOfWork.ProductIngredientRepository.AddAsync(newModel);
             return newModel.Id;
 
         }
 
         private async Task<bool> CheckTheProductComponentIfItExists(ProductIngredientAddUpdateDTO model)
         {
-          
-           return await unitOfWork.ProductIngredientRepository.IsIngredientAlreadyAddedAsync(model.ProductId,model.stockId);
 
-           
+            return await unitOfWork.ProductIngredientRepository.IsIngredientAlreadyAddedAsync(model.ProductId, model.stockId);
+
+
         }
 
-        public  Task<int> AddAsync(ProductIngredientDTO model)
+        public Task<int> AddAsync(ProductIngredientDTO model)
         {
             return null;
         }
@@ -61,11 +64,11 @@ namespace Bakeries.Business.Services
         {
             var model = await unitOfWork.ProductIngredientRepository.GetAllByProductIdAsync(productId);
 
-           
+
 
             var newModel = mapper.Map<IEnumerable<ProductIngredientDTO>>(model);
 
-         
+
 
             return newModel;
         }
@@ -77,13 +80,44 @@ namespace Bakeries.Business.Services
 
         public async Task Update(ProductIngredientAddUpdateDTO model)
         {
-            await unitOfWork.ProductIngredientRepository.UpdateAsync(mapper.Map<ProductIngredientModel>(model));
+
+            await unitOfWork.BeginTransactionAsync();
+            try
+            {
+           
+
+        
+                var mod = mapper.Map<ProductIngredientModel>(model);
+                mod.UpdatedAt = DateTime.Now;
+
+                var temp = await unitOfWork.ProductIngredientRepository.GetByIdAsync(model.Id);
+                mod.CreatedAt = temp.CreatedAt ;
+
+                await unitOfWork.ProductIngredientRepository.UpdateAsync(mod);
+
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitAsync();
+
+
+            }
+            catch
+            {
+                await unitOfWork.RollbackAsync();
+                throw;
+            }
+
+ 
 
         }
 
         public async Task UpdateAsync(ProductIngredientDTO model)
         {
-            await unitOfWork.ProductIngredientRepository.UpdateAsync(mapper.Map<ProductIngredientModel>(model));
+  
+        
+           
+            var mod = mapper.Map<ProductIngredientModel>(model);
+            mod.UpdatedAt = DateTime.Now;
+            await unitOfWork.ProductIngredientRepository.UpdateAsync(mod);
         }
     }
 }

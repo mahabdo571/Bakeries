@@ -3,13 +3,17 @@ class ProductionProcessDetail {
   final double Quantity;
   final String ItemName;
   final String UnitOfMeasure;
+  final DateTime? CreatedAt;
+  final DateTime? UpdatedAt;
 
-  ProductionProcessDetail({
-    required this.Id,
-    required this.Quantity,
-    required this.ItemName,
-    required this.UnitOfMeasure,
-  });
+  ProductionProcessDetail(
+      {required this.Id,
+      required this.Quantity,
+      required this.ItemName,
+      required this.UnitOfMeasure,
+      required this.CreatedAt,
+      required this.UpdatedAt
+      });
 
   Map<String, dynamic> toJson() {
     return {
@@ -24,10 +28,13 @@ class ProductionProcessDetail {
     Map<String, dynamic> cleanedJson = Map.from(json)
       ..removeWhere((key, value) => value == null);
     return ProductionProcessDetail(
-      Id: cleanedJson['Id'] ?? 0,
-      ItemName: cleanedJson['ItemName'] ?? '',
-      UnitOfMeasure: cleanedJson['UnitOfMeasure'] ?? '',
-      Quantity: cleanedJson['Quantity'] ?? 0,
-    );
+        Id: cleanedJson['Id'] ?? 0,
+        ItemName: cleanedJson['ItemName'] ?? '',
+        UnitOfMeasure: cleanedJson['UnitOfMeasure'] ?? '',
+        Quantity: cleanedJson['Quantity'] ?? 0,
+        CreatedAt:
+            DateTime.tryParse(json['CreatedAt'] ?? '1-1-1') ?? DateTime.now(),
+        UpdatedAt:
+            DateTime.tryParse(json['UpdatedAt'] ?? '1-1-1') ?? DateTime.now());
   }
 }

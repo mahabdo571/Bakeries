@@ -63,7 +63,7 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<ProductIngredientModel> GetByIdAsync(int id)
         {
-            return await context.ProductIngredients.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            return await context.ProductIngredients.WhereNotDeleted().AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task UpdateAsync(ProductIngredientModel model)

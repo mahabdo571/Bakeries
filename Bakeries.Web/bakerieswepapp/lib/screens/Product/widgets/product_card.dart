@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../models/product.dart';
 import 'product_detail_item.dart';
@@ -84,6 +85,25 @@ class ProductCard extends StatelessWidget {
               icon: Icons.category,
               label: 'الوحدة',
               value: product.Unit,
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ProductDetailItem(
+              icon: Icons.inventory,
+              label: 'تاريخ الاضافة',
+              value: DateFormat('dd/MM/yyyy (HH:mm)')
+                  .format(product.CreatedAt ?? DateTime.now())
+                  .toString(),
+            ),
+            ProductDetailItem(
+              icon: Icons.inventory,
+              label: 'تاريخ التعديل',
+              value: DateFormat('dd/MM/yyyy (HH:mm)')
+                  .format(product.UpdatedAt ?? DateTime.now())
+                  .toString(),
             ),
           ],
         ),

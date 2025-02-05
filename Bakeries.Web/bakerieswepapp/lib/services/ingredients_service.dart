@@ -58,9 +58,11 @@ class IngredientsService {
       if (response.statusCode == 200) {
         return ProductIngredient.fromJson(jsonDecode(response.body));
       } else {
+       
         throw Exception(jsonDecode(response.body)['messagge']);
       }
     } catch (e) {
+     
       throw Exception(e);
     }
   }

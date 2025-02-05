@@ -27,7 +27,8 @@ namespace Bakeries.Business.Services
         public async Task<int> AddAsync(ProductDTO model)
         {
             var newModel = _mapper.Map<ProductModel>(model);
-
+            newModel.CreatedAt = DateTime.Now;
+            newModel.UpdatedAt = DateTime.Now;
              await _unitOfWork.ProductRepository.AddAsync(newModel);
             return newModel.Id;
         }
@@ -68,7 +69,13 @@ namespace Bakeries.Business.Services
 
         public async Task UpdateAsync(ProductDTO model)
         {
-            await _unitOfWork.ProductRepository.UpdateAsync(_mapper.Map<ProductModel>(model));
+            var newModel = _mapper.Map<ProductModel>(model);
+            newModel.UpdatedAt = DateTime.Now;
+
+            var temp  =  await _unitOfWork.ProductRepository.GetByIdAsync(model.Id);
+            newModel.CreatedAt = temp.CreatedAt;
+
+            await _unitOfWork.ProductRepository.UpdateAsync(newModel);
         }
         public async Task<IEnumerable<ProductDTO>> GetProductsWithComponentsServes() {
 
