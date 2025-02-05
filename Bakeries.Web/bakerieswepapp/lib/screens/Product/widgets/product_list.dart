@@ -1,3 +1,4 @@
+import 'package:bakerieswepapp/Screens/production/production_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Screens/ingredients/ingredients_page.dart';
@@ -47,6 +48,7 @@ class _ProductListState extends State<ProductList> {
             onEdit: _handleEdit,
             onDelete: _handleDelete,
             onClickOnTheIngredients: _onClickOnTheIngredients,
+            onClickOnTheProduction: _onClickOnTheProduction,
           ),
         );
       },
@@ -54,23 +56,38 @@ class _ProductListState extends State<ProductList> {
   }
 
   void _handleEdit(Product product) {
-      showDialog(
+    showDialog(
       context: context,
       builder: (context) => ProductDialog(
         isEdit: true,
-        productData: product.toJson() ,
+        productData: product.toJson(),
         onAdd: (newProduct) {
           // Handle add callback
         },
       ),
     );
   }
+
   void _onClickOnTheIngredients(int productId) {
     Navigator.push(
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             IngredientsScreens(productId: productId),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return child;
+        },
+        transitionDuration: Duration.zero,
+      ),
+    );
+  }
+
+  void _onClickOnTheProduction(int productId) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            ProductionScreen(productId: productId),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child;
         },

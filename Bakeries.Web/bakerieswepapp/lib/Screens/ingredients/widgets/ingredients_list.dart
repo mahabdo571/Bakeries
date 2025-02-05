@@ -1,3 +1,4 @@
+import 'package:bakerieswepapp/Screens/ingredients/widgets/ditels_prouduct.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Screens/ingredients/ingredients_page.dart';
@@ -30,33 +31,7 @@ class _IngredientsListState extends State<IngredientsList> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Card(
-          margin: const EdgeInsets.all(16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          elevation: 4,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Wrap(
-              spacing: 16, // المسافة الأفقية بين العناصر
-              runSpacing: 16, // المسافة الرأسية بين الصفوف
-              alignment: WrapAlignment.center, // محاذاة العناصر في الوسط
-              children: [
-                _buildDetailItem(
-                    Icons.info, 'اسم المنتج \n ${widget.product.Name}'),
-                _buildDetailItem(
-                    Icons.note, 'ملاحظات  \n ${widget.product.Notes}'),
-                _buildDetailItem(Icons.price_check_rounded,
-                    'السعر   \n ${widget.product.Price}'),
-                _buildDetailItem(Icons.upcoming_outlined,
-                    'الوحدة  \n ${widget.product.Unit}'),
-                _buildDetailItem(Icons.description,
-                    ' تفاصيل \n ${widget.product.Description}'),
-              ],
-            ),
-          ),
-        ),
+        ditels_prouduct(product: widget.product),
         SizedBox(
           height: 16,
         ),
@@ -133,20 +108,4 @@ class _IngredientsListState extends State<IngredientsList> {
       );
     }
   }
-}
-
-Widget _buildDetailItem(IconData icon, String text) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Icon(icon, color: Colors.blue, size: 32),
-      const SizedBox(height: 8),
-      Text(
-        text,
-        textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 14),
-      ),
-    ],
-  );
 }

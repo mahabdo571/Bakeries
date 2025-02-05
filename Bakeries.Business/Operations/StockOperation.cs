@@ -33,6 +33,7 @@ namespace Bakeries.Business.Operations
 
                 foreach (var ingredient in product.Ingredients)
                 {
+                    
                     var requiredQuantity = ingredient.Quantity * totalQuantity;
 
                     if (stockUpdates.ContainsKey(ingredient.stockId))
@@ -59,7 +60,7 @@ namespace Bakeries.Business.Operations
 
 
                     stockItem.AvailableQuantity -= stockUpdate.Value;
-
+                    stockItem.UpdatedAt = DateTime.Now;
 
                    
                     await unitOfWork.ProductionRepository.UpdateStockAsync(stockItem);
@@ -136,7 +137,7 @@ namespace Bakeries.Business.Operations
 
 
                 stockItem.AvailableQuantity += stockUpdate.Value;
-
+                stockItem.UpdatedAt = DateTime.Now;
 
 
                 await unitOfWork.ProductionRepository.UpdateStockAsync(stockItem);

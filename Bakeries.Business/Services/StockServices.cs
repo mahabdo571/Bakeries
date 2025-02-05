@@ -96,6 +96,7 @@ namespace Bakeries.Business.Services
             
 
                     modelStock.AvailableQuantity += item.Quantity;
+                    modelStock.UpdatedAt = DateTime.Now;
 
                     await unitOfWork.StockRepository.UpdateAsync(modelStock);
 

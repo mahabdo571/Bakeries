@@ -14,24 +14,20 @@ final List<NavigationItem> navigationItems = [
     route: const HomePage(),
   ),
   NavigationItem(
-    title: 'المشتريات',
+    title: 'المشتريات والفواتير',
     route: PurchasesPage(),
   ),
   NavigationItem(
-    title: 'المخزن',
+    title: 'المخازن',
     route: StockScreens(),
   ),
   NavigationItem(
-    title: 'قواعد الانتاج',
+    title: 'الانتاج',
     route: ProductScreens(), // Replace with actual Products page
   ),
   NavigationItem(
-    title: 'عمليات الانتاج',
-    route: ProductionScreen(), // Replace with actual Production page
-  ),
-  NavigationItem(
-    title: 'مبيعات',
-    route: ProductionScreen(), // Replace with actual Production page
+    title: 'المبيعات',
+    route: ProductScreens(), // Replace with actual Production page
   ),
   NavigationItem(
     title: 'الاعدادات',

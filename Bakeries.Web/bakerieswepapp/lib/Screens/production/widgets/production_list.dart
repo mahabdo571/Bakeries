@@ -1,13 +1,10 @@
 import 'package:bakerieswepapp/Screens/production/widgets/production_dialog/details_dialog.dart';
 import 'package:bakerieswepapp/Screens/production/widgets/production_dialog/production_dialog.dart';
-import 'package:bakerieswepapp/models/production_process_detail.dart';
 
 import '../../../models/production.dart';
 import 'production_card.dart';
 import '../../../services/production_service.dart';
 import 'package:flutter/material.dart';
-
-
 
 class ProductionList extends StatefulWidget {
   ProductionList({
@@ -53,7 +50,7 @@ class _ProductionListState extends State<ProductionList> {
                   production: snapshot.data![index],
                   onEdit: () => _handleEdit(snapshot.data![index]),
                   onDelete: () => _handleDelete(snapshot.data![index].Id),
-                  onDetails: ()=>_handleDetails(snapshot.data![index].Id),
+                  onDetails: () => _handleDetails(snapshot.data![index].Id),
                 ),
               );
             },
@@ -66,9 +63,13 @@ class _ProductionListState extends State<ProductionList> {
   void _handleEdit(Production production) {
     showDialog(
       context: context,
-      builder: (context) => ProductionDialog(ProductionData: production.toJson(),isEdit: true,),
+      builder: (context) => ProductionDialog(
+        ProductionData: production.toJson(),
+        isEdit: true,
+      ),
     );
   }
+
   void _handleDetails(int productionId) {
     showDialog(
       context: context,

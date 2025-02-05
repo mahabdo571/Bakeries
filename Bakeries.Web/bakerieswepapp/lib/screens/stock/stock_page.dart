@@ -10,7 +10,7 @@ class StockScreens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarForAllPage(pageName: 'المخزن'),
+      appBar: const AppBarForAllPage(pageName: 'المخازن'),
       body: const StockList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddStockDialog(context),
