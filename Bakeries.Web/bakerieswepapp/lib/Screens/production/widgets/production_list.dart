@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+
+import '../../../models/product.dart';
+import '../../../models/production.dart';
+import '../../../services/production_service.dart';
+import 'production_card.dart';
 import 'production_dialog/details_dialog.dart';
 import 'production_dialog/production_dialog.dart';
-import '../../../models/product.dart';
-
-import '../../../models/production.dart';
-import 'production_card.dart';
-import '../../../services/production_service.dart';
-import 'package:flutter/material.dart';
 
 class ProductionList extends StatefulWidget {
   final Product product;

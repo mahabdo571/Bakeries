@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../components/app_bar/app_bar_for_all_page.dart';
 import 'widgets/add_purchase_dialog/add_purchase_dialog.dart';
 import 'widgets/purchase_list.dart';
 
@@ -10,7 +9,7 @@ class PurchasesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarForAllPage(pageName: 'المشتريات والفواتير'),
+ 
       body: const PurchaseList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddPurchaseDialog(context),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../Screens/product/widgets/product_dialog/product_dialog.dart';
-import '../../components/app_bar/app_bar_for_all_page.dart';
 import 'widgets/product_list.dart';
 
 class ProductScreens extends StatelessWidget {
@@ -10,7 +9,7 @@ class ProductScreens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarForAllPage(pageName: 'الانتاج'),
+ 
       body: const ProductList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddStockDialog(context),

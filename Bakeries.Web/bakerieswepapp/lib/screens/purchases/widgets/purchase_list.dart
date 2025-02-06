@@ -1,9 +1,11 @@
 import 'dart:async';
-import 'add_purchase_dialog/add_purchase_dialog.dart';
+
 import 'package:flutter/material.dart';
+
 import '../../../models/Purchase.dart';
-import 'purchase_card.dart';
 import '../../../services/purchases_service.dart';
+import 'add_purchase_dialog/add_purchase_dialog.dart';
+import 'purchase_card.dart';
 
 class PurchaseList extends StatefulWidget {
   const PurchaseList({Key? key}) : super(key: key);

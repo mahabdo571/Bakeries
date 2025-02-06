@@ -1,10 +1,10 @@
-import '../../production/production_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Screens/ingredients/ingredients_page.dart';
 import '../../../Screens/product/widgets/product_dialog/product_dialog.dart';
 import '../../../models/product.dart';
 import '../../../services/product_service.dart';
+import '../../production/production_page.dart';
 import 'product_card.dart';
 
 class ProductList extends StatefulWidget {

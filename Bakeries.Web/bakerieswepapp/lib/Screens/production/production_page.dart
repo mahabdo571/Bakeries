@@ -1,10 +1,9 @@
-import '../ingredients/widgets/ditels_prouduct.dart';
-import '../../models/product.dart';
+import 'package:flutter/material.dart';
 
 import '../../Screens/production/widgets/production_dialog/production_dialog.dart';
 import '../../Screens/production/widgets/production_list.dart';
-import 'package:flutter/material.dart';
-import '../../components/app_bar/app_bar_for_all_page.dart';
+import '../../models/product.dart';
+import '../ingredients/widgets/ditels_prouduct.dart';
 
 class ProductionScreen extends StatelessWidget {
   final Product? product;
@@ -13,7 +12,14 @@ class ProductionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBarForAllPage(pageName: 'عمليات الانتاج للمنتج ${product!.Name}'),
+      appBar: AppBar(
+        title: Text('   عمليات انتاج ${product!.Name}'),
+        // إضافة زر الرجوع للخلف
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -39,7 +45,7 @@ class ProductionScreen extends StatelessWidget {
   void _showAddStockDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => ProductionDialog(product:product!),
+      builder: (context) => ProductionDialog(product: product!),
     );
   }
 }

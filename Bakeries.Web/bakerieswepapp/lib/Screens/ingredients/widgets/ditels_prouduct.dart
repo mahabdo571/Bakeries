@@ -1,5 +1,6 @@
-import '../../../models/product.dart';
 import 'package:flutter/material.dart';
+
+import '../../../models/product.dart';
 
 class ditels_prouduct extends StatelessWidget {
   const ditels_prouduct({

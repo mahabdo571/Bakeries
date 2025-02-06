@@ -1,4 +1,3 @@
-import 'ditels_prouduct.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Screens/ingredients/ingredients_page.dart';
@@ -7,6 +6,7 @@ import '../../../models/product.dart';
 import '../../../models/product_ingredient.dart';
 import '../../../services/ingredients_service.dart';
 import 'add_update_dialog/add_update_dialog.dart';
+import 'ditels_prouduct.dart';
 
 class IngredientsList extends StatefulWidget {
   final int productId;

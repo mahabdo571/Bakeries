@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../Screens/ingredients/widgets/ingredients_list.dart';
-import '../../components/app_bar/app_bar_for_all_page.dart';
 import '../../models/product.dart';
 import '../../services/product_service.dart';
 import 'widgets/add_update_dialog/add_update_dialog.dart';
@@ -28,7 +27,7 @@ class _IngredientsScreensState extends State<IngredientsScreens> {
   Widget build(BuildContext context) {
     if (_product == null) {
       return Scaffold(
-        appBar: AppBarForAllPage(pageName: ''),
+ 
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -40,7 +39,14 @@ class _IngredientsScreensState extends State<IngredientsScreens> {
       );
     } else {
       return Scaffold(
-        appBar: AppBarForAllPage(pageName: 'مكونات المنتج - ${_product!.Name}'),
+        appBar:  AppBar(
+        title: Text('مكونات المنتج - ${_product!.Name}'),
+        // إضافة زر الرجوع للخلف
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
         body: IngredientsList(
           productId: widget.productId,
           product: _product!,
