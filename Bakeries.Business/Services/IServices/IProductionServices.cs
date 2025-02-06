@@ -9,6 +9,6 @@ namespace Bakeries.Business.Services.IServices
 {
     public interface IProductionServices : IServices<ProductionDTO>
     {
-        Task<IEnumerable<ProductionDTO>> ProductionProcessWithAssociatedProductAsync();
+        Task<IEnumerable<ProductionDTO>> ProductionProcessWithAssociatedProductAsync(int productId);
     }
 }

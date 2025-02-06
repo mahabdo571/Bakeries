@@ -1,4 +1,4 @@
-import 'package:bakerieswepapp/Screens/production/production_page.dart';
+import '../../production/production_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Screens/ingredients/ingredients_page.dart';
@@ -82,12 +82,12 @@ class _ProductListState extends State<ProductList> {
     );
   }
 
-  void _onClickOnTheProduction(int productId) {
+  void _onClickOnTheProduction(Product product) {
     Navigator.push(
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            ProductionScreen(productId: productId),
+            ProductionScreen(product: product),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child;
         },

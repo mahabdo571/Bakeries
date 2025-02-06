@@ -1,5 +1,5 @@
-import 'package:bakerieswepapp/models/production_process_detail.dart';
-import 'package:bakerieswepapp/services/production_process_detail_service.dart';
+import '../../../../models/production_process_detail.dart';
+import '../../../../services/production_process_detail_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

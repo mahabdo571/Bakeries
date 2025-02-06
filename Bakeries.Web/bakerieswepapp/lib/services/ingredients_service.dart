@@ -1,7 +1,9 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
 import '../api_config.dart';
 import '../models/product_ingredient.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class IngredientsService {
   static Stream<List<ProductIngredient>> getProductIngredientStream(

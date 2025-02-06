@@ -37,8 +37,8 @@ class AppBarForAllPage extends StatelessWidget implements PreferredSizeWidget {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: NavButton(
-                      title: item.title,
-                      route: item.route,
+                      item: item,
+                    
                       isSelected: pageName == item.title,
                     ),
                   );

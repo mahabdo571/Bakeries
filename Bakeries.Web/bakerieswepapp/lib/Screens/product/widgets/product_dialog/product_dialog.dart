@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+
 import '../../../../Screens/product/widgets/product_dialog/product_form.dart';
 import '../../../../models/product.dart';
 import '../../../../services/product_service.dart';
-import 'package:flutter/material.dart';
 
 class ProductDialog extends StatelessWidget {
   final bool isEdit;

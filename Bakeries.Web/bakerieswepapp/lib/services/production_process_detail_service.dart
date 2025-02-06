@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../api_config.dart';
-import 'package:bakerieswepapp/models/production_process_detail.dart';
+import '../models/production_process_detail.dart';
 
 class ProductionProcsessDetailService {
  

@@ -63,10 +63,11 @@ namespace Bakeries.Business.Services
             await unitOfWork.BeginTransactionAsync();
             try
             {
-                model.UpdatedAt=DateTime.Now;
+              
                 var orginalModel = mapper.Map<ProductionModel>(model);
-
-             
+                orginalModel.UpdatedAt = DateTime.Now;
+                var tempModel = await unitOfWork.ProductionRepository.GetByIdAsync(model.Id);
+                orginalModel.CreatedAt = tempModel.CreatedAt;
 
                 await unitOfWork.ProductionRepository.UpdateAsync(orginalModel);
                 var  newModel = await unitOfWork.ProductionRepository.GetProductionWithProductAndIngredientsAsync(model.Id);
@@ -110,9 +111,9 @@ namespace Bakeries.Business.Services
     
 
     
-        public async Task<IEnumerable<ProductionDTO>> ProductionProcessWithAssociatedProductAsync()
+        public async Task<IEnumerable<ProductionDTO>> ProductionProcessWithAssociatedProductAsync(int productId)
         {
-            var model = await unitOfWork.ProductionRepository.ProductionProcessWithAssociatedProductAsync();
+            var model = await unitOfWork.ProductionRepository.ProductionProcessWithAssociatedProductAsync(productId);
 
 
 

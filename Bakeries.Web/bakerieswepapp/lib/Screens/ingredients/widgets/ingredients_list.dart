@@ -1,4 +1,4 @@
-import 'package:bakerieswepapp/Screens/ingredients/widgets/ditels_prouduct.dart';
+import 'ditels_prouduct.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Screens/ingredients/ingredients_page.dart';

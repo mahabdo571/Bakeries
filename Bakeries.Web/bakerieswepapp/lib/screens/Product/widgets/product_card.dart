@@ -9,7 +9,7 @@ class ProductCard extends StatelessWidget {
   final Function(Product) onEdit;
   final Function(int) onDelete;
   final Function(int) onClickOnTheIngredients;
-  final Function(int) onClickOnTheProduction;
+  final Function(Product) onClickOnTheProduction;
 
   const ProductCard({
     Key? key,
@@ -118,7 +118,7 @@ class ProductCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ElevatedButton.icon(
-          onPressed: () => onClickOnTheProduction(product.Id),
+          onPressed: () => onClickOnTheProduction(product),
           icon:
               const Icon(Icons.production_quantity_limits, color: Colors.white),
           label: const Text('عمليات الانتاج'),

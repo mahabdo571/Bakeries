@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 class NavigationItem {
   final String title;
-  final Widget route;
+  final Widget? route;
+  final List<NavigationItem>? subItems;
 
-  const NavigationItem({
+  NavigationItem({
     required this.title,
-    required this.route,
+    this.route,
+    this.subItems,
   });
+
+  bool get hasSubItems => subItems != null && subItems!.isNotEmpty;
 }

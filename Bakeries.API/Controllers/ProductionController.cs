@@ -36,16 +36,16 @@ namespace Bakeries.API.Controllers
             }
         }
 
-        [HttpGet("ProductionProcessWithAssociatedProduct")]
+        [HttpGet("ProductionProcessWithAssociatedProduct/{productId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<ProductionDTO>>> ProductionProcessWithAssociatedProduct()
+        public async Task<ActionResult<IEnumerable<ProductionDTO>>> ProductionProcessWithAssociatedProduct([FromRoute] int productId)
         {
 
             try
             {
-                var model = await _productionServices.ProductionProcessWithAssociatedProductAsync();
+                var model = await _productionServices.ProductionProcessWithAssociatedProductAsync(productId);
                 if (model is null)
                 {
                     _logger.LogWarning("model is null  - not found.");

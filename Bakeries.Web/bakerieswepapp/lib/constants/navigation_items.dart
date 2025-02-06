@@ -1,7 +1,4 @@
-import '../Screens/production/production_page.dart';
 import '../screens/settings/setting_page.dart';
-import 'package:flutter/material.dart';
-
 import '../models/navigation_item.dart';
 import '../screens/Product/product_page.dart';
 import '../screens/home/home_page.dart';
@@ -19,19 +16,28 @@ final List<NavigationItem> navigationItems = [
   ),
   NavigationItem(
     title: 'المخازن',
-    route: StockScreens(),
+    subItems: [
+      NavigationItem(
+        title: 'إدارة المخازن',
+        route: StockScreens(),
+      ),
+      NavigationItem(
+        title: 'جرد المخازن',
+        route: SettingsScreens(),
+      ),
+    ],
   ),
   NavigationItem(
     title: 'الانتاج',
-    route: ProductScreens(), // Replace with actual Products page
+    route: ProductScreens(),
   ),
   NavigationItem(
     title: 'المبيعات',
-    route: ProductScreens(), // Replace with actual Production page
+    route: SettingsScreens(),
   ),
   NavigationItem(
     title: 'الاعدادات',
     route: SettingsScreens(),
-    // Replace with actual Production page
   ),
 ];
+

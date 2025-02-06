@@ -1,4 +1,5 @@
-import 'package:bakerieswepapp/services/production_service.dart';
+import '../../../../models/product.dart';
+import '../../../../services/production_service.dart';
 
 import '../../../../Screens/production/widgets/production_dialog/production_form.dart';
 import '../../../../models/production.dart';
@@ -9,11 +10,12 @@ class ProductionDialog extends StatelessWidget {
   final Map<String, dynamic>? ProductionData;
   final Function(Map<String, dynamic>)? onAdd;
   final Function(Map<String, dynamic>)? onEdit;
-
+final Product product;
   const ProductionDialog({
     Key? key,
     this.isEdit = false,
     this.ProductionData,
+   required this.product,
     this.onAdd,
     this.onEdit,
   }) : super(key: key);
@@ -25,6 +27,7 @@ class ProductionDialog extends StatelessWidget {
       content: ProductionForm(
         isEdit: isEdit,
         ProductionData: ProductionData,
+        product:product,
         onSubmit: (p) => _handleSubmit(context, p),
       ),
       actions: [

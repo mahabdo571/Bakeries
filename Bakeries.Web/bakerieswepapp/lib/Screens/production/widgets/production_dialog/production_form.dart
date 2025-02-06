@@ -1,4 +1,5 @@
-import '../../../../Screens/production/widgets/production_dialog/product_item_section.dart';
+import '../../../../models/product.dart';
+
 import '../../../../models/production.dart';
 import 'package:flutter/material.dart';
 
@@ -6,11 +7,13 @@ class ProductionForm extends StatefulWidget {
   final bool isEdit;
   final Map<String, dynamic>? ProductionData;
   final Function(Production) onSubmit;
+  final Product product;
 
   const ProductionForm({
     Key? key,
     required this.isEdit,
     this.ProductionData,
+    required this.product,
     required this.onSubmit,
   }) : super(key: key);
 
@@ -37,7 +40,8 @@ class _ProductionFormState extends State<ProductionForm> {
   void _initializeFormData() {
     final data = widget.ProductionData!;
     _notesController.text = data['Notes'] ?? '';
-    _quantityProduced = data['QuantityProduced'] ??0;;
+    _quantityProduced = data['QuantityProduced'] ?? 0;
+    ;
     _quantityDamaged = data['QuantityDamaged'] ?? 0;
     _selectedItemId = data['ProductId'] ?? 0;
   }
@@ -54,15 +58,14 @@ class _ProductionFormState extends State<ProductionForm> {
   void _handleSubmit() {
     if (_formKey.currentState?.validate() ?? false) {
       final product = Production(
-        Id: widget.isEdit ? widget.ProductionData!['Id'] : 0,
-        QuantityProduced: _quantityProduced ?? 0,
-        QuantityDamaged: _quantityDamaged ?? 0,
-        Notes: _notesController.text,
-        ProductId: _selectedItemId ?? 0,
-        ProductName: null,
-        CreatedAt: DateTime.now(),
-        UpdatedAt: DateTime.now()
-      );
+          Id: widget.isEdit ? widget.ProductionData!['Id'] : 0,
+          QuantityProduced: _quantityProduced ?? 0,
+          QuantityDamaged: _quantityDamaged ?? 0,
+          Notes: _notesController.text,
+          ProductId: _selectedItemId ?? 0,
+          ProductName: null,
+          CreatedAt: DateTime.now(),
+          UpdatedAt: DateTime.now());
 
       widget.onSubmit(product);
     }
@@ -70,15 +73,32 @@ class _ProductionFormState extends State<ProductionForm> {
 
   @override
   Widget build(BuildContext context) {
+    _selectedItemId = widget.product.Id;
+
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ProductItemSection(
-              selectedItemId: _selectedItemId,
-              onItemSelected: (id) => setState(() => _selectedItemId = id),
+            TextFormField(
+              initialValue: widget.product.Name, // تعيين النص الافتراضي
+              readOnly: true, // يمنع التعديل
+              decoration: InputDecoration(
+                labelText: "اسم المنتج", // تسمية الحقل
+                border: OutlineInputBorder(), // يضيف إطار للحقل
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              initialValue: widget.product.Unit, // تعيين النص الافتراضي
+              readOnly: true, // يمنع التعديل
+              decoration: InputDecoration(
+                labelText: "الوحدة", // تسمية الحقل
+                border: OutlineInputBorder(), // يضيف إطار للحقل
+              ),
             ),
             SizedBox(
               height: 10,
@@ -87,8 +107,7 @@ class _ProductionFormState extends State<ProductionForm> {
               initialValue: _quantityProduced.toString(),
               keyboardType: TextInputType.numberWithOptions(
                   decimal: true), // لتمكين إدخال الأرقام العشرية
-              decoration: const InputDecoration(
-                  labelText: '(1.4) الكمية المنتجة- بالكيلو غرام'),
+              decoration: const InputDecoration(labelText: 'الكمية المنتجة-  '),
               onChanged: (val) {
                 _quantityProduced = double.tryParse(val) ?? 0;
               }, // استخدام double بدلاً من int
@@ -106,8 +125,8 @@ class _ProductionFormState extends State<ProductionForm> {
               initialValue: _quantityDamaged.toString(),
               keyboardType: TextInputType.numberWithOptions(
                   decimal: true), // لتمكين إدخال الأرقام العشرية
-              decoration: const InputDecoration(
-                  labelText: '(1.3) الكمية التالفة- بالكيلو غرام'),
+              decoration:
+                  const InputDecoration(labelText: ' الكمية التالفة-  '),
               onChanged: (val) {
                 _quantityDamaged = double.tryParse(val) ?? 0;
               }, // استخدام double بدلاً من int

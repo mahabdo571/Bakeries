@@ -1,5 +1,6 @@
-import 'package:bakerieswepapp/Screens/production/widgets/production_dialog/details_dialog.dart';
-import 'package:bakerieswepapp/Screens/production/widgets/production_dialog/production_dialog.dart';
+import 'production_dialog/details_dialog.dart';
+import 'production_dialog/production_dialog.dart';
+import '../../../models/product.dart';
 
 import '../../../models/production.dart';
 import 'production_card.dart';
@@ -7,8 +8,10 @@ import '../../../services/production_service.dart';
 import 'package:flutter/material.dart';
 
 class ProductionList extends StatefulWidget {
+  final Product product;
   ProductionList({
     Key? key,
+    required this.product,
   }) : super(key: key);
 
   @override
@@ -20,7 +23,7 @@ class _ProductionListState extends State<ProductionList> {
   @override
   void initState() {
     super.initState();
-    productionStream = ProductionService.getProductionStream();
+    productionStream = ProductionService.getProductionStream(widget.product.Id);
   }
 
   @override
@@ -44,10 +47,13 @@ class _ProductionListState extends State<ProductionList> {
               }
 
               return ListView.builder(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(10),
+                shrinkWrap: false,
+                physics: BouncingScrollPhysics(), // يجعل التمرير سلسًا
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) => ProductionCard(
                   production: snapshot.data![index],
+                  product:widget.product,
                   onEdit: () => _handleEdit(snapshot.data![index]),
                   onDelete: () => _handleDelete(snapshot.data![index].Id),
                   onDetails: () => _handleDetails(snapshot.data![index].Id),
@@ -63,7 +69,7 @@ class _ProductionListState extends State<ProductionList> {
   void _handleEdit(Production production) {
     showDialog(
       context: context,
-      builder: (context) => ProductionDialog(
+      builder: (context) => ProductionDialog(product:widget.product,
         ProductionData: production.toJson(),
         isEdit: true,
       ),

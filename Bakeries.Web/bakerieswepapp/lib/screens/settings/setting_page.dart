@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../components/app_bar/app_bar_for_all_page.dart';
 
 class SettingsScreens extends StatelessWidget {

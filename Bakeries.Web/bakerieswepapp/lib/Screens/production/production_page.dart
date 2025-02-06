@@ -1,4 +1,5 @@
-import 'package:bakerieswepapp/Screens/ingredients/widgets/ditels_prouduct.dart';
+import '../ingredients/widgets/ditels_prouduct.dart';
+import '../../models/product.dart';
 
 import '../../Screens/production/widgets/production_dialog/production_dialog.dart';
 import '../../Screens/production/widgets/production_list.dart';
@@ -6,17 +7,25 @@ import 'package:flutter/material.dart';
 import '../../components/app_bar/app_bar_for_all_page.dart';
 
 class ProductionScreen extends StatelessWidget {
-  final int productId;
-  const ProductionScreen({Key? key, required this.productId}) : super(key: key);
+  final Product? product;
+  const ProductionScreen({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarForAllPage(pageName: 'عمليات الانتاج'),
+      appBar:  AppBarForAllPage(pageName: 'عمليات الانتاج للمنتج ${product!.Name}'),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          ditels_prouduct(product: widget.product),
-          ProductionList(),
+          Expanded(
+            child: ditels_prouduct(product: product!),
+            flex: 1,
+          ),
+          Expanded(
+            child: ProductionList(product: product!),
+            flex: 4,
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -30,7 +39,7 @@ class ProductionScreen extends StatelessWidget {
   void _showAddStockDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => ProductionDialog(),
+      builder: (context) => ProductionDialog(product:product!),
     );
   }
 }

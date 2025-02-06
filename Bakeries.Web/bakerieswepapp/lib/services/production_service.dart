@@ -1,17 +1,16 @@
 import 'dart:convert';
 
-import '../models/production.dart';
 import 'package:http/http.dart' as http;
 
 import '../api_config.dart';
-import '../models/product.dart';
+import '../models/production.dart';
 
 class ProductionService {
-  static Stream<List<Production>> getProductionStream() async* {
+  static Stream<List<Production>> getProductionStream(int productId) async* {
     while (true) {
       try {
-        final response = await http
-            .get(Uri.parse(ApiConfig.ProductionProcessWithAssociatedProduct));
+        final response = await http.get(Uri.parse(
+            '${ApiConfig.ProductionProcessWithAssociatedProduct}/$productId'));
 
         if (response.statusCode == 200) {
           List jsonResponse = json.decode(response.body);

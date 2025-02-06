@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import '../models/Purchase.dart';
+
 import '../api_config.dart';
+import '../models/Purchase.dart';
 
 class PurchasesService {
   static Stream<List<Purchase>> getPurchasesStream() async* {

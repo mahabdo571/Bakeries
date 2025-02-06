@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/navigation_item.dart';
+import 'nav_button.dart';
 
 class ResponsiveNavMenu extends StatelessWidget {
   final String currentPage;
@@ -13,37 +14,15 @@ class ResponsiveNavMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<NavigationItem>(
-      icon: const Icon(Icons.menu, color: Colors.white),
-      itemBuilder: (BuildContext context) {
-        return items.map((NavigationItem item) {
-          return PopupMenuItem<NavigationItem>(
-            value: item,
-            child: Row(
-              children: [
-                if (currentPage == item.title)
-                  const Icon(Icons.check, size: 18, color: Colors.brown)
-                else
-                  const SizedBox(width: 18),
-                const SizedBox(width: 8),
-                Text(item.title),
-              ],
-            ),
-          );
-        }).toList();
-      },
-      onSelected: (NavigationItem item) {
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => item.route,
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              return child;
-            },
-            transitionDuration: Duration.zero,
-          ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: items.map((item) {
+        return NavButton(
+          item: item,
+          isSelected: currentPage == item.title,
         );
-      },
+      }).toList(),
     );
   }
 }
+

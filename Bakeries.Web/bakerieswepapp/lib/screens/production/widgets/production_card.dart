@@ -1,3 +1,4 @@
+import '../../../models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../models/production.dart';
@@ -9,14 +10,15 @@ class ProductionCard extends StatelessWidget {
   final VoidCallback onEdit;
   final VoidCallback onDetails;
   final VoidCallback onDelete;
-
-  const ProductionCard({
-    Key? key,
-    required this.production,
-    required this.onEdit,
-    required this.onDelete,
-    required this.onDetails,
-  }) : super(key: key);
+  final Product product;
+  const ProductionCard(
+      {Key? key,
+      required this.production,
+      required this.onEdit,
+      required this.onDelete,
+      required this.onDetails,
+      required this.product})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,52 +33,14 @@ class ProductionCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
-            const Divider(height: 24, thickness: 1),
+            // _buildHeader(),
+            //  const Divider(height: 24, thickness: 1),
             _buildDetails(),
             const Divider(height: 24, thickness: 1),
             _buildActions(context),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.brown.shade100,
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(Icons.inventory, color: Colors.brown, size: 32),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                production.ProductName ?? '',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                production.Notes,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade700,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 
@@ -99,7 +63,7 @@ class ProductionCard extends StatelessWidget {
             ProductDetailItem(
               icon: Icons.category,
               label: 'الوحدة',
-              value: 'كيلو غرام',
+              value: product.Unit,
             ),
           ],
         ),
@@ -120,7 +84,6 @@ class ProductionCard extends StatelessWidget {
                   .format(production.UpdatedAt ?? DateTime.now())
                   .toString(),
             ),
-           
           ],
         ),
       ],
