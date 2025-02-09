@@ -98,6 +98,7 @@ class _PurchaseFormState extends State<PurchaseForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ItemSection(
+              isEdit: widget.isEdit,
               selectedItemId: _selectedItemId,
               onItemSelected: (id) => setState(() => _selectedItemId = id),
             ),

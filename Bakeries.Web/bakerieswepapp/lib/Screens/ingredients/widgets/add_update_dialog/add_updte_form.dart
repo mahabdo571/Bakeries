@@ -80,12 +80,12 @@ class _AddUpdateFormState extends State<AddUpdateForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ItemSection(
+              isEdit: widget.isEdit,
               selectedItemId: _itemSelected,
               onItemSelected: (itemId) {
                 setState(() => _itemSelected = itemId);
               },
             ),
-            const SizedBox(height: 16),
             const SizedBox(height: 16),
             QuantitySection(
               quantity: _quantity,

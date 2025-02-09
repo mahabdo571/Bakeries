@@ -23,12 +23,12 @@ final List<NavigationItem> navigationItems = [
     icon: Icons.store,
     subItems: [
       NavigationItem(
-        title: 'إدارة المخازن',
+        title: 'مخزن المواد الخام',
         route: StockScreens(),
         icon: Icons.inventory,
       ),
       NavigationItem(
-        title: 'جرد المخازن',
+        title: 'مخزن المعرض',
         route: SettingsScreens(),
         icon: Icons.list_alt,
       ),

@@ -72,16 +72,19 @@ class IngredientsCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ProductDetailItem(
+              isMobile: false,
               icon: Icons.inventory,
               label: 'الكمية ',
               value: productIngredient.Quantity.toString(),
             ),
             ProductDetailItem(
+              isMobile: false,
               icon: Icons.inventory,
               label: 'تفاصيل اضافية',
               value: productIngredient.Notes,
             ),
             ProductDetailItem(
+              isMobile: false,
               icon: Icons.category,
               label: 'الوحدة',
               value: productIngredient.UnitOfMeasure,
@@ -92,6 +95,7 @@ class IngredientsCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ProductDetailItem(
+              isMobile: false,
               icon: Icons.inventory,
               label: 'تاريخ الاضافة',
               value: DateFormat('dd/MM/yyyy (HH:mm)')
@@ -99,6 +103,7 @@ class IngredientsCard extends StatelessWidget {
                   .toString(),
             ),
             ProductDetailItem(
+              isMobile: false,
               icon: Icons.inventory,
               label: 'تاريخ التعديل',
               value: DateFormat('dd/MM/yyyy (HH:mm)')

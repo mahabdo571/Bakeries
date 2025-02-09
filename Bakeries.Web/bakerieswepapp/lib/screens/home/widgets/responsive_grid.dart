@@ -13,9 +13,9 @@ class ResponsiveGrid extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         int crossAxisCount;
-        if (constraints.maxWidth < 600) {
+        if (constraints.maxWidth < 630) {
           crossAxisCount = 1; // Mobile
-        } else if (constraints.maxWidth < 1200) {
+        } else if (constraints.maxWidth < 1240) {
           crossAxisCount = 2; // Tablet
         } else {
           crossAxisCount = 4; // Desktop

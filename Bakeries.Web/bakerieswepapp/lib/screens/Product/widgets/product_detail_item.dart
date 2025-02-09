@@ -4,12 +4,14 @@ class ProductDetailItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
+  final bool isMobile;
 
   const ProductDetailItem({
     Key? key,
     required this.icon,
     required this.label,
     required this.value,
+    required this.isMobile,
   }) : super(key: key);
 
   @override

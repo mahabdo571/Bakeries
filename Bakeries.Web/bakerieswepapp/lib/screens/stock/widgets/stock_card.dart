@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../../../models/Stock.dart';
 import 'stock_detail_item.dart';
 
@@ -18,44 +17,76 @@ class StockCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // تحديد حالة الموبايل باستخدام العرض العام للشاشة
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      elevation: 5,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      margin: EdgeInsets.symmetric(
+        horizontal: isMobile ? 12 : 24,
+        vertical: 8,
+      ),
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        // حشوة داخلية تناسب حجم الشاشة
+        padding: EdgeInsets.all(isMobile ? 12 : 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
-            const Divider(height: 24),
-            _buildDetails(),
-            const Divider(height: 24),
-            _buildActions(),
+            _buildHeader(isMobile),
+            const SizedBox(height: 8),
+            const Divider(height: 1),
+            const SizedBox(height: 8),
+            _buildDetails(isMobile),
+            const SizedBox(height: 8),
+            const Divider(height: 1),
+            const SizedBox(height: 8),
+            _buildActions(isMobile),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(bool isMobile) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Icon(Icons.inventory, color: Colors.brown, size: 24),
-        const SizedBox(width: 12),
+        Icon(
+          Icons.inventory,
+          color: Colors.blueGrey[700],
+          size: isMobile ? 22 : 28,
+        ),
+        SizedBox(width: isMobile ? 10 : 16),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 stock.ItemName,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: isMobile ? 18 : 22,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[800],
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              Text(
-                stock.Notes,
-                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-              ),
+              if (stock.Notes.isNotEmpty) ...[
+                SizedBox(height: isMobile ? 4 : 6),
+                Text(
+                  stock.Notes,
+                  style: TextStyle(
+                    fontSize: isMobile ? 13 : 15,
+                    color: Colors.grey[600],
+                    height: 1.3,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ],
           ),
         ),
@@ -63,58 +94,89 @@ class StockCard extends StatelessWidget {
     );
   }
 
-  Widget _buildDetails() {
-    return Column(
+  Widget _buildDetails(bool isMobile) {
+    return Wrap(
+      spacing: isMobile ? 12 : 20,
+      runSpacing: isMobile ? 12 : 16,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            StockDetailItem(
-              icon: Icons.inventory,
-              label: 'الكمية',
-              value: stock.AvailableQuantity.toString(),
-            ),
-            StockDetailItem(
-              icon: Icons.category,
-              label: 'الوحدة',
-              value: stock.UnitOfMeasure,
-            ),
-            StockDetailItem(
-              icon: Icons.date_range,
-              label: 'تاريخ اخر تحديث ',
-              value: DateFormat('dd/MM/yyyy (HH:mm)')
-                  .format(stock.UpdatedAt ?? DateTime.now())
-                  .toString(),
-            ),
-            StockDetailItem(
-              icon: Icons.date_range,
-              label: 'تاريخ الاضافة',
-              value: DateFormat('dd/MM/yyyy (HH:mm)')
-                  .format(stock.CreatedAt ?? DateTime.now())
-                  .toString(),
-            ),
-          ],
+        StockDetailItem(
+          icon: Icons.inventory,
+          label: 'الكمية',
+          value: stock.AvailableQuantity.toString(),
+          isHorizontal: true,
+          isMobile: isMobile,
+        ),
+        StockDetailItem(
+          icon: Icons.category,
+          label: 'الوحدة',
+          value: stock.UnitOfMeasure,
+          isHorizontal: true,
+          isMobile: isMobile,
+        ),
+        StockDetailItem(
+          icon: Icons.date_range,
+          label: 'تاريخ اخر تحديث',
+          value: _formatDate(stock.UpdatedAt),
+          isHorizontal: true,
+          isMobile: isMobile,
+        ),
+        StockDetailItem(
+          icon: Icons.date_range,
+          label: 'تاريخ الاضافة',
+          value: _formatDate(stock.CreatedAt),
+          isHorizontal: true,
+          isMobile: isMobile,
         ),
       ],
     );
   }
 
-  Widget _buildActions() {
+  String _formatDate(DateTime? date) {
+    return DateFormat('dd/MM/yyyy (HH:mm)')
+        .format(date ?? DateTime.now())
+        .toString();
+  }
+
+  Widget _buildActions(bool isMobile) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ElevatedButton.icon(
+          icon: Icon(Icons.edit, size: isMobile ? 18 : 20),
+          label: Text(
+            'تعديل',
+            style: TextStyle(fontSize: isMobile ? 14 : 16),
+          ),
           onPressed: () => onEdit(stock),
-          icon: const Icon(Icons.edit, color: Colors.white),
-          label: const Text('تعديل'),
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            padding: EdgeInsets.symmetric(
+              horizontal: isMobile ? 12 : 16,
+              vertical: isMobile ? 8 : 12,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
         ),
         const SizedBox(width: 8),
         ElevatedButton.icon(
+          icon: Icon(Icons.delete, size: isMobile ? 18 : 20),
+          label: Text(
+            'حذف',
+            style: TextStyle(fontSize: isMobile ? 14 : 16),
+          ),
           onPressed: () => onDelete(stock.Id),
-          icon: const Icon(Icons.delete, color: Colors.white),
-          label: const Text('حذف'),
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            padding: EdgeInsets.symmetric(
+              horizontal: isMobile ? 12 : 16,
+              vertical: isMobile ? 8 : 12,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
         ),
       ],
     );

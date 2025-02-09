@@ -51,16 +51,19 @@ class ProductionCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ProductDetailItem(
+              isMobile: false,
               icon: Icons.production_quantity_limits,
               label: 'الكمية المنتجة',
               value: production.QuantityProduced.toString(),
             ),
             ProductDetailItem(
+              isMobile: false,
               icon: Icons.error,
               label: 'الكمية التالفة',
               value: production.QuantityDamaged.toString(),
             ),
             ProductDetailItem(
+              isMobile: false,
               icon: Icons.category,
               label: 'الوحدة',
               value: product.Unit,
@@ -71,6 +74,7 @@ class ProductionCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ProductDetailItem(
+              isMobile:false,
               icon: Icons.production_quantity_limits,
               label: 'تاريخ الانتاج',
               value: DateFormat('dd/MM/yyyy (HH:mm)')
@@ -78,6 +82,7 @@ class ProductionCard extends StatelessWidget {
                   .toString(),
             ),
             ProductDetailItem(
+                isMobile:false,
               icon: Icons.error,
               label: 'تاريخ التعديل',
               value: DateFormat('dd/MM/yyyy (HH:mm)')
@@ -136,3 +141,5 @@ class ProductionCard extends StatelessWidget {
     );
   }
 }
+
+

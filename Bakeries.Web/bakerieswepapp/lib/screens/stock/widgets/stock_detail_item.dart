@@ -4,12 +4,15 @@ class StockDetailItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
-
+final bool isHorizontal;
+final bool isMobile;
   const StockDetailItem({
     Key? key,
     required this.icon,
     required this.label,
     required this.value,
+    required this.isHorizontal,
+    required this.isMobile
   }) : super(key: key);
 
   @override

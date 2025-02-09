@@ -6,11 +6,13 @@ import '../../../../../services/stock_service.dart';
 class ItemSection extends StatefulWidget {
   final int? selectedItemId;
   final Function(int) onItemSelected;
+  final bool isEdit;
 
   const ItemSection({
     Key? key,
     this.selectedItemId,
     required this.onItemSelected,
+    required this.isEdit,
   }) : super(key: key);
 
   @override
@@ -53,6 +55,7 @@ class _ItemSectionState extends State<ItemSection> {
       value: widget.selectedItemId,
       items: _items.map((item) {
         return DropdownMenuItem<int>(
+          enabled: !widget.isEdit,
           value: item.Id,
           child: Text(item.ItemName),
         );

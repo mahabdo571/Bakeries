@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
 
   ListTile _buildMobileSubItem(NavigationItem subItem, bool isMobile) {
     return ListTile(
+
       leading: Icon(subItem.icon),
       title: Text(subItem.title),
       onTap: () => _navigateTo(subItem.route!, isMobile),
@@ -68,6 +69,7 @@ class _HomePageState extends State<HomePage> {
     return navigationItems.map((item) {
       if (item.hasSubItems) {
         return MenuAnchor(
+          
           menuChildren: item.subItems!.map((subItem) {
             return MenuItemButton(
               child: Row(
@@ -119,7 +121,9 @@ class _HomePageState extends State<HomePage> {
                 ? Text('مخبز التوفيق')
                 : SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(children: _buildDesktopNavItems()),
+                    child: Row(
+                      children:_buildDesktopNavItems())
+                      ,
                   ),
           ),
           drawer: isMobile ? _buildMobileDrawer() : null,
