@@ -21,6 +21,11 @@ namespace Bakeries.DataAccess.Entities
         [MaxLength(200)]
         public string ItemName { get; set; }
 
+        // سعر المنتج علي اكان تكلفة انتاجه ام بكم قمت بشرائه
+        [Required]
+        public decimal CostPrice { get; set; } 
+        
+        
         //  السعر الأساسي للوحدة للناس
         [Required]
         public decimal UnitPriceForPeople  { get; set; } 
