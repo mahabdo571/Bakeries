@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -15,8 +16,7 @@ namespace Bakeries.DataAccess.Entities
         [ForeignKey("DailySalesId")]
         public virtual DailySaleModel DailySales { get; set; }
 
-        // معرف المنتج المباع
-        public int FinishedProductInventoryId { get; set; }
+
 
         // اسم المنتج (للتوثيق في حال تغيرت بيانات المنتج لاحقاً)
         public string ProductName { get; set; }
@@ -36,5 +36,9 @@ namespace Bakeries.DataAccess.Entities
         {
             get { return (UnitPrice * Quantity) - Discount; }
         }
+
+        [Required]
+        public int FinishedProductInventoryId { get; set; }
+        public FinishedProductInventoryModel FinishedProductInventory { get; set; }
     }
 }

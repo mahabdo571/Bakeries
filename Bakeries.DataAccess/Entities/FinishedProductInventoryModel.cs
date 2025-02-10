@@ -56,6 +56,7 @@ namespace Bakeries.DataAccess.Entities
 
         public ICollection<PurchaseModel> Purchases { get; set; }
 
+        public ICollection<SalesDetailModel> Details { get; set; } = new List<SalesDetailModel>();
 
 
     }
