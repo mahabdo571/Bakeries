@@ -91,6 +91,7 @@ builder.Services.AddScoped<IProductIngredientRepo, ProductIngredientRepo>();
 builder.Services.AddScoped<IProductionRepo, ProductionRepo>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IProductionProcessDetailRepo, ProductionProcessDetailRepo>();
+builder.Services.AddScoped<IFinishedProductInventoryRepo, FinishedProductInventoryRepo>();
 
 //Services
 builder.Services.AddScoped<IPurchasesServices, PurchasesServices>();
