@@ -18,6 +18,7 @@ namespace Bakeries.DataAccess
         public DbSet<ProductIngredientModel> ProductIngredients { get; set; }
         public DbSet<ProductionModel> Productions { get; set; }
         public DbSet<ProductionProcessDetailModel> ProductionProcessDetails { get; set; }
+        public DbSet<FinishedProductInventoryModel> FinishedProductInventorys { get; set; }
         public clsDbContext(DbContextOptions op) : base(op)
         {
          

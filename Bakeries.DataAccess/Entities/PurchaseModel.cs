@@ -15,8 +15,7 @@ namespace Bakeries.DataAccess.Entities
         [StringLength(100)] // تحديد الحد الأقصى لعدد الحروف
         public string SupplierName { get; set; } // اسم المورد
       
-        [Required]
-        public int ItemId { get; set; } // اسم المورد
+  
 
         [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف
         public string SupplierInvoiceNumber { get; set; } // رقم فاتورة المورد
@@ -50,8 +49,23 @@ namespace Bakeries.DataAccess.Entities
         public string Status { get; set; } // حالة العملية
 
 
+ 
+
+
+        // قيمة لتحديد المخزن المختار: 
+        // مثلاً 1 = مخزن أول، 2 = مخزن ثاني
+        public int WarehouseSelection { get; set; }
+
+        // العلاقة مع المخزن الأول (nullable لأن العملية قد تكون من المخزن الثاني)
+      
+        public int? ItemId { get; set; } // اسم المورد
         [ForeignKey("ItemId")]
-        public StockModel Item { get; set; } // الكلاس المرتبط
+        public virtual StockModel Item  { get; set; }
+
+        // العلاقة مع المخزن الثاني (nullable لأن العملية قد تكون من المخزن الأول)
+        public int? FinishedProductInventoryId { get; set; }
+        [ForeignKey("FinishedProductInventoryId")]
+        public virtual FinishedProductInventoryModel FinishedProductInventory { get; set; }
 
     }
 }
