@@ -37,4 +37,12 @@ class ApiConfig {
 //ProductionProcessDetail
   static const String ProductionProcessDetailByPruductionId =
       '$baseUrl/ProductionProcessDetail';
+
+
+      //FinishedProductInventory
+  static const String FinishedProductInventory = '$baseUrl/FinishedProductInventory';
+  static const String FinishedProductInventoryAll = '$FinishedProductInventory/All';
+  static const String FinishedProductInventoryById = '$FinishedProductInventory/';
+
+
 }
