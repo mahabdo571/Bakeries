@@ -154,12 +154,16 @@ namespace Bakeries.Business.Services
             await unitOfWork.BeginTransactionAsync();
             model.UpdatedAt = DateTime.Now;
 
+       
             try
             {
 
               await UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(model);
 
                 var purchaseModel = _mapper.Map<PurchaseModel>(model);
+                var temp = await unitOfWork.PurchasesRepository.GetByIdAsync(model.Id);
+                purchaseModel.CreatedAt = temp.CreatedAt;
+
                 await unitOfWork.PurchasesRepository.UpdateAsync(purchaseModel);
 
                 await unitOfWork.SaveChangesAsync();

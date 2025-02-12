@@ -100,6 +100,7 @@ builder.Services.AddScoped<IProductServices, ProductServices>();
 builder.Services.AddScoped<IProductIngredientService, ProductIngredientService>();
 builder.Services.AddScoped<IProductionServices, ProductionServices>();
 builder.Services.AddScoped<IProductionProcessDetailService, ProductionProcessDetailServices>();
+builder.Services.AddScoped<IFinishedProductInventoryService, FinishedProductInventoryService>();
 
 
 //Event

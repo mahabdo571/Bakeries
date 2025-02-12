@@ -10,8 +10,8 @@ namespace Bakeries.DataAccess
         (clsDbContext context, IProductsRepo productRepository,
         IProductionRepo productionRepository, IStockRepo stockRepository,
         IProductIngredientRepo productIngredientRepository, IPurchasesRepo purchasesRepository,
-        IProductionProcessDetailRepo productionProcessDetailRepo
-        
+        IProductionProcessDetailRepo productionProcessDetailRepo,IFinishedProductInventoryRepo finishedProductInventoryRepo
+
         ) : IUnitOfWork
     {
 
@@ -26,6 +26,8 @@ namespace Bakeries.DataAccess
         public IProductIngredientRepo ProductIngredientRepository { get; } = productIngredientRepository;
         public IPurchasesRepo PurchasesRepository { get; } = purchasesRepository;
         public IProductionProcessDetailRepo ProductionProcessDetailRepository { get; } = productionProcessDetailRepo;
+
+        public IFinishedProductInventoryRepo FinishedProductInventoryRepo { get; } = finishedProductInventoryRepo;
 
         public async Task BeginTransactionAsync()
         {

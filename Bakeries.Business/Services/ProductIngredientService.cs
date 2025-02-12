@@ -117,6 +117,10 @@ namespace Bakeries.Business.Services
            
             var mod = mapper.Map<ProductIngredientModel>(model);
             mod.UpdatedAt = DateTime.Now;
+
+            var temp = await unitOfWork.ProductIngredientRepository.GetByIdAsync(model.Id);
+            mod.CreatedAt = temp.CreatedAt;
+
             await unitOfWork.ProductIngredientRepository.UpdateAsync(mod);
         }
     }

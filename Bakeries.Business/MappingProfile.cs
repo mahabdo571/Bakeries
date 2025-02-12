@@ -13,6 +13,7 @@ namespace Bakeries.Business
             CreateMap<StockModel, StockDTO>().ReverseMap();
             CreateMap<ProductModel, ProductDTO>().ReverseMap();
             CreateMap<ProductIngredientModel, ProductIngredientDTO>().ReverseMap();
+            CreateMap<FinishedProductInventoryModel, FinishedProductInventoryDTO>().ReverseMap();
 
 
 
