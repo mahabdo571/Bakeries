@@ -15,6 +15,7 @@ namespace Business.Shared.DTOs
         public string ItemName { get; set; }
         public string ItemDescription { get; set; }
 
+        public bool isFinishedProductInventory { get; set; }
 
         [MaxLength]
         [Column(TypeName = "nvarchar(max)")]

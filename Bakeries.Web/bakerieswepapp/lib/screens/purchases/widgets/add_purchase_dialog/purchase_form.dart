@@ -1,3 +1,4 @@
+import 'package:bakerieswepapp/Screens/purchases/widgets/add_purchase_dialog/form_sections/item_section_finished_product_inventory.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../models/Purchase.dart';
@@ -9,12 +10,14 @@ import 'form_sections/supplier_section.dart';
 
 class PurchaseForm extends StatefulWidget {
   final bool isEdit;
+  final bool isFinishedProductInventory;
   final Map<String, dynamic>? purchaseData;
   final Function(Purchase) onSubmit;
 
   const PurchaseForm({
     Key? key,
     required this.isEdit,
+    required this.isFinishedProductInventory,
     this.purchaseData,
     required this.onSubmit,
   }) : super(key: key);
@@ -79,6 +82,7 @@ class _PurchaseFormState extends State<PurchaseForm> {
           Notes: _notesController.text,
           TotalPrice: _quantity * _unitPrice,
           ItemName: '',
+          isFinishedProductInventory: widget.isFinishedProductInventory,
           ItemDescription: '',
           SupplierName: _supplierNameController.text,
           SupplierInvoiceNumber: _supplierInvoiceNumberController.text,
@@ -97,11 +101,19 @@ class _PurchaseFormState extends State<PurchaseForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ItemSection(
-              isEdit: widget.isEdit,
-              selectedItemId: _selectedItemId,
-              onItemSelected: (id) => setState(() => _selectedItemId = id),
-            ),
+            widget.isFinishedProductInventory
+                ? ItemSectionFinishedProductInventory(
+                    isEdit: widget.isEdit,
+                    selectedItemId: _selectedItemId,
+                    onItemSelected: (id) =>
+                        setState(() => _selectedItemId = id),
+                  )
+                : ItemSection(
+                    isEdit: widget.isEdit,
+                    selectedItemId: _selectedItemId,
+                    onItemSelected: (id) =>
+                        setState(() => _selectedItemId = id),
+                  ),
             const SizedBox(height: 16),
             SupplierSection(
               supplierNameController: _supplierNameController,

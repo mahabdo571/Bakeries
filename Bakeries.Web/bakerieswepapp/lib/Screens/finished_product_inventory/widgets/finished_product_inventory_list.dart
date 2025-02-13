@@ -1,7 +1,9 @@
+import 'package:bakerieswepapp/Screens/finished_product_inventory/widgets/add_edit_dialog/add_finished_product_inventory_dialog.dart';
+import 'package:bakerieswepapp/Screens/finished_product_inventory/widgets/finished_product_inventory_card.dart';
 import 'package:bakerieswepapp/models/finished_product_inventory.dart';
 import 'package:bakerieswepapp/services/finished_product_inventory_service.dart';
 import 'package:flutter/material.dart';
-import '../../../models/Stock.dart';
+
 import '../../../services/stock_service.dart';
 
 
@@ -68,7 +70,7 @@ class _FinishedProductInventoryListState extends State<FinishedProductInventoryL
               mainAxisExtent: desiredCardHeight,
             ),
             itemBuilder: (context, index) => FinishedProductInventoryCard(
-              stock: snapshot.data![index],
+              finishedProductInventory: snapshot.data![index],
               onEdit: _handleEdit,
               onDelete: _handleDelete,
             ),
@@ -78,12 +80,12 @@ class _FinishedProductInventoryListState extends State<FinishedProductInventoryL
     );
   }
 
-  void _handleEdit(Stock stock) {
+  void _handleEdit(FinishedProductInventory fpi) {
     showDialog(
       context: context,
-      builder: (context) => AddStockDialog(
+      builder: (context) => AddFinishedProductInventoryDialog(
         isEdit: true,
-        stockData: stock.toJson(),
+        stockData: fpi.toJson(),
         onAdd: (newStock) {
           // يمكن معالجة عملية التعديل هنا
         },

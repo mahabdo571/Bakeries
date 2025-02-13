@@ -12,6 +12,7 @@ class Purchase {
   final String PaymentMethod;
   final String Status;
   final int ItemId;
+  final bool isFinishedProductInventory;
   final DateTime? CreatedAt;
   final DateTime? UpdatedAt;
 
@@ -29,6 +30,7 @@ class Purchase {
     required this.PaymentMethod,
     required this.Status,
     required this.ItemId,
+    required this.isFinishedProductInventory,
     required this.CreatedAt,
     required this.UpdatedAt,
   });
@@ -50,6 +52,7 @@ class Purchase {
         PaymentMethod: json['PaymentMethod'] ?? '',
         Status: json['Status'] ?? '',
         ItemId: json['ItemId'] ?? 0,
+        isFinishedProductInventory: json['isFinishedProductInventory'] ?? false,
         CreatedAt:
             DateTime.tryParse(json['CreatedAt'] ?? '1-1-1') ?? DateTime.now(),
         UpdatedAt:
@@ -68,6 +71,7 @@ class Purchase {
       'SupplierName': SupplierName ?? '',
       'SupplierInvoiceNumber': SupplierInvoiceNumber ?? '',
       'ItemName': ItemName ?? '',
+      'isFinishedProductInventory': isFinishedProductInventory ?? false,
       'ItemDescription': ItemDescription ?? '',
       'UnitOfMeasure': UnitOfMeasure ?? 'لتر',
       'PaymentMethod': PaymentMethod ?? '',

@@ -1,3 +1,4 @@
+import 'package:bakerieswepapp/Screens/finished_product_inventory/finished_product_inventory_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../models/navigation_item.dart';
@@ -29,7 +30,7 @@ final List<NavigationItem> navigationItems = [
       ),
       NavigationItem(
         title: 'مخزن المعرض',
-        route: SettingsScreens(),
+        route: FinishedProductInventoryScreen(),
         icon: Icons.list_alt,
       ),
     ],

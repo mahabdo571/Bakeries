@@ -6,6 +6,7 @@ import 'purchase_form.dart';
 
 class AddPurchaseDialog extends StatelessWidget {
   final bool isEdit;
+  final bool isFinishedProductInventory;
   final Map<String, dynamic>? purchaseData;
   final Function(Map<String, dynamic>)? onAdd;
   final Function(Map<String, dynamic>)? onEdit;
@@ -13,6 +14,7 @@ class AddPurchaseDialog extends StatelessWidget {
   const AddPurchaseDialog({
     Key? key,
     this.isEdit = false,
+   required this.isFinishedProductInventory,
     this.purchaseData,
     this.onAdd,
     this.onEdit,
@@ -24,6 +26,7 @@ class AddPurchaseDialog extends StatelessWidget {
       title: Text(isEdit ? 'تعديل عملية شراء' : 'إضافة عملية شراء'),
       content: PurchaseForm(
         isEdit: isEdit,
+        isFinishedProductInventory: isFinishedProductInventory,
         purchaseData: purchaseData,
         onSubmit: (purchase) => _handleSubmit(context, purchase),
       ),

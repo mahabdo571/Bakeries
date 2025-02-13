@@ -163,7 +163,6 @@ namespace Bakeries.Business.Services
                 var purchaseModel = _mapper.Map<PurchaseModel>(model);
                 var temp = await unitOfWork.PurchasesRepository.GetByIdAsync(model.Id);
                 purchaseModel.CreatedAt = temp.CreatedAt;
-
                 await unitOfWork.PurchasesRepository.UpdateAsync(purchaseModel);
 
                 await unitOfWork.SaveChangesAsync();
@@ -219,6 +218,7 @@ namespace Bakeries.Business.Services
             // تعديل الكمية المتاحة
             stockModel.AvailableQuantity += quantityDifference;
 
+       
             // تحديث المخزون
             await _stockServices.UpdateAsync(stockModel);
         }

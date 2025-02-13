@@ -56,8 +56,11 @@ namespace Bakeries.DataAccess.Entities
         // مثلاً 1 = مخزن أول، 2 = مخزن ثاني
         public int WarehouseSelection { get; set; }
 
+        [Required]
+        public bool isFinishedProductInventory { get; set; } = false;
+
         // العلاقة مع المخزن الأول (nullable لأن العملية قد تكون من المخزن الثاني)
-      
+
         public int? ItemId { get; set; } // اسم المورد
         [ForeignKey("ItemId")]
         public virtual StockModel Item  { get; set; }

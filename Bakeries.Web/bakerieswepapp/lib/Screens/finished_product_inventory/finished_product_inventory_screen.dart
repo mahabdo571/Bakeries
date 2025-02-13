@@ -1,3 +1,4 @@
+import 'package:bakerieswepapp/Screens/finished_product_inventory/widgets/add_edit_dialog/add_finished_product_inventory_dialog.dart';
 import 'package:bakerieswepapp/Screens/finished_product_inventory/widgets/finished_product_inventory_list.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class FinishedProductInventoryScreen extends StatelessWidget {
   void _showAddStockDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AddStockDialog(
+      builder: (context) => AddFinishedProductInventoryDialog(
         isEdit: false,
         onAdd: (newStock) {
           // Handle add callback

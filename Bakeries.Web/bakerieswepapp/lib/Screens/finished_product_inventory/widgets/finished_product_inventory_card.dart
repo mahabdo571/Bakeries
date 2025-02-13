@@ -1,3 +1,4 @@
+import 'package:bakerieswepapp/Screens/stock/widgets/stock_detail_item.dart';
 import 'package:bakerieswepapp/models/finished_product_inventory.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -103,28 +104,28 @@ class FinishedProductInventoryCard extends StatelessWidget {
         StockDetailItem(
           icon: Icons.inventory,
           label: 'الكمية',
-          value: stock.AvailableQuantity.toString(),
+          value: finishedProductInventory.AvailableQuantity.toString(),
           isHorizontal: true,
           isMobile: isMobile,
         ),
         StockDetailItem(
           icon: Icons.category,
           label: 'الوحدة',
-          value: stock.UnitOfMeasure,
+          value: finishedProductInventory.Unit,
           isHorizontal: true,
           isMobile: isMobile,
         ),
         StockDetailItem(
           icon: Icons.date_range,
           label: 'تاريخ اخر تحديث',
-          value: _formatDate(stock.UpdatedAt),
+          value: _formatDate(finishedProductInventory.UpdatedAt),
           isHorizontal: true,
           isMobile: isMobile,
         ),
         StockDetailItem(
           icon: Icons.date_range,
           label: 'تاريخ الاضافة',
-          value: _formatDate(stock.CreatedAt),
+          value: _formatDate(finishedProductInventory.CreatedAt),
           isHorizontal: true,
           isMobile: isMobile,
         ),
@@ -148,7 +149,7 @@ class FinishedProductInventoryCard extends StatelessWidget {
             'تعديل',
             style: TextStyle(fontSize: isMobile ? 14 : 16),
           ),
-          onPressed: () => onEdit(stock),
+          onPressed: () => onEdit(finishedProductInventory),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.blue,
             padding: EdgeInsets.symmetric(
@@ -167,7 +168,7 @@ class FinishedProductInventoryCard extends StatelessWidget {
             'حذف',
             style: TextStyle(fontSize: isMobile ? 14 : 16),
           ),
-          onPressed: () => onDelete(stock.Id),
+          onPressed: () => onDelete(finishedProductInventory.Id),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
             padding: EdgeInsets.symmetric(

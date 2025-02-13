@@ -346,6 +346,9 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<int>("WarehouseSelection")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isFinishedProductInventory")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FinishedProductInventoryId");
