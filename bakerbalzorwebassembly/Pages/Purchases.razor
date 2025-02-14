@@ -1,0 +1,270 @@
+﻿@page "/stocks"
+@using Business.Shared.DTOs
+@using bakerbalzorwebassembly.Services
+@inject StockService StockService
+
+<h3 class="mb-4">إدارة المخزون</h3>
+
+<!-- شريط البحث وزر الإضافة -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="w-50">
+        <input type="text" class="form-control" placeholder="ابحث باسم العنصر..." @oninput="SearchStocks" value="@searchText" />
+    </div>
+    <button class="btn btn-success" @onclick="ShowAddModal">
+        <i class="bi bi-plus-lg"></i> إضافة عنصر جديد
+    </button>
+</div>
+
+<!-- الجدول المتجاوب -->
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <!-- تظهر فقط على سطح المكتب -->
+                <th class="d-none d-md-table-cell">#</th>
+                <th>اسم العنصر</th>
+                <th>الكمية</th>
+                <th class="d-none d-md-table-cell">وحدة القياس</th>
+                <th class="d-none d-md-table-cell">الحد الأدنى</th>
+                <th class="d-none d-md-table-cell">الموقع</th>
+                <th class="d-none d-md-table-cell">الملاحظات</th>
+                <th class="d-none d-md-table-cell">تاريخ الإنشاء</th>
+                <th class="d-none d-md-table-cell">تاريخ التعديل</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (stocks == null)
+            {
+                <tr>
+                    <td colspan="10" class="text-center">جاري التحميل...</td>
+                </tr>
+            }
+            else if (!FilteredStocks.Any())
+            {
+                <tr>
+                    <td colspan="10" class="text-center">لا توجد بيانات</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var stock in FilteredStocks)
+                {
+                    <tr @onclick="() => ShowDetails(stock)" style="cursor: pointer;">
+                        <td class="d-none d-md-table-cell">@stock.Id</td>
+                        <td>@stock.ItemName</td>
+                        <td>@stock.AvailableQuantity</td>
+                        <td class="d-none d-md-table-cell">@stock.UnitOfMeasure</td>
+                        <td class="d-none d-md-table-cell">@stock.ReorderLevel</td>
+                        <td class="d-none d-md-table-cell">@stock.Location</td>
+                        <td class="d-none d-md-table-cell">@stock.Notes</td>
+                        <td class="d-none d-md-table-cell">
+                            @(stock.CreatedAt.HasValue ? stock.CreatedAt.Value.ToString("yyyy-MM-dd") : "-")
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            @(stock.UpdatedAt.HasValue ? stock.UpdatedAt.Value.ToString("yyyy-MM-dd") : "-")
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1"
+                            @onclick:stopPropagation
+                                    @onclick="() => ShowEdit(stock)"
+                                    title="تعديل">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger"
+                            @onclick:stopPropagation
+                                    @onclick="() => ShowDelete(stock)"
+                                    title="حذف">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- دايلوج عرض التفاصيل -->
+@if (selectedStockForDetails != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تفاصيل المخزون</h5>
+                    <button type="button" class="btn-close" @onclick="CloseDetails"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>الرقم:</strong> @selectedStockForDetails.Id</p>
+                    <p><strong>اسم العنصر:</strong> @selectedStockForDetails.ItemName</p>
+                    <p><strong>الكمية:</strong> @selectedStockForDetails.AvailableQuantity</p>
+                    <p><strong>وحدة القياس:</strong> @selectedStockForDetails.UnitOfMeasure</p>
+                    <p><strong>الحد الأدنى:</strong> @selectedStockForDetails.ReorderLevel</p>
+                    <p><strong>الموقع:</strong> @selectedStockForDetails.Location</p>
+                    <p><strong>الملاحظات:</strong> @selectedStockForDetails.Notes</p>
+                    <p><strong>تاريخ الإنشاء:</strong> @(selectedStockForDetails.CreatedAt?.ToString("yyyy-MM-dd") ?? "-")</p>
+                    <p><strong>تاريخ التعديل:</strong> @(selectedStockForDetails.UpdatedAt?.ToString("yyyy-MM-dd") ?? "-")</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="CloseDetails">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- دايلوج التعديل/الإضافة -->
+@if (selectedStockForEdit != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @(selectedStockForEdit.Id == 0 ? "إضافة مخزون" : "تعديل المخزون")
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="CloseEditModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="selectedStockForEdit" OnValidSubmit="SaveStock">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label class="form-label">اسم العنصر</label>
+                            <InputText class="form-control" @bind-Value="selectedStockForEdit.ItemName" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الكمية المتوفرة</label>
+                            <InputNumber class="form-control" @bind-Value="selectedStockForEdit.AvailableQuantity" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">وحدة القياس</label>
+                            <InputText class="form-control" @bind-Value="selectedStockForEdit.UnitOfMeasure" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الحد الأدنى</label>
+                            <InputNumber class="form-control" @bind-Value="selectedStockForEdit.ReorderLevel" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الموقع</label>
+                            <InputText class="form-control" @bind-Value="selectedStockForEdit.Location" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الملاحظات</label>
+                            <InputTextArea class="form-control" @bind-Value="selectedStockForEdit.Notes" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CloseEditModal">إغلاق</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- دايلوج تأكيد الحذف -->
+@if (selectedStockForDelete != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تأكيد الحذف</h5>
+                    <button type="button" class="btn-close" @onclick="CloseDeleteModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من حذف العنصر <strong>@selectedStockForDelete.ItemName</strong>؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" @onclick="ConfirmDelete">نعم</button>
+                    <button class="btn btn-secondary" @onclick="CloseDeleteModal">لا</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<StockDTO> stocks;
+    private string searchText = "";
+    private StockDTO selectedStockForDetails;
+    private StockDTO selectedStockForEdit;
+    private StockDTO selectedStockForDelete;
+    private List<StockDTO> filteredStocks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadStocks();
+    }
+
+    private async Task LoadStocks()
+    {
+        stocks = await StockService.GetAllAsync();
+        FilterStocks(); // يتم تصفية البيانات فور تحميلها
+    }
+
+    // دالة البحث والتصفية حسب النص المكتوب
+    private void SearchStocks(ChangeEventArgs e)
+    {
+        searchText = e.Value.ToString();
+        FilterStocks(); // يتم تصفية البيانات مباشرة عند الكتابة
+    }
+
+    // دالة تصفية البيانات حسب النص
+    private void FilterStocks()
+    {
+        if (string.IsNullOrEmpty(searchText))
+        {
+            filteredStocks = stocks;
+        }
+        else
+        {
+            filteredStocks = stocks.Where(s => s.ItemName != null &&
+                                                s.ItemName.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+    }
+
+    private IEnumerable<StockDTO> FilteredStocks => filteredStocks;
+
+    private void ShowDetails(StockDTO stock) { selectedStockForDetails = stock; }
+    private void CloseDetails() { selectedStockForDetails = null; }
+
+    private void ShowEdit(StockDTO stock)
+    {
+        selectedStockForEdit = new StockDTO
+            {
+                Id = stock.Id,
+                ItemName = stock.ItemName,
+                AvailableQuantity = stock.AvailableQuantity,
+                UnitOfMeasure = stock.UnitOfMeasure,
+                ReorderLevel = stock.ReorderLevel,
+                Location = stock.Location,
+                Notes = stock.Notes,
+                CreatedAt = stock.CreatedAt,
+                UpdatedAt = stock.UpdatedAt
+            };
+    }
+
+    private void ShowAddModal() { selectedStockForEdit = new StockDTO(); }
+    private void CloseEditModal() { selectedStockForEdit = null; }
+    private async Task SaveStock()
+    {
+        if (selectedStockForEdit.Id == 0)
+        {
+            stocks.Add(selectedStockForEdit);
+        }
+        CloseEditModal();
+    }
+
+    private void ShowDelete(StockDTO stock) { selectedStockForDelete = stock; }
+    private void CloseDeleteModal() { selectedStockForDelete = null; }
+    private async Task ConfirmDelete()
+    {
+        stocks.Remove(selectedStockForDelete);
+        await LoadStocks();
+        CloseDeleteModal();
+    }
+}

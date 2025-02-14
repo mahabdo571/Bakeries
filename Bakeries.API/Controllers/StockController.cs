@@ -1,8 +1,10 @@
-﻿using Bakeries.Business.Services;
+﻿
+using Bakeries.Business.Services;
 using Bakeries.Business.Services.IServices;
 using Business.Shared.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Bakeries.API.Controllers
 {
@@ -12,11 +14,13 @@ namespace Bakeries.API.Controllers
     {
         private readonly IStockServices _stockServices;
         private readonly ILogger<StockController> _logger;
+   
 
         public StockController(IStockServices stockServices, ILogger<StockController> logger)
         {
             _stockServices = stockServices;
             _logger = logger;
+    
         }
 
         [HttpGet("All")]
@@ -85,6 +89,7 @@ namespace Bakeries.API.Controllers
                 int newId = await _stockServices.AddAsync(model);
                 model.Id = newId;
 
+              
 
                 return CreatedAtAction(nameof(GetPurchasesById), new { Id = newId }, model);
             }

@@ -25,7 +25,6 @@ builder.Services.AddLogging(); // تأكد من إضافة خدمة ILogger
 //  builder.Logging.AddSerilog();
 //}
 
-
 #if DEBUG
 builder.Services.AddDbContext<clsDbContext>(options =>
     options
@@ -117,8 +116,15 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
+
 var serviceProvider = app.Services;
 serviceProvider.GetRequiredService<StockEventHandler>();
+
+
+
+
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -143,11 +149,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 
+
+
 app.MapControllers();
+
 app.UseCors(policy => policy
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
+
 
 
 app.Run();

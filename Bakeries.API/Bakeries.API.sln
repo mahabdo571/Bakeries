@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bakeries.API", "Bakeries.API.csproj", "{27B47B45-09B8-4489-ABCF-5F569CF48237}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bakeries.Business", "..\Bakeries.Business\Bakeries.Business.csproj", "{1DA9DD6D-EC9B-441B-99BC-28D41E370117}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.Shared", "..\Business.Shared\Business.Shared.csproj", "{D27A199E-C7BD-4920-BEE3-8AE7C1AD9DB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bakerbalzorwebassembly", "..\bakerbalzorwebassembly\bakerbalzorwebassembly.csproj", "{EF49EDC2-5AB5-4B7A-8AE5-2FF846F8BA25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D27A199E-C7BD-4920-BEE3-8AE7C1AD9DB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D27A199E-C7BD-4920-BEE3-8AE7C1AD9DB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D27A199E-C7BD-4920-BEE3-8AE7C1AD9DB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF49EDC2-5AB5-4B7A-8AE5-2FF846F8BA25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF49EDC2-5AB5-4B7A-8AE5-2FF846F8BA25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF49EDC2-5AB5-4B7A-8AE5-2FF846F8BA25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF49EDC2-5AB5-4B7A-8AE5-2FF846F8BA25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
