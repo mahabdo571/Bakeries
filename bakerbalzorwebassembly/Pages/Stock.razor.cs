@@ -2,6 +2,7 @@
 using Business.Shared.DTOs;
 using bakerbalzorwebassembly.Services;
 using Microsoft.AspNetCore.Components;
+using Business.Shared.Enums;
 
 
 namespace bakerbalzorwebassembly.Pages
@@ -94,6 +95,8 @@ namespace bakerbalzorwebassembly.Pages
         }
         protected async Task SaveStock()
         {
+            selectedStockForEdit.UnitOfMeasure = (UnitOfMeasure)selectedStockForEdit.UnitOfMeasureId;
+
             isSaving = true;
             if (selectedStockForEdit.Id == 0)
             {

@@ -47,7 +47,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DailySales");
+                    b.ToTable("DailySales", (string)null);
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.FinishedProductInventoryModel", b =>
@@ -115,7 +115,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FinishedProductInventorys");
+                    b.ToTable("FinishedProductInventorys", (string)null);
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductIngredientModel", b =>
@@ -160,7 +160,7 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("stockId")
                         .HasDatabaseName("IX_ProductIngredient_StockId");
 
-                    b.ToTable("ProductIngredients");
+                    b.ToTable("ProductIngredients", (string)null);
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductModel", b =>
@@ -206,7 +206,7 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_Products_Name");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionModel", b =>
@@ -242,7 +242,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Productions");
+                    b.ToTable("Productions", (string)null);
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionProcessDetailModel", b =>
@@ -280,7 +280,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasIndex("stockId");
 
-                    b.ToTable("ProductionProcessDetails");
+                    b.ToTable("ProductionProcessDetails", (string)null);
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseModel", b =>
@@ -355,7 +355,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("Purchases");
+                    b.ToTable("Purchases", (string)null);
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.SalesDetailModel", b =>
@@ -403,7 +403,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasIndex("FinishedProductInventoryId");
 
-                    b.ToTable("SalesDetails");
+                    b.ToTable("SalesDetails", (string)null);
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.StockModel", b =>
@@ -450,7 +450,7 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("ItemName")
                         .HasDatabaseName("IX_Stock_ItemName");
 
-                    b.ToTable("Stocks");
+                    b.ToTable("Stocks", (string)null);
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductIngredientModel", b =>

@@ -1,6 +1,7 @@
 ﻿@page "/Stock"
 @using Business.Shared.DTOs
 @using Business.Shared.Enums
+@using Business.Shared.Enums.Extensions
 @using bakerbalzorwebassembly.Services
 @inherits StockBase
 
@@ -57,7 +58,7 @@
                         <td class="d-none d-md-table-cell">@StockItem.Id</td>
                         <td>@StockItem.ItemName</td>
                         <td>@StockItem.AvailableQuantity</td>
-                        <td class="d-none d-md-table-cell">@StockItem.UnitOfMeasure.ToString()</td>
+                        <td class="d-none d-md-table-cell">@StockItem.UnitOfMeasure.GetDisplayName()</td>
                         <td class="d-none d-md-table-cell">@StockItem.ReorderLevel</td>
                         <td class="d-none d-md-table-cell">@StockItem.Location</td>
                         <td class="d-none d-md-table-cell">@StockItem.Notes</td>
@@ -102,7 +103,7 @@
                     <p><strong>الرقم:</strong> @selectedStockForDetails.Id</p>
                     <p><strong>اسم العنصر:</strong> @selectedStockForDetails.ItemName</p>
                     <p><strong>الكمية:</strong> @selectedStockForDetails.AvailableQuantity</p>
-                    <p><strong>وحدة القياس:</strong> @selectedStockForDetails.UnitOfMeasure.ToString()</p>
+                    <p><strong>وحدة القياس:</strong> @selectedStockForDetails.UnitOfMeasure.GetDisplayName()</p>
                     <p><strong>الحد الأدنى:</strong> @selectedStockForDetails.ReorderLevel</p>
                     <p><strong>الموقع:</strong> @selectedStockForDetails.Location</p>
                     <p><strong>الملاحظات:</strong> @selectedStockForDetails.Notes</p>
@@ -143,11 +144,11 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">وحدة القياس</label>
-                            <InputSelect class="form-control" @bind-Value="selectedStockForEdit.UnitOfMeasure">
-                                <option value="">اختر وحدة القياس</option>
+                            <InputSelect class="form-control" @bind-Value="selectedStockForEdit.UnitOfMeasureId">
+                                <option value="0">اختر وحدة القياس</option>
                                 @foreach (var unit in Enum.GetValues<UnitOfMeasure>())
                                 {
-                                    <option value="@((int)unit)">@unit</option>
+                                    <option value="@((int)unit)">@unit.GetDisplayName()</option>
                                 }
                             </InputSelect>
                         </div>

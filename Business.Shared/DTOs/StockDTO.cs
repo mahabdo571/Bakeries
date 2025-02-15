@@ -18,9 +18,14 @@ namespace Business.Shared.DTOs
         [Required]
         public float AvailableQuantity { get; set; }
 
-        [StringLength(50, ErrorMessage = "lenght max 50")]
-        public UnitOfMeasure? UnitOfMeasure { get; set; }
+        public UnitOfMeasure UnitOfMeasure { get; set; }
 
+
+        public int UnitOfMeasureId
+        {
+            get => (int)UnitOfMeasure;
+            set => UnitOfMeasure = (UnitOfMeasure)value;
+        } 
 
         public int ReorderLevel { get; set; }
 

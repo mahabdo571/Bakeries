@@ -18,7 +18,6 @@ namespace Bakeries.DataAccess.Entities
         [Column(TypeName = "decimal(18,4)")]
         public decimal AvailableQuantity { get; set; }
 
-        [StringLength(50,ErrorMessage ="lenght max 50")]
         public int UnitOfMeasure { get; set; }
 
 
