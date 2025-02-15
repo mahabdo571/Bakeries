@@ -60,9 +60,11 @@ namespace Bakeries.DataAccess
             // إضافة فهرس على ItemName في جدول StockModel
             modelBuilder.Entity<StockModel>()
                 .HasIndex(s => s.ItemName)
-                .HasDatabaseName("IX_Stock_ItemName")
-                
-                ;
+                .HasDatabaseName("IX_Stock_ItemName");
+
+            modelBuilder.Entity<StockModel>()
+       .Property(s => s.UnitOfMeasure)
+       .HasConversion<int>(); // تأكيد تخزين enum كـ int
 
             // إضافة فهرس على Name في جدول ProductsModel
             modelBuilder.Entity<ProductModel>()

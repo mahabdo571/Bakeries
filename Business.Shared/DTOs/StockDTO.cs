@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,10 +19,10 @@ namespace Business.Shared.DTOs
         public float AvailableQuantity { get; set; }
 
         [StringLength(50, ErrorMessage = "lenght max 50")]
-        public string UnitOfMeasure { get; set; }
+        public UnitOfMeasure? UnitOfMeasure { get; set; }
 
 
-        public int ReorderLevel { get; set; }//الحد الأدنى للكمية قبل الحاجة لإعادة الطلب.
+        public int ReorderLevel { get; set; }
 
 
         public string Location { get; set; }

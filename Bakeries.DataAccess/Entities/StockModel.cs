@@ -19,7 +19,7 @@ namespace Bakeries.DataAccess.Entities
         public decimal AvailableQuantity { get; set; }
 
         [StringLength(50,ErrorMessage ="lenght max 50")]
-        public string UnitOfMeasure { get; set; }
+        public int UnitOfMeasure { get; set; }
 
 
         public int ReorderLevel { get; set; }//الحد الأدنى للكمية قبل الحاجة لإعادة الطلب.

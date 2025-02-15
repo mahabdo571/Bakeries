@@ -438,10 +438,9 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<int>("ReorderLevel")
                         .HasColumnType("int");
 
-                    b.Property<string>("UnitOfMeasure")
-                        .IsRequired()
+                    b.Property<int>("UnitOfMeasure")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");

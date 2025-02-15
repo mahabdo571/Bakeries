@@ -27,7 +27,7 @@ namespace Bakeries.DataAccess.Repo
             var purchases = await context.Purchases.WhereNotDeleted().FirstOrDefaultAsync((p) => p.ItemId == model.Id);
 
             if (purchases is not null)
-                throw new Exception("Item associated with purchases cannot be deleted - delete associated purchases first");
+                throw new Exception("المنتج مرتبط بعمليات شراء وفواتير معرفة بالنظام يجب عليك حذفها اولا");
 
             model.DeletedAt  = DateTime.Now;
 

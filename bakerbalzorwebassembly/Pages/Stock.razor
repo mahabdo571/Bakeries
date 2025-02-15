@@ -1,0 +1,234 @@
+﻿@page "/Stock"
+@using Business.Shared.DTOs
+@using Business.Shared.Enums
+@using bakerbalzorwebassembly.Services
+@inherits StockBase
+
+<h3 class="mb-4">
+    <i class="bi bi-boxes"></i> مخزون المادة الخام
+</h3>
+
+<!-- شريط البحث وزر الإضافة -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="w-50">
+        <input type="text" class="form-control" placeholder="ابحث باسم العنصر..." @oninput="SearchStocks" value="@searchText" />
+    </div>
+    <button class="btn btn-success" @onclick="ShowAddModal">
+        <i class="bi bi-plus-lg"></i> إضافة عنصر جديد
+    </button>
+</div>
+
+<!-- الجدول المتجاوب -->
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <!-- تظهر فقط على سطح المكتب -->
+                <th class="d-none d-md-table-cell">#</th>
+                <th>اسم العنصر</th>
+                <th>الكمية</th>
+                <th class="d-none d-md-table-cell">وحدة القياس</th>
+                <th class="d-none d-md-table-cell">الحد الأدنى</th>
+                <th class="d-none d-md-table-cell">الموقع</th>
+                <th class="d-none d-md-table-cell">الملاحظات</th>
+                <th class="d-none d-md-table-cell">تاريخ الإنشاء</th>
+                <th class="d-none d-md-table-cell">تاريخ التعديل</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (stockModel == null)
+            {
+                <tr>
+                    <td colspan="10" class="text-center">جاري التحميل...</td>
+                </tr>
+            }
+            else if (!FilteredStocks.Any())
+            {
+                <tr>
+                    <td colspan="10" class="text-center">لا توجد بيانات</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var StockItem in FilteredStocks)
+                {
+                    <tr @onclick="() => ShowDetails(StockItem)" style="cursor: pointer;">
+                        <td class="d-none d-md-table-cell">@StockItem.Id</td>
+                        <td>@StockItem.ItemName</td>
+                        <td>@StockItem.AvailableQuantity</td>
+                        <td class="d-none d-md-table-cell">@StockItem.UnitOfMeasure.ToString()</td>
+                        <td class="d-none d-md-table-cell">@StockItem.ReorderLevel</td>
+                        <td class="d-none d-md-table-cell">@StockItem.Location</td>
+                        <td class="d-none d-md-table-cell">@StockItem.Notes</td>
+                        <td class="d-none d-md-table-cell">
+                            @(StockItem.CreatedAt.HasValue ? StockItem.CreatedAt.Value.ToString("yyyy-MM-dd") : "-")
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            @(StockItem.UpdatedAt.HasValue ? StockItem.UpdatedAt.Value.ToString("yyyy-MM-dd") : "-")
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1"
+                            @onclick:stopPropagation
+                                    @onclick="() => ShowEdit(StockItem)"
+                                    title="تعديل">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger"
+                            @onclick:stopPropagation
+                                    @onclick="() => ShowDelete(StockItem)"
+                                    title="حذف">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- دايلوج عرض التفاصيل -->
+@if (selectedStockForDetails != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تفاصيل المخزون</h5>
+                    <button type="button" class="btn-close" @onclick="CloseDetails"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>الرقم:</strong> @selectedStockForDetails.Id</p>
+                    <p><strong>اسم العنصر:</strong> @selectedStockForDetails.ItemName</p>
+                    <p><strong>الكمية:</strong> @selectedStockForDetails.AvailableQuantity</p>
+                    <p><strong>وحدة القياس:</strong> @selectedStockForDetails.UnitOfMeasure.ToString()</p>
+                    <p><strong>الحد الأدنى:</strong> @selectedStockForDetails.ReorderLevel</p>
+                    <p><strong>الموقع:</strong> @selectedStockForDetails.Location</p>
+                    <p><strong>الملاحظات:</strong> @selectedStockForDetails.Notes</p>
+                    <p><strong>تاريخ الإنشاء:</strong> @(selectedStockForDetails.CreatedAt?.ToString("yyyy-MM-dd") ?? "-")</p>
+                    <p><strong>تاريخ التعديل:</strong> @(selectedStockForDetails.UpdatedAt?.ToString("yyyy-MM-dd") ?? "-")</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="CloseDetails">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- دايلوج التعديل/الإضافة -->
+@if (selectedStockForEdit != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @(selectedStockForEdit.Id == 0 ? "إضافة مخزون" : "تعديل المخزون")
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="CloseEditModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="selectedStockForEdit" OnValidSubmit="SaveStock">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label class="form-label">اسم العنصر</label>
+                            <InputText class="form-control" @bind-Value="selectedStockForEdit.ItemName" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الكمية المتوفرة</label>
+                            <InputNumber class="form-control" @bind-Value="selectedStockForEdit.AvailableQuantity" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">وحدة القياس</label>
+                            <InputSelect class="form-control" @bind-Value="selectedStockForEdit.UnitOfMeasure">
+                                <option value="">اختر وحدة القياس</option>
+                                @foreach (var unit in Enum.GetValues<UnitOfMeasure>())
+                                {
+                                    <option value="@((int)unit)">@unit</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الحد الأدنى</label>
+                            <InputNumber class="form-control" @bind-Value="selectedStockForEdit.ReorderLevel" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الموقع</label>
+                            <InputText class="form-control" @bind-Value="selectedStockForEdit.Location" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الملاحظات</label>
+                            <InputTextArea class="form-control" @bind-Value="selectedStockForEdit.Notes" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CloseEditModal">إغلاق</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- دايلوج تأكيد الحذف -->
+@if (selectedStockForDelete != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تأكيد الحذف</h5>
+                    <button type="button" class="btn-close" @onclick="CloseDeleteModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من حذف العنصر <strong>@selectedStockForDelete.ItemName</strong>؟</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" @onclick="ConfirmDelete">نعم</button>
+                    <button class="btn btn-secondary" @onclick="CloseDeleteModal">لا</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (isSaving)
+{
+    <div class="modal fade show" tabindex="-1" style="display: block; background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">جاري المعالجة .. </span>
+                    </div>
+                    <p>جاري المعالجة...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (messageError != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> رسالة خطأ</h5>
+                    <button type="button" class="btn-close" @onclick="CloseDeleteModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p> <strong>@messageError</strong>؟</p>
+                </div>
+                <div class="modal-footer">
+
+                    <button class="btn btn-secondary" @onclick="CloseDeleteModal">موافق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
