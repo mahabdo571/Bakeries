@@ -1,0 +1,118 @@
+﻿@inherits ComponentBase
+@using Business.Shared.DTOs
+@using Business.Shared.Enums
+@using Business.Shared.Enums.Extensions
+
+@if (Item != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @(Item.Id == 0 ? "إضافة مخزون" : "تعديل المخزون")
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="@OnClose"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="Item" OnValidSubmit="@HandleSave">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label class="form-label">اسم العنصر</label>
+
+                            <InputSelect disabled="@(Item.Id != 0)" class="form-control" @bind-Value="Item.ItemId">
+                                <option value="0">اختر منتج</option>
+                                @foreach (var item in StockItems)
+                                {
+                                    <option value="@item.Id">@item.ItemName</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">اسم المورد</label>
+                            <InputText class="form-control" @bind-Value="Item.SupplierName" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">رقم الفاتورة</label>
+                            <InputText class="form-control" @bind-Value="Item.SupplierInvoiceNumber" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">سعر الوحدة</label>
+                            <InputNumber class="form-control"
+                                         @bind-Value="Item.UnitPrice"                                    
+                                         @oninput="@(e => OnUnitPriceChanged.InvokeAsync(e.Value.ToString()))" />
+
+                                         />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الكمية</label>
+                            <InputNumber class="form-control"
+                                         @bind-Value="Item.Quantity"         
+                                         @oninput="@(e => OnQuantityChanged.InvokeAsync(e.Value.ToString()))" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">السعر الكلي</label>
+                            <InputNumber disabled class="form-control" @bind-Value="Item.TotalPrice" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">وحدة القياس</label>
+                            <InputSelect class="form-control" @bind-Value="Item.UnitOfMeasureId">
+                                <option value="0">اختر وحدة القياس</option>
+                                @foreach (var unit in Enum.GetValues<UnitOfMeasure>())
+                                {
+                                    <option value="@((int)unit)">@unit.GetDisplayName()</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">طريقة الدفع</label>
+                            <InputSelect class="form-control" @bind-Value="Item.PaymentMethod">
+                                <option value="0">اختر طريقة الدفع</option>
+
+                                <option value="كاش">كاش</option>
+                                <option value="شيك">شيك</option>
+
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">حالة الفاتورة</label>
+                            <InputSelect class="form-control" @bind-Value="Item.Status">
+                                <option value="0">اختر حالة الفاتورة</option>
+
+                                <option value="مدفوع">مدفوع</option>
+                                <option value="ملغي">ملغي</option>
+                                <option value="راجع">راجع</option>
+
+                            </InputSelect>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">الملاحظات</label>
+                            <InputTextArea class="form-control" @bind-Value="Item.Notes" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                            <button type="button" class="btn btn-secondary" @onclick="OnClose">إغلاق</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter] public PurchasesDTO Item { get; set; }
+    [Parameter] public IEnumerable<StockDTO> StockItems { get; set; }
+    [Parameter] public EventCallback OnSave { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+    [Parameter] public EventCallback<string> OnQuantityChanged { get; set; }
+    [Parameter] public EventCallback<string> OnUnitPriceChanged { get; set; }
+
+    private async Task HandleSave()
+    {
+        await OnSave.InvokeAsync();
+    }
+}

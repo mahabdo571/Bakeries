@@ -27,8 +27,8 @@ namespace Bakeries.DataAccess.Entities
         public decimal Quantity { get; set; } // الكمية
 
         [Required]
-        [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف
-        public string UnitOfMeasure { get; set; } // وحدة القياس
+     
+        public int UnitOfMeasure { get; set; } // وحدة القياس
 
         [Required]
         [Column(TypeName = "decimal(18,4)")]
@@ -56,8 +56,6 @@ namespace Bakeries.DataAccess.Entities
         // مثلاً 1 = مخزن أول، 2 = مخزن ثاني
         public int WarehouseSelection { get; set; }
 
-        [Required]
-        public bool isFinishedProductInventory { get; set; } = false;
 
         // العلاقة مع المخزن الأول (nullable لأن العملية قد تكون من المخزن الثاني)
 

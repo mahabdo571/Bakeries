@@ -2,7 +2,7 @@
 
 namespace bakerbalzorwebassembly.Pages
 {
-    public class HomeBase : ComponentBase
+    public partial class Home : ComponentBase
     {
     }
 }

@@ -7,7 +7,7 @@ using Business.Shared.Enums;
 
 namespace bakerbalzorwebassembly.Pages
 {
-    public partial class StockBase : ComponentBase
+    public partial class Stock : ComponentBase
     {
         // المتغيرات
         protected List<StockDTO> stockModel;

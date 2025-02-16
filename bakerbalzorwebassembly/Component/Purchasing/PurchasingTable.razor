@@ -1,0 +1,71 @@
+﻿@inherits ComponentBase
+@using Business.Shared.DTOs
+
+<div class="table-responsive">
+    <table class="table-striped table-hover table">
+        <thead class="table-dark">
+            <tr>
+                <!-- تظهر فقط على سطح المكتب -->
+                <th class="d-none d-md-table-cell">#</th>
+                <th>اسم العنصر</th>
+                <th>الكمية المشتراة</th>
+                <th>السعر الكلي</th>
+                <th class="d-none d-md-table-cell">حالة الفاتورة</th>
+                <th class="d-none d-md-table-cell">الملاحظات</th>
+                <th class="d-none d-md-table-cell">تاريخ الإنشاء</th>
+                <th class="d-none d-md-table-cell">تاريخ التعديل</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Items == null)
+            {
+                <tr><td colspan="10" class="text-center">جاري التحميل...</td></tr>
+            }
+            else if (!Items.Any())
+            {
+                <tr><td colspan="10" class="text-center">لا توجد بيانات</td></tr>
+            }
+            else
+            {
+                @foreach (var item in Items)
+                {
+                    <tr @onclick="() => OnDetails.InvokeAsync(item)" style="cursor: pointer;">
+                        <td class="d-none d-md-table-cell">@item.Id</td>
+                        <td>@item.ItemName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.TotalPrice</td>
+                        <td class="d-none d-md-table-cell">@item.Status</td>
+                        <td class="d-none d-md-table-cell">@item.Notes</td>
+                        <td class="d-none d-md-table-cell">
+                            @(item.CreatedAt.HasValue ? item.CreatedAt.Value.ToString("yyyy-MM-dd") : "-")
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            @(item.UpdatedAt.HasValue ? item.UpdatedAt.Value.ToString("yyyy-MM-dd") : "-")
+                        </td>
+
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1"
+                            @onclick:stopPropagation
+                                    @onclick="() => OnEdit.InvokeAsync(item)">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger"
+                            @onclick:stopPropagation
+                                    @onclick="() => OnDelete.InvokeAsync(item)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    [Parameter] public IEnumerable<PurchasesDTO> Items { get; set; }
+    [Parameter] public EventCallback<PurchasesDTO> OnDetails { get; set; }
+    [Parameter] public EventCallback<PurchasesDTO> OnEdit { get; set; }
+    [Parameter] public EventCallback<PurchasesDTO> OnDelete { get; set; }
+}

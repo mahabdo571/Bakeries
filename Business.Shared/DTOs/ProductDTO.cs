@@ -25,7 +25,7 @@ namespace Business.Shared.DTOs
         [Required(ErrorMessage = "is Requird")]
         [MaxLength(50)]
         public string Unit { get; set; } // مثل "قطعة" أو "كيلوغرام"
-        public string Notes { get; set; }
+        public string? Notes { get; set; } = "لا يوجد ملاحظات";
         public DateTime? CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }

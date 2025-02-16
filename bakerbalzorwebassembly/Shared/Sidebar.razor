@@ -1,4 +1,4 @@
-﻿@inject NavigationManager Navigation
+﻿
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark sidebar" id="sidebar">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-white text-decoration-none">
         <i class="bi bi-layout-sidebar fs-3 me-2"></i>
@@ -12,7 +12,7 @@
             </NavLink>
         </li>
         <li>
-            <NavLink class="nav-link text-white sidebar-item" href="/#">
+            <NavLink class="nav-link text-white sidebar-item" href="/PurchasingAndInvoc" @onclick="PurchasingAndInvoc">
                 <i class="bi bi-receipt"></i> المشتريات والفواتير
             </NavLink>
         </li>
@@ -23,7 +23,7 @@
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <NavLink class="dropdown-item" @onclick="testtt">
+                    <NavLink class="dropdown-item" href="/RawMaterialStock" @onclick="RawMaterialStock">
                         <i class="bi bi-boxes"></i> مخزون المادة الخام
                     </NavLink>
                 </li>
@@ -48,10 +48,28 @@
     </ul>
 </div>
 @code{
-    private void testtt(){
-        var baseUri = Navigation.BaseUri;
+@inject NavigationManager Navigation
 
-        Navigation.NavigateTo($"{baseUri}Stock");
+ 
+
+  
+
+
+    private void RawMaterialStock()
+    {
+       var baseUri = Navigation.BaseUri;
+
+        Navigation.NavigateTo($"{baseUri}RawMaterialStock");
+ 
+
+    } 
+    
+    private void PurchasingAndInvoc()
+    {
+     
+        var baseUri = Navigation.BaseUri;
+  
+        Navigation.NavigateTo($"{baseUri}PurchasingAndInvoc");
 
     }
 }

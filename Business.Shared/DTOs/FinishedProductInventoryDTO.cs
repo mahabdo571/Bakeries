@@ -15,7 +15,7 @@ namespace Business.Shared.DTOs
 
         public DateTime? UpdatedAt { get; set; }
 
-        public string? Notes { get; set; }
+        public string? Notes { get; set; } = "لا يوجد ملاحظات";
 
         [Required]
         [MaxLength(50)]

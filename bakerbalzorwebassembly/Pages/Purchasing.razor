@@ -1,0 +1,43 @@
+﻿@page "/PurchasingAndInvoc"
+@using Business.Shared.DTOs
+@using Business.Shared.Enums
+@using bakerbalzorwebassembly.Component.Purchasing
+@using bakerbalzorwebassembly.Component.Shared
+@inherits ComponentBase
+
+<h3 class="mb-4">
+    <i class="bi bi-receipt"></i> المشتريات والفواتير
+</h3>
+
+<PageToolbar SearchText="@searchText"
+    OnSearch= "@SearchPurchasing"
+    OnAdd="ShowAddModal" />
+
+<PurchasingTable 
+    Items="@FilteredPurchases"
+    OnDetails="ShowDetails"
+    OnEdit="ShowEdit"
+    OnDelete="ShowDelete" />
+
+<DetailsModal 
+    Item="@selectedPurchasingForDetails"
+    OnClose="CloseDetails" />
+
+<EditModal 
+    Item="@selectedPurchasingForEdit"
+    StockItems="@stockItem"
+    OnSave="@SavePurchases"
+    OnClose="@CloseEditModal"
+    OnQuantityChanged="@OnQuantityChanged"
+    OnUnitPriceChanged="@OnUnitPriceChanged" />
+
+<DeleteModal 
+    Item="@selectedPurchasingForDelete"
+    OnConfirm="ConfirmDelete"
+    OnClose="CloseDeleteModal" />
+
+<LoadingModal IsVisible="@isSaving" />
+
+<ErrorModal 
+    Message="@messageError"
+    OnClose="CloseDeleteModal" />

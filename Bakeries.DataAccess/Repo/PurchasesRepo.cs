@@ -30,7 +30,7 @@ namespace Bakeries.DataAccess.Repo
           
         }
 
-        public async Task UpdateStockOnPurchase(int stockId,float Quantity)
+        public async Task UpdateStockOnPurchase(int stockId,decimal Quantity)
         {
             await context.Database.ExecuteSqlRawAsync(
                 "EXEC UpdateStockOnPurchase @p0, @p1",

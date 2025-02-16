@@ -1,14 +1,12 @@
-﻿
-@inherits LayoutComponentBase
-
+﻿@inherits LayoutComponentBase   
 <div class="container-fluid">
     <div class="row flex-row-reverse">
-        @* Sidebar for larger screens *@
+
         <div class="col-md-3 col-lg-2 d-none d-md-block sidebar-container">
             <Sidebar />
         </div>
 
-        @* Main content area *@
+    
         <div class="col-md-9 ms-auto col-lg-10 px-md-4">
             <div class="d-md-none mobile-nav">
                 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
@@ -23,7 +21,7 @@
     </div>
 </div>
 
-@* Offcanvas Sidebar for mobile *@
+
 <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileSidebar">
     <div class="offcanvas-header">
 
@@ -33,3 +31,5 @@
         <Sidebar />
     </div>
 </div>
+
+

@@ -16,7 +16,7 @@ namespace Business.Shared.DTOs
         public string ItemName { get; set; }
 
         [Required]
-        public float AvailableQuantity { get; set; }
+        public decimal AvailableQuantity { get; set; }
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
@@ -31,7 +31,7 @@ namespace Business.Shared.DTOs
 
 
         public string Location { get; set; }
-        public string Notes { get; set; }
+        public string? Notes { get; set; } = "لا يوجد ملاحظات";
 
         public DateTime? UpdatedAt { get; set; }
 

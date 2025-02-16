@@ -184,7 +184,7 @@ namespace Bakeries.Business.Services
             {
                 throw new NullReferenceException("Old purchase not found.");
             }
-            float quantityDifference=0;
+            decimal quantityDifference=0;
 
             if (model.Status.Equals("ملغي") && !oldPurchase.Status.Equals("ملغي"))
             {

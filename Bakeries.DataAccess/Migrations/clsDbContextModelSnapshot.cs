@@ -47,7 +47,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DailySales", (string)null);
+                    b.ToTable("DailySales");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.FinishedProductInventoryModel", b =>
@@ -115,7 +115,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FinishedProductInventorys", (string)null);
+                    b.ToTable("FinishedProductInventorys");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductIngredientModel", b =>
@@ -160,7 +160,7 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("stockId")
                         .HasDatabaseName("IX_ProductIngredient_StockId");
 
-                    b.ToTable("ProductIngredients", (string)null);
+                    b.ToTable("ProductIngredients");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductModel", b =>
@@ -206,7 +206,7 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_Products_Name");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionModel", b =>
@@ -242,7 +242,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Productions", (string)null);
+                    b.ToTable("Productions");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionProcessDetailModel", b =>
@@ -280,7 +280,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasIndex("stockId");
 
-                    b.ToTable("ProductionProcessDetails", (string)null);
+                    b.ToTable("ProductionProcessDetails");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseModel", b =>
@@ -332,10 +332,8 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<string>("UnitOfMeasure")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("UnitOfMeasure")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,4)");
@@ -346,16 +344,13 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<int>("WarehouseSelection")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isFinishedProductInventory")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FinishedProductInventoryId");
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("Purchases", (string)null);
+                    b.ToTable("Purchases");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.SalesDetailModel", b =>
@@ -403,7 +398,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasIndex("FinishedProductInventoryId");
 
-                    b.ToTable("SalesDetails", (string)null);
+                    b.ToTable("SalesDetails");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.StockModel", b =>
@@ -439,7 +434,6 @@ namespace Bakeries.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("UnitOfMeasure")
-                        .HasMaxLength(50)
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -450,7 +444,7 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("ItemName")
                         .HasDatabaseName("IX_Stock_ItemName");
 
-                    b.ToTable("Stocks", (string)null);
+                    b.ToTable("Stocks");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductIngredientModel", b =>
