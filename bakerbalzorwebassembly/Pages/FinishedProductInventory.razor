@@ -1,0 +1,39 @@
+﻿@page "/FinishedProductInventory"
+@using Business.Shared.DTOs
+@using Business.Shared.Enums
+@using bakerbalzorwebassembly.Component.FinishedProductInventory
+@using bakerbalzorwebassembly.Component.Shared
+@inherits ComponentBase 
+
+<h3 class="mb-4">
+    <i class="bi bi-inboxes"></i> مخزن المعرض
+</h3>
+
+ <PageToolbar SearchText="@searchText" 
+              OnSearch="@SearchFinishedProductInventory" 
+             OnAdd="ShowAddModal" /> 
+
+<FinishedProductInventoryTable Items="@FilteredFinishedProductInventory" 
+            OnDetails="ShowDetails" 
+            OnEdit="ShowEdit"
+            OnDelete="ShowDelete" /> 
+            
+<EditModal Item="@selectedFinishedProductInventoryForEdit"
+           OnSave="@SaveStock"
+           OnClose="@CloseEditModal" />
+
+
+ <DetailsModal Item="@selectedFinishedProductInventoryForDetails"
+              OnClose="CloseDetails" />
+
+
+<DeleteModal Item="@selectedFinishedProductInventoryForDelete"
+             OnConfirm="ConfirmDelete"
+             OnClose="CloseDeleteModal" /> 
+
+ <LoadingModal IsVisible="@isSaving" />
+
+<ErrorModal Message="@messageError"
+            OnClose="CloseDeleteModal" />
+ 
+

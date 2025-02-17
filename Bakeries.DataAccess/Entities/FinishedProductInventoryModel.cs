@@ -49,9 +49,12 @@ namespace Bakeries.DataAccess.Entities
 
         public string Location { get; set; }
 
-        // نوع الوحدة مثل "قطعة" أو "كجم" ...
-        [MaxLength(50)]
-        public string Unit { get; set; }
+        public int UnitOfMeasure { get; set; }
+
+        public int? ProductId { get; set; } //اذا فارغ اذا هو منتج لا يتم تصنيعه ويتم شرائه من الخارج اما اذا لديه قيمة فهو منتج يتم تصنيعه ومرتبط بالمنتج بقسم الانتاج
+        [ForeignKey("ProductId")]
+        public virtual ProductModel Product { get; set; }
+  
 
         public ICollection<PurchaseModel> Purchases { get; set; }
 

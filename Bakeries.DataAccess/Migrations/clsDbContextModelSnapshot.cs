@@ -90,6 +90,9 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ReorderLevel")
                         .HasColumnType("int");
 
@@ -99,10 +102,8 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<decimal>("UniPtriceForDealers")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("UnitOfMeasure")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("UnitPriceForPeople")
                         .HasColumnType("decimal(18,2)");
@@ -114,6 +115,8 @@ namespace Bakeries.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("FinishedProductInventorys");
                 });
@@ -182,6 +185,9 @@ namespace Bakeries.DataAccess.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int?>("FinishedProductInventoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -202,6 +208,8 @@ namespace Bakeries.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FinishedProductInventoryId");
 
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_Products_Name");
@@ -447,6 +455,15 @@ namespace Bakeries.DataAccess.Migrations
                     b.ToTable("Stocks");
                 });
 
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.FinishedProductInventoryModel", b =>
+                {
+                    b.HasOne("Bakeries.DataAccess.Entities.ProductModel", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductIngredientModel", b =>
                 {
                     b.HasOne("Bakeries.DataAccess.Entities.ProductModel", "Product")
@@ -464,6 +481,15 @@ namespace Bakeries.DataAccess.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("stock");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductModel", b =>
+                {
+                    b.HasOne("Bakeries.DataAccess.Entities.FinishedProductInventoryModel", "FinishedProductInventory")
+                        .WithMany()
+                        .HasForeignKey("FinishedProductInventoryId");
+
+                    b.Navigation("FinishedProductInventory");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionModel", b =>

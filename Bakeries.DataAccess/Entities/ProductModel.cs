@@ -24,7 +24,9 @@ namespace Bakeries.DataAccess.Entities
         [Required]
         [MaxLength(50)]
         public string Unit { get; set; } // مثل "قطعة" أو "كيلوغرام"
-
+        public int? FinishedProductInventoryId { get; set; } //اذا فارغ اذا هو منتج لا يتم تصنيعه ويتم شرائه من الخارج اما اذا لديه قيمة فهو منتج يتم تصنيعه ومرتبط بالمنتج بقسم الانتاج
+        [ForeignKey("FinishedProductInventoryId")]
+        public virtual FinishedProductInventoryModel FinishedProductInventory { get; set; }
         public virtual ICollection<ProductIngredientModel> Ingredients { get; set; }
         public virtual ICollection<ProductionModel> Production { get; set; }
 

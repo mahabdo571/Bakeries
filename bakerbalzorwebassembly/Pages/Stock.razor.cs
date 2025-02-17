@@ -38,9 +38,9 @@ namespace bakerbalzorwebassembly.Pages
         }
 
         // دالة البحث والتصفية حسب النص المكتوب
-        protected void SearchStocks(ChangeEventArgs e)
+        protected void SearchStocks(string e)
         {
-            searchText = e.Value.ToString();
+            searchText =e;
             FilterStocks(); // يتم تصفية البيانات مباشرة عند الكتابة
         }
 

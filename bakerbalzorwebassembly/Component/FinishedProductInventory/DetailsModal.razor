@@ -1,0 +1,47 @@
+﻿@inherits ComponentBase
+@using Business.Shared.DTOs
+@using Business.Shared.Enums.Extensions
+
+@if (Item != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تفاصيل العنصر</h5>
+                    <button type="button" class="btn-close" @onclick="@OnClose"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>الرقم:</strong> @Item.Id</p>
+                    <p><strong>اسم العنصر:</strong> @Item.ItemName</p>
+                    <p><strong>الكمية المتوفرة في المخزن:</strong> @Item.AvailableQuantity</p>
+                    <p><strong>مكان وجودها في المخزن :</strong> @Item.Location</p>
+                    <p><strong>ادنى كمية لاعادة الطلبة  :</strong> @Item.ReorderLevel</p>
+                    <p><strong>سعر شراء الوحدة - التكلفة الفعلية  :</strong> @Item.CostPrice</p>
+                    <p><strong>سعر بيع الوحدة للزبائن  :</strong> @Item.UnitPriceForPeople</p>
+                    <p><strong>سعر بيع الوحدة للتجار  :</strong> @Item.UniPtriceForDealers</p>
+                    <p><strong>سعر بيع الوحدة للموزعين  :</strong> @Item.UnitPriceForResellers</p>
+                    <p><strong>وحدة القياس :</strong> @Item.UnitOfMeasure.GetDisplayName()</p>
+
+                    <p><strong>الخصومات السارية :</strong> @Item.Discount</p>
+                    <p><strong>الضريبة السارية  :</strong> @Item.Tax</p>
+                    <p><strong>باركود  :</strong> @Item.Code</p>
+                    <p><strong>ملاحظات:</strong> @Item.Notes</p>
+                    <p><strong>تاريخ الإنشاء:</strong> @(Item.CreatedAt?.ToString("yyyy-MM-dd | hh:mm:ss") ?? "-")</p>
+                    <p><strong>تاريخ التعديل:</strong> @(Item.UpdatedAt?.ToString("yyyy-MM-dd | hh:mm:ss") ?? "-")</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="Close">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public FinishedProductInventoryDTO Item { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    private void Close() => OnClose.InvokeAsync();
+}

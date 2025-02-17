@@ -1,5 +1,5 @@
 ﻿
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-dark sidebar" id="sidebar">
+<div class="d-flex flex-column p-3 bg-dark sidebar flex-shrink-0" id="sidebar">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-white text-decoration-none">
         <i class="bi bi-layout-sidebar fs-3 me-2"></i>
         <span class="fs-4 fw-bold">مخبز التوفيق</span>
@@ -12,7 +12,7 @@
             </NavLink>
         </li>
         <li>
-            <NavLink class="nav-link text-white sidebar-item" href="/PurchasingAndInvoc" @onclick="PurchasingAndInvoc">
+            <NavLink class="nav-link text-white sidebar-item" href="/PurchasingAndInvoc" @onclick="@PurchasingAndInvoc">
                 <i class="bi bi-receipt"></i> المشتريات والفواتير
             </NavLink>
         </li>
@@ -23,11 +23,12 @@
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <NavLink class="dropdown-item" href="/RawMaterialStock" @onclick="RawMaterialStock">
+                    <NavLink class="dropdown-item" href="/RawMaterialStock" @onclick="@RawMaterialStock">
                         <i class="bi bi-boxes"></i> مخزون المادة الخام
                     </NavLink>
                 </li>
-                <li><NavLink class="dropdown-item" href="#">
+                <li>
+                    <NavLink class="dropdown-item" href="/FinishedProductInventory" @onclick="@FinishedProductInventory">
                         <i class="bi bi-inboxes"></i> مخزون المعرض
                     </NavLink></li>
             </ul>
@@ -35,7 +36,7 @@
 
         <li>
             <NavLink class="nav-link text-white sidebar-item" href="/#">
-                <i class="bi bi-gear-wide-connected"></i> الانتاج
+                <i class="bi bi-gear-wide-connected"></i> قسم الانتاج
             </NavLink>
         </li>   
 
@@ -60,6 +61,14 @@
        var baseUri = Navigation.BaseUri;
 
         Navigation.NavigateTo($"{baseUri}RawMaterialStock");
+ 
+
+    } 
+    private void FinishedProductInventory()
+    {
+       var baseUri = Navigation.BaseUri;
+
+        Navigation.NavigateTo($"{baseUri}FinishedProductInventory");
  
 
     } 

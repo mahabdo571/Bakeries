@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Business.Shared.DTOs
 
         [Required]
         [MaxLength(50)]
-        public string Code { get; set; }
+        public string? Code { get; set; } = "لا يوجد";
 
         // اسم المنتج
         [Required]
@@ -44,10 +45,10 @@ namespace Business.Shared.DTOs
         public decimal UnitPriceForResellers { get; set; }
 
         // قيمة الخصم على المنتج (يمكن يكون صفر إذا ما في خصم)
-        public decimal Discount { get; set; }
+        public decimal Discount { get; set; } = 0;
 
         // قيمة الضريبة على المنتج (يمكن يكون صفر إذا ما في ضريبة)
-        public decimal Tax { get; set; }
+        public decimal Tax { get; set; } = 0;
 
         // كمية المنتج المتوفرة للبيع
         public int AvailableQuantity { get; set; }
@@ -55,9 +56,13 @@ namespace Business.Shared.DTOs
 
         public string Location { get; set; }
 
-        // نوع الوحدة مثل "قطعة" أو "كجم" ...
-        [MaxLength(50)]
-        public string Unit { get; set; }
-
+      
+    
+        public UnitOfMeasure UnitOfMeasure { get; set; }
+        public int UnitOfMeasureId
+        {
+            get => (int)UnitOfMeasure;
+            set => UnitOfMeasure = (UnitOfMeasure)value;
+        }
     }
 }

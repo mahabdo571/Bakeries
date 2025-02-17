@@ -1,0 +1,107 @@
+﻿@inherits ComponentBase
+@using Business.Shared.DTOs
+@using Business.Shared.Enums
+@using Business.Shared.Enums.Extensions
+
+@if (Item != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @(Item.Id == 0 ? "إضافة مخزون" : "تعديل المخزون")
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="@OnClose"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="Item" OnValidSubmit="@HandleSave">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label class="form-label">اسم العنصر</label>
+                            <InputText class="form-control" @bind-Value="@Item.ItemName" />
+                        </div>         
+                        
+                        <div class="mb-3">
+                            <label class="form-label">باركود</label>
+                            <InputText class="form-control" @bind-Value="@Item.Code" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الكمية المتوفرة</label>
+                            <InputNumber class="form-control" @bind-Value="@Item.AvailableQuantity" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">وحدة القياس</label>
+                            <InputSelect class="form-control" @bind-Value="@Item.UnitOfMeasureId">
+                                <option value="0">اختر وحدة القياس</option>
+                                @foreach (var unit in Enum.GetValues<UnitOfMeasure>())
+                                {
+                                    <option value="@((int)unit)">@unit.GetDisplayName()</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">سعر الشراء</label>
+                            <InputNumber class="form-control" @bind-Value="@Item.CostPrice" />
+                        </div>  
+                        <div class="mb-3">
+                            <label class="form-label">سعر البيع للزبائن</label>
+                            <InputNumber class="form-control" @bind-Value="@Item.UnitPriceForPeople" />
+                        </div> 
+                        <div class="mb-3">
+                            <label class="form-label">سعر البيع للتجار</label>
+                            <InputNumber class="form-control" @bind-Value="@Item.UniPtriceForDealers" />
+                        </div> 
+                        
+                        <div class="mb-3">
+                            <label class="form-label">سعر البيع للموزعين</label>
+                            <InputNumber class="form-control" @bind-Value="@Item.UnitPriceForResellers" />
+                        </div>           
+                        <div class="mb-3">
+                            <label class="form-label">خصومات</label>
+                            <InputNumber class="form-control" @bind-Value="@Item.Discount" />
+                        </div>     
+                        
+                        <div class="mb-3">
+                            <label class="form-label">الضريبة</label>
+                            <InputNumber class="form-control" @bind-Value="@Item.Tax" />
+                        </div>   
+                        
+                        <div class="mb-3">
+                            <label class="form-label">الحد الأدنى</label>
+                            <InputNumber class="form-control" @bind-Value="@Item.ReorderLevel" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الموقع</label>
+                            <InputText class="form-control" @bind-Value="@Item.Location" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الملاحظات</label>
+                            <InputTextArea class="form-control" @bind-Value="@Item.Notes" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                            <button type="button" class="btn btn-secondary" @onclick="@OnClose">إغلاق</button>
+                        </div>
+
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter] public FinishedProductInventoryDTO Item { get; set; }
+
+    [Parameter] public EventCallback OnSave { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+
+    private async Task HandleSave()
+    {
+        await OnSave.InvokeAsync();
+    }
+}

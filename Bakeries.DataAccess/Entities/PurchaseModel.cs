@@ -59,7 +59,7 @@ namespace Bakeries.DataAccess.Entities
 
         // العلاقة مع المخزن الأول (nullable لأن العملية قد تكون من المخزن الثاني)
 
-        public int? ItemId { get; set; } // اسم المورد
+        public int? ItemId { get; set; } //اسم العنصر بالمخزن
         [ForeignKey("ItemId")]
         public virtual StockModel Item  { get; set; }
 
