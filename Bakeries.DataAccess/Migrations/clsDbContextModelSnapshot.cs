@@ -291,7 +291,7 @@ namespace Bakeries.DataAccess.Migrations
                     b.ToTable("ProductionProcessDetails");
                 });
 
-            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseModel", b =>
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseFinishedProductInventoryModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -305,8 +305,67 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("FinishedProductInventoryId")
+                    b.Property<int>("FinishedProductInventoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("SupplierInvoiceNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("SupplierName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int>("UnitOfMeasure")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FinishedProductInventoryId");
+
+                    b.ToTable("PurchaseFinishedProductInventoryModel");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("ItemId")
                         .HasColumnType("int");
@@ -349,12 +408,7 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("WarehouseSelection")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("FinishedProductInventoryId");
 
                     b.HasIndex("ItemId");
 
@@ -522,17 +576,22 @@ namespace Bakeries.DataAccess.Migrations
                     b.Navigation("Stock");
                 });
 
-            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseModel", b =>
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseFinishedProductInventoryModel", b =>
                 {
                     b.HasOne("Bakeries.DataAccess.Entities.FinishedProductInventoryModel", "FinishedProductInventory")
-                        .WithMany("Purchases")
-                        .HasForeignKey("FinishedProductInventoryId");
+                        .WithMany("PurchaseFinishedProductInventory")
+                        .HasForeignKey("FinishedProductInventoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
+                    b.Navigation("FinishedProductInventory");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseModel", b =>
+                {
                     b.HasOne("Bakeries.DataAccess.Entities.StockModel", "Item")
                         .WithMany("Purchases")
                         .HasForeignKey("ItemId");
-
-                    b.Navigation("FinishedProductInventory");
 
                     b.Navigation("Item");
                 });
@@ -565,7 +624,7 @@ namespace Bakeries.DataAccess.Migrations
                 {
                     b.Navigation("Details");
 
-                    b.Navigation("Purchases");
+                    b.Navigation("PurchaseFinishedProductInventory");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductModel", b =>
