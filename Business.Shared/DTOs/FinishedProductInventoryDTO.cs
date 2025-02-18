@@ -55,6 +55,7 @@ namespace Business.Shared.DTOs
         public int ReorderLevel { get; set; }//الحد الأدنى للكمية قبل الحاجة لإعادة الطلب.
 
         public string Location { get; set; }
+        public bool? ProductId { get; set; }
 
       
     

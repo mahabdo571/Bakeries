@@ -66,6 +66,10 @@ namespace Bakeries.Business.Services
 
             var temp = await unitOfWork.FinishedProductInventoryRepo.GetByIdAsync(model.Id);
             newModel.CreatedAt = temp.CreatedAt;
+                if(temp.ProductId is not null && temp.AvailableQuantity != model.AvailableQuantity)
+                {
+                    throw new Exception("لا يمكنك تعديل الكمية في منتج يتم انتاجه محليا");
+                }
 
             await unitOfWork.FinishedProductInventoryRepo.UpdateAsync(newModel);
                 await unitOfWork.SaveChangesAsync();
