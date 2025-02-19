@@ -1,36 +1,56 @@
 ﻿@page "/RawMaterialStock"
 @using Business.Shared.DTOs
 @using Business.Shared.Enums
+@using System.Text.Json
 @using bakerbalzorwebassembly.Component.Stock
 @using bakerbalzorwebassembly.Component.Shared
+@using bakerbalzorwebassembly.Models
 @inherits ComponentBase
+
 
 <h3 class="mb-4">
     <i class="bi bi-boxes"></i> مخزن المواد الخام
 </h3>
 
 <PageToolbar SearchText="@searchText"
-             OnSearch="@SearchStocks"
-             OnAdd="ShowAddModal" />
+OnSearch="@SearchStocks"
+OnAdd="ShowAddModal" />
 
 <StockTable Items="@FilteredStocks"
-                 OnDetails="ShowDetails"
-                 OnEdit="ShowEdit"
-                 OnDelete="ShowDelete" />
+OnDetails="ShowDetails"
+OnEdit="ShowEdit"
+OnClickToOpenPurchasing="PurchasingAndInvoc"
+OnDelete="ShowDelete" />
 
- <DetailsModal Item="@selectedStockForDetails"
-              OnClose="CloseDetails" />
+<DetailsModal Item="@selectedStockForDetails"
+OnClose="CloseDetails" />
 
 <EditModal Item="@selectedStockForEdit"
-           OnSave="@SaveStock"
-           OnClose="@CloseEditModal"
- />
+OnSave="@SaveStock"
+OnClose="@CloseEditModal"
+/>
 
- <DeleteModal Item="@selectedStockForDelete"
-             OnConfirm="ConfirmDelete"
-             OnClose="CloseDeleteModal" /> 
+<DeleteModal Item="@selectedStockForDelete"
+OnConfirm="ConfirmDelete"
+OnClose="CloseDeleteModal" /> 
 
- <LoadingModal IsVisible="@isSaving" />
+<LoadingModal IsVisible="@isSaving" />
 
 <ErrorModal Message="@messageError"
-            OnClose="CloseDeleteModal" />
+OnClose="CloseDeleteModal" />
+
+
+@code {
+    @inject NavigationManager Navigation;
+    @inject NavigationMode navModel;
+    private void PurchasingAndInvoc(StockDTO stock)
+    {
+        var baseUri = Navigation.BaseUri;
+
+        navModel.stockDTO = stock;
+
+        Navigation.NavigateTo($"{baseUri}PurchasingAndInvoc");
+
+
+    }
+} 

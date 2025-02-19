@@ -19,6 +19,7 @@ namespace Bakeries.DataAccess
         public DbSet<ProductionModel> Productions { get; set; }
         public DbSet<ProductionProcessDetailModel> ProductionProcessDetails { get; set; }
         public DbSet<FinishedProductInventoryModel> FinishedProductInventorys { get; set; }
+        public DbSet<PurchaseFinishedProductInventoryModel> PurchasesFinishedProductInventorys { get; set; }
         public DbSet<SalesDetailModel> SalesDetails { get; set; }
         public DbSet<DailySaleModel> DailySales { get; set; }
         public clsDbContext(DbContextOptions op) : base(op)
@@ -94,6 +95,7 @@ namespace Bakeries.DataAccess
 
             StoredProcedure.UpdateStockOnPurchase(this);
             StoredProcedure.GetProductsWithComponents(this);
+            StoredProcedure.UpdateFinishedProductInventoryAfterPurchase(this);
 
 
        

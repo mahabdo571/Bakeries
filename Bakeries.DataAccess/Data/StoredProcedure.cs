@@ -35,6 +35,33 @@ namespace Bakeries.DataAccess.Data
 
             END;
         ");
+        }     
+        
+        
+        public static void UpdateFinishedProductInventoryAfterPurchase(clsDbContext dbContext)
+        {
+            dbContext.Database.ExecuteSqlRaw(@"
+            CREATE OR ALTER PROCEDURE UpdateFinishedProductInventoryAfterPurchase
+ @finishedProductInventoryId INT,
+    @Quantity INT
+            AS
+            BEGIN
+              IF EXISTS (SELECT 1 FROM FinishedProductInventorys WHERE Id = @finishedProductInventoryId)
+    BEGIN
+        UPDATE FinishedProductInventorys
+        SET AvailableQuantity = AvailableQuantity + @Quantity,
+            UpdatedAt =DATEADD(HOUR, 2, GETUTCDATE())
+        WHERE Id = @finishedProductInventoryId;
+    END
+    ELSE
+    BEGIN
+
+        INSERT INTO FinishedProductInventorys (Id, ItemName, AvailableQuantity, UpdatedAt)
+        VALUES (@finishedProductInventoryId, 'Unknown Item', @Quantity, DATEADD(HOUR, 2, GETUTCDATE()));
+    END
+
+            END;
+        ");
         }
 
         public static void GetProductsWithComponents(clsDbContext dbContext)

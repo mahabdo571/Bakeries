@@ -350,7 +350,7 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasIndex("FinishedProductInventoryId");
 
-                    b.ToTable("PurchaseFinishedProductInventoryModel");
+                    b.ToTable("PurchasesFinishedProductInventorys");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseModel", b =>

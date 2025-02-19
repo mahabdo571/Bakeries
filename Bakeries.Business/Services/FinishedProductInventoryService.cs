@@ -19,7 +19,7 @@ namespace Bakeries.Business.Services
             var newModel = mapper.Map<FinishedProductInventoryModel>(model);
             newModel.CreatedAt = DateTime.Now;
             newModel.UpdatedAt = DateTime.Now;
-            await unitOfWork.FinishedProductInventoryRepo.AddAsync(newModel);
+            await unitOfWork.FinishedProductInventoryRepository.AddAsync(newModel);
             return newModel.Id;
         }
 
@@ -28,7 +28,7 @@ namespace Bakeries.Business.Services
             await unitOfWork.BeginTransactionAsync();
             try
             {
-                await unitOfWork.FinishedProductInventoryRepo.DeleteAsync(id);
+                await unitOfWork.FinishedProductInventoryRepository.DeleteAsync(id);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
 
@@ -43,7 +43,7 @@ namespace Bakeries.Business.Services
 
         public async Task<IEnumerable<FinishedProductInventoryDTO>> GetAllAsync()
         {
-            var model = await unitOfWork.FinishedProductInventoryRepo.GetAllAsync(); ;
+            var model = await unitOfWork.FinishedProductInventoryRepository.GetAllAsync(); ;
 
             var newModel = mapper.Map<IEnumerable<FinishedProductInventoryDTO>>(model);
 
@@ -53,7 +53,7 @@ namespace Bakeries.Business.Services
 
         public async Task<FinishedProductInventoryDTO> GetByIdAsync(int id)
         {
-            return mapper.Map<FinishedProductInventoryDTO>(await unitOfWork.FinishedProductInventoryRepo.GetByIdAsync(id));
+            return mapper.Map<FinishedProductInventoryDTO>(await unitOfWork.FinishedProductInventoryRepository.GetByIdAsync(id));
         }
 
         public async Task UpdateAsync(FinishedProductInventoryDTO model)
@@ -64,14 +64,14 @@ namespace Bakeries.Business.Services
                 var newModel = mapper.Map <FinishedProductInventoryModel>(model);
             newModel.UpdatedAt = DateTime.Now;
 
-            var temp = await unitOfWork.FinishedProductInventoryRepo.GetByIdAsync(model.Id);
+            var temp = await unitOfWork.FinishedProductInventoryRepository.GetByIdAsync(model.Id);
             newModel.CreatedAt = temp.CreatedAt;
                 if(temp.ProductId is not null && temp.AvailableQuantity != model.AvailableQuantity)
                 {
                     throw new Exception("لا يمكنك تعديل الكمية في منتج يتم انتاجه محليا");
                 }
 
-            await unitOfWork.FinishedProductInventoryRepo.UpdateAsync(newModel);
+            await unitOfWork.FinishedProductInventoryRepository.UpdateAsync(newModel);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
 

@@ -60,6 +60,19 @@ namespace Bakeries.DataAccess.Repo
 
          
         return model;
+        }     
+        
+        public async Task<IEnumerable<PurchaseModel>> GetAllByItemIdAsync(int itemId)
+        {
+            var model =  await context
+                .Purchases
+                .WhereNotDeleted()
+                .Where(p=>p.ItemId == itemId)
+                .Include(p => p.Item)
+                .ToListAsync();
+
+           
+        return model;
         }
         public async Task<StockModel> GetStockDetailsFromItemId(int itemId, clsDbContext dbContext)
         {

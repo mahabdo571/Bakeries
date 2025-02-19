@@ -1,4 +1,5 @@
 using bakerbalzorwebassembly;
+using bakerbalzorwebassembly.Models;
 using bakerbalzorwebassembly.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -12,7 +13,9 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://
 builder.Services.AddScoped<StockService>();
 builder.Services.AddScoped<PurchasingService>();
 builder.Services.AddScoped<FinishedProductInventoryService>();
+builder.Services.AddSingleton<NavigationMode>();
 
 
 
-await builder.Build().RunAsync();
+var app = builder.Build();
+await app.RunAsync();

@@ -3,6 +3,7 @@ using bakerbalzorwebassembly.Services;
 using Microsoft.AspNetCore.Components;
 using Business.Shared.Enums;
 using Microsoft.AspNetCore.Components.Web;
+using bakerbalzorwebassembly.Models;
 
 
 namespace bakerbalzorwebassembly.Pages
@@ -24,17 +25,22 @@ namespace bakerbalzorwebassembly.Pages
         protected PurchasingService PurchasingService { get; set; }
         [Inject]
         protected StockService stockService { get; set; }
+        
+        [Inject]
+        protected NavigationMode navigationMode { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            await LoadPurchasing();
+
+            await LoadPurchasing(navigationMode?.stockDTO?.Id ?? -1);
             stockItem =await stockService.GetAllAsync();
         }
 
-        protected async Task LoadPurchasing()
+        protected async Task LoadPurchasing(int itemId)
         {
+         
 
-            PurchasingModel = await PurchasingService.GetAllAsync();
+            PurchasingModel = await PurchasingService.GetAllByItemIdAsync(itemId);
             FilterPurchasing();
 
 
@@ -114,7 +120,7 @@ namespace bakerbalzorwebassembly.Pages
 
                 await PurchasingService.UpdateAsync(selectedPurchasingForEdit);
             }
-            await LoadPurchasing();
+            await LoadPurchasing(selectedPurchasingForEdit.ItemId);
 
             CloseEditModal();
             isSaving = false;
@@ -167,7 +173,7 @@ namespace bakerbalzorwebassembly.Pages
 
             }
 
-            await LoadPurchasing();
+            await LoadPurchasing(selectedPurchasingForDelete.ItemId);
             if (messageError == null)
             {
                 CloseDeleteModal();

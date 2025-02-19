@@ -27,6 +27,12 @@ namespace Bakeries.Business
             CreateMap<FinishedProductInventoryModel, FinishedProductInventoryDTO>()
     .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (UnitOfMeasure)src.UnitOfMeasure))
     .ReverseMap()
+    .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (int)src.UnitOfMeasure!)); 
+            
+            
+            CreateMap<PurchaseFinishedProductInventoryModel, PurchaseFinishedProductInventoryDTO>()
+    .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (UnitOfMeasure)src.UnitOfMeasure))
+    .ReverseMap()
     .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (int)src.UnitOfMeasure!));
 
 

@@ -66,6 +66,6 @@ namespace Business.Shared.DTOs
         public DateTime? UpdatedAt { get; set; }
 
 
-
+        public StockDTO item { get; set; }
     }
 }

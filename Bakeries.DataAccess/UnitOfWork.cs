@@ -1,4 +1,5 @@
-﻿using Bakeries.DataAccess.Repo;
+﻿using Bakeries.DataAccess.Entities;
+using Bakeries.DataAccess.Repo;
 using Bakeries.DataAccess.Repo.IRepo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -10,8 +11,8 @@ namespace Bakeries.DataAccess
         (clsDbContext context, IProductsRepo productRepository,
         IProductionRepo productionRepository, IStockRepo stockRepository,
         IProductIngredientRepo productIngredientRepository, IPurchasesRepo purchasesRepository,
-        IProductionProcessDetailRepo productionProcessDetailRepo,IFinishedProductInventoryRepo finishedProductInventoryRepo
-
+        IProductionProcessDetailRepo productionProcessDetailRepo,IFinishedProductInventoryRepo finishedProductInventoryRepo,
+        IPurchaseFinishedProductInventoryRepo purchaseFinishedProductInventoryRepo
         ) : IUnitOfWork
     {
 
@@ -27,7 +28,8 @@ namespace Bakeries.DataAccess
         public IPurchasesRepo PurchasesRepository { get; } = purchasesRepository;
         public IProductionProcessDetailRepo ProductionProcessDetailRepository { get; } = productionProcessDetailRepo;
 
-        public IFinishedProductInventoryRepo FinishedProductInventoryRepo { get; } = finishedProductInventoryRepo;
+        public IFinishedProductInventoryRepo FinishedProductInventoryRepository { get; } = finishedProductInventoryRepo;
+        public IPurchaseFinishedProductInventoryRepo PurchaseFinishedProductInventoryRepository { get; } = purchaseFinishedProductInventoryRepo;
 
         public async Task BeginTransactionAsync()
         {

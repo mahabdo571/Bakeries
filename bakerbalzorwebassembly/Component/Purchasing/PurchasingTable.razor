@@ -32,7 +32,7 @@
                 {
                     <tr @onclick="() => OnDetails.InvokeAsync(item)" style="cursor: pointer;">
                         <td class="d-none d-md-table-cell">@item.Id</td>
-                        <td>@item.ItemName</td>
+                        <td>@item.item.ItemName</td>
                         <td>@item.Quantity</td>
                         <td>@item.TotalPrice</td>
                         <td class="d-none d-md-table-cell">@item.Status</td>
@@ -45,6 +45,7 @@
                         </td>
 
                         <td>
+                       
                             <button class="btn btn-sm btn-warning me-1"
                             @onclick:stopPropagation
                                     @onclick="() => OnEdit.InvokeAsync(item)">

@@ -3,11 +3,14 @@
 @using Business.Shared.Enums
 @using bakerbalzorwebassembly.Component.Purchasing
 @using bakerbalzorwebassembly.Component.Shared
+@using bakerbalzorwebassembly.Models
 @inherits ComponentBase
-
+    
 <h3 class="mb-4">
-    <i class="bi bi-receipt"></i> المشتريات والفواتير
+    <i class="bi bi-receipt"></i>
+    المشتريات والفواتير ل @(navigationMode?.stockDTO?.ItemName ?? "لا توجد بيانات")
 </h3>
+
 
 <PageToolbar SearchText="@searchText"
     OnSearch= "@SearchPurchasing"
@@ -41,3 +44,5 @@
 <ErrorModal 
     Message="@messageError"
     OnClose="CloseDeleteModal" />
+
+  
