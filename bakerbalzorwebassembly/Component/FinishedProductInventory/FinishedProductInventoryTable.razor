@@ -51,7 +51,7 @@
                         <td>
                             <button title="المشتريات والفواتير الخاصة بالمنتج" class="btn btn-sm btn-success me-1"
                             @onclick:stopPropagation
-                                    @onclick="() => OnEdit.InvokeAsync(item)">
+                                    @onclick="() => OnClickPurchaseFinishedProductInventory.InvokeAsync(item)">
                                 <i class="bi bi-receipt"></i>
                             </button>  
                             <button class="btn btn-sm btn-warning me-1"
@@ -77,4 +77,5 @@
     [Parameter] public EventCallback<FinishedProductInventoryDTO> OnDetails { get; set; }
     [Parameter] public EventCallback<FinishedProductInventoryDTO> OnEdit { get; set; }
     [Parameter] public EventCallback<FinishedProductInventoryDTO> OnDelete { get; set; }
+    [Parameter] public EventCallback<FinishedProductInventoryDTO> OnClickPurchaseFinishedProductInventory { get; set; }
 }

@@ -3,37 +3,55 @@
 @using Business.Shared.Enums
 @using bakerbalzorwebassembly.Component.FinishedProductInventory
 @using bakerbalzorwebassembly.Component.Shared
-@inherits ComponentBase 
+@using bakerbalzorwebassembly.Models
+@inherits ComponentBase
 
 <h3 class="mb-4">
     <i class="bi bi-inboxes"></i> مخزن المعرض
 </h3>
 
- <PageToolbar SearchText="@searchText" 
-              OnSearch="@SearchFinishedProductInventory" 
-             OnAdd="ShowAddModal" /> 
+<PageToolbar SearchText="@searchText"
+             OnSearch="@SearchFinishedProductInventory"
+             ShowButtonAddNew="@true"
+             OnAdd="ShowAddModal" />
 
-<FinishedProductInventoryTable Items="@FilteredFinishedProductInventory" 
-            OnDetails="ShowDetails" 
-            OnEdit="ShowEdit"
-            OnDelete="ShowDelete" /> 
-            
+<FinishedProductInventoryTable Items="@FilteredFinishedProductInventory"
+                               OnDetails="ShowDetails"
+                               OnEdit="ShowEdit"
+                               OnClickPurchaseFinishedProductInventory="OnClickPurchaseFinishedProductInventory"
+                               OnDelete="ShowDelete" />
+
 <EditModal Item="@selectedFinishedProductInventoryForEdit"
            OnSave="@SaveStock"
            OnClose="@CloseEditModal" />
 
 
- <DetailsModal Item="@selectedFinishedProductInventoryForDetails"
+<DetailsModal Item="@selectedFinishedProductInventoryForDetails"
               OnClose="CloseDetails" />
 
 
 <DeleteModal Item="@selectedFinishedProductInventoryForDelete"
              OnConfirm="ConfirmDelete"
-             OnClose="CloseDeleteModal" /> 
+             OnClose="CloseDeleteModal" />
 
- <LoadingModal IsVisible="@isSaving" />
+<LoadingModal IsVisible="@isSaving" />
 
 <ErrorModal Message="@messageError"
             OnClose="CloseDeleteModal" />
- 
+@code {
+    @inject NavigationManager Navigation;
+    @inject NavigationMode navModel;
+    private void OnClickPurchaseFinishedProductInventory(FinishedProductInventoryDTO model)
+    {
+        var baseUri = Navigation.BaseUri;
+        navModel.restState();
+        navModel.FPIDTO = model;
+
+        Navigation.NavigateTo($"{baseUri}PurchaseFinishedProductInventory");
+
+
+    }
+}
+
+
 

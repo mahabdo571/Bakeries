@@ -51,14 +51,17 @@ namespace Bakeries.Business.Services
 
         public async Task DeleteAsync(int id)
         {
+            var model = await GetByIdAsync(id);
             await unitOfWork.BeginTransactionAsync();
             try
             {
                 await unitOfWork.PurchaseFinishedProductInventoryRepository.DeleteAsync(id);
+
+
+                await UpdateInventoryQuantityBasedOnDeleteInInvoiceStatusAsync(model);
+
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
-
-
             }
             catch
             {
@@ -96,6 +99,30 @@ namespace Bakeries.Business.Services
             newModel.CreatedAt = temp.CreatedAt;
 
             await unitOfWork.PurchaseFinishedProductInventoryRepository.UpdateAsync(newModel);
+        }
+
+        private async Task UpdateInventoryQuantityBasedOnDeleteInInvoiceStatusAsync(PurchaseFinishedProductInventoryDTO model)
+        {
+            if (model is null) throw new ArgumentNullException(nameof(model));
+
+
+
+            var temp = await unitOfWork.FinishedProductInventoryRepository.GetByIdAsync((int)model.FinishedProductInventoryId!);
+
+         
+
+
+            if (temp == null)
+            {
+
+                throw new NullReferenceException("Stock item not found.");
+            }
+
+            // تعديل الكمية المتاحة
+            temp.AvailableQuantity -= model.Quantity;
+
+            // تحديث المخزون
+            await unitOfWork.FinishedProductInventoryRepository.UpdateAsync(temp);
         }
     }
 }

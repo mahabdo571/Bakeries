@@ -5,7 +5,7 @@
     <div class="w-50">
         <input type="text"
         class="form-control"
-        placeholder="ابحث باسم العنصر..."
+        placeholder="ابحث باسم او ملاحظات العنصر..."
         @oninput="@(e => OnSearch.InvokeAsync(e.Value.ToString()))"
         value="@SearchText" />
     </div>

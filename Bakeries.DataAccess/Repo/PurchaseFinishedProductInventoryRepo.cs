@@ -18,7 +18,7 @@ namespace Bakeries.DataAccess.Repo
         }
         public async Task UpdateAvailableQuantityOnFinishedProductInventoryAfterPurchase(int? finishedProductInventoryId, decimal Quantity)
         {
-            if(finishedProductInventoryId is null || finishedProductInventoryId > 0)
+            if(finishedProductInventoryId is null || finishedProductInventoryId <= 0)
             {
                 return;
             }
@@ -62,7 +62,7 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<PurchaseFinishedProductInventoryModel> GetByIdAsync(int id)
         {
-            return await context.PurchasesFinishedProductInventorys.WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+            return await context.PurchasesFinishedProductInventorys.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task UpdateAsync(PurchaseFinishedProductInventoryModel model)

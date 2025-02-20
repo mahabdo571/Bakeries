@@ -32,7 +32,7 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task UpdateStockOnPurchase(int? stockId,decimal Quantity)
         {
-            if(stockId is null || stockId > 0) return;
+            if(stockId is null || stockId <= 0) return;
             await context.Database.ExecuteSqlRawAsync(
                 "EXEC UpdateStockOnPurchase @p0, @p1",
                 parameters: new object[] { stockId, Quantity }

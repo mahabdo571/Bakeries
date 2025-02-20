@@ -63,8 +63,8 @@ namespace bakerbalzorwebassembly.Pages
             }
             else
             {
-                filteredPurchasing = PurchasingModel.Where(s => s.ItemName != null &&
-                                                s.ItemName.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
+                filteredPurchasing = PurchasingModel.Where(s => s.Notes != null &&
+                                                s.Notes.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
             }
         }
 

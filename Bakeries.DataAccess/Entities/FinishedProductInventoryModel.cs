@@ -44,7 +44,7 @@ namespace Bakeries.DataAccess.Entities
         public decimal Tax { get; set; }
 
         // كمية المنتج المتوفرة للبيع
-        public int AvailableQuantity { get; set; }
+        public decimal AvailableQuantity { get; set; }
         public int ReorderLevel { get; set; }//الحد الأدنى للكمية قبل الحاجة لإعادة الطلب.
 
         public string Location { get; set; }

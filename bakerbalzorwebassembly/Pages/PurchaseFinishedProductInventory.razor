@@ -1,2 +1,42 @@
-﻿<h3>PurchaseFinishedProductInventory</h3>
+﻿@page "/PurchaseFinishedProductInventory"
+@using bakerbalzorwebassembly.Component.PurchaseFinishedProductInventory
+@using bakerbalzorwebassembly.Component.Shared
 
+@inherits ComponentBase
+
+<h3 class="mb-4">
+    <i class="bi bi-receipt"></i>
+
+    مشتريات وفواتير المعرض للمنتج @(!string.IsNullOrEmpty(navigationMode?.FPIDTO?.ItemName) ? navigationMode?.FPIDTO?.ItemName : "خطأ")
+</h3>
+<PageToolbar SearchText="@searchText"
+             OnSearch="@Search"
+             OnAdd="ShowAddModal"
+             ShowButtonAddNew="@true" />
+
+<PurchaseFinishedProductInventoryTable Items="@filteredData"
+                                       OnDetails="ShowDetails"
+                                       OnEdit="ShowEdit"
+                                       OnDelete="ShowDelete" />
+
+
+<DetailsModal Item="@selectedForDetails"
+              OnClose="CloseDetails" />
+
+
+<EditModal Item="@selectedForEdit"
+           OnSave="@SavePurchases"
+           OnClose="@CloseEditModal"
+           navigationItem="navigationMode?.FPIDTO"
+           OnQuantityChanged="@OnQuantityChanged"
+           OnUnitPriceChanged="@OnUnitPriceChanged" />
+
+
+<DeleteModal Item="@selectedForDelete"
+             OnConfirm="ConfirmDelete"
+             OnClose="CloseDeleteModal" />
+
+<LoadingModal IsVisible="@isSaving" />
+
+<ErrorModal Message="@messageError"
+            OnClose="CloseDeleteModal" />
