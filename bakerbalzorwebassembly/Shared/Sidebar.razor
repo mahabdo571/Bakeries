@@ -1,4 +1,5 @@
-﻿
+﻿@using bakerbalzorwebassembly.Models
+
 <div class="d-flex flex-column p-3 bg-dark sidebar flex-shrink-0" id="sidebar">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-white text-decoration-none">
         <i class="bi bi-layout-sidebar fs-3 me-2"></i>
@@ -51,31 +52,32 @@
 @code{
 @inject NavigationManager Navigation
 
- 
+    @inject NavigationMode navigationMode 
 
-  
+
+
 
 
     private void RawMaterialStock()
     {
-       var baseUri = Navigation.BaseUri;
+        var baseUri = Navigation.BaseUri;
 
         Navigation.NavigateTo($"{baseUri}RawMaterialStock");
- 
+
 
     } 
     private void FinishedProductInventory()
     {
-       var baseUri = Navigation.BaseUri;
+        var baseUri = Navigation.BaseUri;
 
         Navigation.NavigateTo($"{baseUri}FinishedProductInventory");
- 
+
 
     } 
-    
+
     private void PurchasingAndInvoc()
     {
-     
+        navigationMode?.restState();
         var baseUri = Navigation.BaseUri;
   
         Navigation.NavigateTo($"{baseUri}PurchasingAndInvoc");

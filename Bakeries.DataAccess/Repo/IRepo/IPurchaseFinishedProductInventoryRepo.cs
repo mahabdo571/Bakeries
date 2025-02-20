@@ -9,6 +9,9 @@ namespace Bakeries.DataAccess.Repo.IRepo
 {
     public interface IPurchaseFinishedProductInventoryRepo : IRepoBase<PurchaseFinishedProductInventoryModel>
     {
-        Task UpdateAvailableQuantityOnFinishedProductInventoryAfterPurchase(int finishedProductInventoryId, decimal Quantity);
+        Task UpdateAvailableQuantityOnFinishedProductInventoryAfterPurchase(int? finishedProductInventoryId, decimal Quantity);
+        Task<IEnumerable<PurchaseFinishedProductInventoryModel>> GetAllByItemIdAsync(int itemId);
+
+
     }
 }

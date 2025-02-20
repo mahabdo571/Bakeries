@@ -8,29 +8,33 @@
     
 <h3 class="mb-4">
     <i class="bi bi-receipt"></i>
-    المشتريات والفواتير ل @(navigationMode?.stockDTO?.ItemName ?? "لا توجد بيانات")
+    المشتريات والفواتير @(!string.IsNullOrEmpty(navigationMode?.stockDTO?.ItemName) ? " للمنتج " + navigationMode?.stockDTO?.ItemName : "للعرض فقط")
 </h3>
 
 
 <PageToolbar SearchText="@searchText"
     OnSearch= "@SearchPurchasing"
-    OnAdd="ShowAddModal" />
+    OnAdd="ShowAddModal" 
+    ShowButtonAddNew="@(navigationMode?.stockDTO is not null)"
+    />
 
 <PurchasingTable 
     Items="@FilteredPurchases"
     OnDetails="ShowDetails"
     OnEdit="ShowEdit"
-    OnDelete="ShowDelete" />
+    OnDelete="ShowDelete"
+                 navMod="navigationMode?.stockDTO" />
 
 <DetailsModal 
     Item="@selectedPurchasingForDetails"
     OnClose="CloseDetails" />
 
-<EditModal 
+<EditModal
     Item="@selectedPurchasingForEdit"
-    StockItems="@stockItem"
+
     OnSave="@SavePurchases"
     OnClose="@CloseEditModal"
+    navigationItem="navigationMode?.stockDTO"
     OnQuantityChanged="@OnQuantityChanged"
     OnUnitPriceChanged="@OnUnitPriceChanged" />
 

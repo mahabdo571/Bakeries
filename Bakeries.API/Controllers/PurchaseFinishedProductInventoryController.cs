@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bakeries.API.Controllers
-{
+{ 
     [Route("api/PurchaseFinishedProductInventory")]
     [ApiController]
     public class PurchaseFinishedProductInventoryController(IPurchaseFinishedProductInventoryServes serves, ILogger<PurchaseFinishedProductInventoryController> logger) : ControllerBase
@@ -20,6 +20,31 @@ namespace Bakeries.API.Controllers
             try
             {
                 var model = await serves.GetAllAsync();
+                if (model is null)
+                {
+                    logger.LogWarning("model is null  - not found.");
+                    return NotFound($" not found.");
+                }
+                return Ok(model);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
+            }
+        } 
+        
+        
+        [HttpGet("GetAllByItemId/{itemId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<PurchaseFinishedProductInventoryDTO>>> GetAllByItemIdAsync(int itemId)
+        {
+
+            try
+            {
+                var model = await serves.GetAllByItemIdAsync(itemId);
                 if (model is null)
                 {
                     logger.LogWarning("model is null  - not found.");

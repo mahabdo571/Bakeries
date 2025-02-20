@@ -36,11 +36,11 @@ namespace bakerbalzorwebassembly.Pages
             stockItem =await stockService.GetAllAsync();
         }
 
-        protected async Task LoadPurchasing(int itemId)
+        protected async Task LoadPurchasing(int? itemId)
         {
-         
+         if(itemId == null) return;
 
-            PurchasingModel = await PurchasingService.GetAllByItemIdAsync(itemId);
+            PurchasingModel = await PurchasingService.GetAllByItemIdAsync((int)itemId!);
             FilterPurchasing();
 
 
@@ -108,7 +108,8 @@ namespace bakerbalzorwebassembly.Pages
         protected async Task SavePurchases()
         {
             selectedPurchasingForEdit.UnitOfMeasure = (UnitOfMeasure)selectedPurchasingForEdit.UnitOfMeasure;
-
+            selectedPurchasingForEdit.ItemId = navigationMode?.stockDTO?.Id ?? -1;
+            Console.WriteLine(selectedPurchasingForEdit.ItemId);
             isSaving = true;
             if (selectedPurchasingForEdit.Id == 0)
             {

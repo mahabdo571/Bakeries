@@ -3,14 +3,16 @@
 @using Business.Shared.Enums
 @using Business.Shared.Enums.Extensions
 
-@if (Item != null)
+
+
+@if (Item is not null)
 {
     <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        @(Item.Id == 0 ? "إضافة مخزون" : "تعديل المخزون")
+                        @(Item.Id == 0 ? "إضافة عملية شراء جديدة او فاتورة" : "تعديل عملية شراء او فاتورة")
                     </h5>
                     <button type="button" class="btn-close" @onclick="@OnClose"></button>
                 </div>
@@ -20,14 +22,9 @@
                         <ValidationSummary />
                         <div class="mb-3">
                             <label class="form-label">اسم العنصر</label>
+                            <label class="form-control"> @navigationItem.ItemName</label>
 
-                            <InputSelect disabled="@(Item.Id != 0)" class="form-control" @bind-Value="Item.ItemId">
-                                <option value="0">اختر منتج</option>
-                                @foreach (var item in StockItems)
-                                {
-                                    <option value="@item.Id">@item.ItemName</option>
-                                }
-                            </InputSelect>
+
                         </div>
                         <div class="mb-3">
                             <label class="form-label">اسم المورد</label>
@@ -40,16 +37,16 @@
                         <div class="mb-3">
                             <label class="form-label">سعر الوحدة</label>
                             <InputNumber class="form-control"
-                                         @bind-Value="Item.UnitPrice"                                    
-                                         @oninput="@(e => OnUnitPriceChanged.InvokeAsync(e.Value.ToString()))" />
+                            @bind-Value="Item.UnitPrice"                                    
+                            @oninput="@(e => OnUnitPriceChanged.InvokeAsync(e.Value.ToString()))" />
 
-                                    
+
                         </div>
                         <div class="mb-3">
                             <label class="form-label">الكمية</label>
                             <InputNumber class="form-control"
-                                         @bind-Value="Item.Quantity"         
-                                         @oninput="@(e => OnQuantityChanged.InvokeAsync(e.Value.ToString()))" />
+                            @bind-Value="Item.Quantity"         
+                            @oninput="@(e => OnQuantityChanged.InvokeAsync(e.Value.ToString()))" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">السعر الكلي</label>
@@ -104,15 +101,23 @@
 
 
 @code {
+
+
+
+
     [Parameter] public PurchasesDTO Item { get; set; }
-    [Parameter] public IEnumerable<StockDTO> StockItems { get; set; }
+    [Parameter] public StockDTO navigationItem { get; set; }
     [Parameter] public EventCallback OnSave { get; set; }
     [Parameter] public EventCallback OnClose { get; set; }
     [Parameter] public EventCallback<string> OnQuantityChanged { get; set; }
     [Parameter] public EventCallback<string> OnUnitPriceChanged { get; set; }
 
+   
+
     private async Task HandleSave()
     {
         await OnSave.InvokeAsync();
     }
+
+  
 }

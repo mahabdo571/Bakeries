@@ -16,8 +16,12 @@ namespace Bakeries.DataAccess.Repo
             await context.PurchasesFinishedProductInventorys.AddAsync(model);
             await context.SaveChangesAsync();
         }
-        public async Task UpdateAvailableQuantityOnFinishedProductInventoryAfterPurchase(int finishedProductInventoryId, decimal Quantity)
+        public async Task UpdateAvailableQuantityOnFinishedProductInventoryAfterPurchase(int? finishedProductInventoryId, decimal Quantity)
         {
+            if(finishedProductInventoryId is null || finishedProductInventoryId > 0)
+            {
+                return;
+            }
             await context.Database.ExecuteSqlRawAsync(
                 "EXEC UpdateFinishedProductInventoryAfterPurchase @p0, @p1",
                 parameters: new object[] { finishedProductInventoryId, Quantity }
@@ -39,7 +43,18 @@ namespace Bakeries.DataAccess.Repo
                 throw new NullReferenceException("MODEL IS NULL");
             }
         }
+        public async Task<IEnumerable<PurchaseFinishedProductInventoryModel>> GetAllByItemIdAsync(int itemId)
+        {
+            var model = await context
+                .PurchasesFinishedProductInventorys
+                .WhereNotDeleted()
+                .Where(p => p.FinishedProductInventoryId == itemId)
+                .Include(p => p.FinishedProductInventory)
+                .ToListAsync();
 
+
+            return model;
+        }
         public async Task<IEnumerable<PurchaseFinishedProductInventoryModel>> GetAllAsync()
         {
             return await context.PurchasesFinishedProductInventorys.WhereNotDeleted().ToListAsync();

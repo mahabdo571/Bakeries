@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace bakerbalzorwebassembly.Services
 {
-    public class StockService
+    public class StockService 
     {
 
         private readonly HttpClient _httpClient;

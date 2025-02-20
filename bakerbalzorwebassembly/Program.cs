@@ -13,6 +13,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://
 builder.Services.AddScoped<StockService>();
 builder.Services.AddScoped<PurchasingService>();
 builder.Services.AddScoped<FinishedProductInventoryService>();
+builder.Services.AddScoped<PurchaseFinishedProductInventoryService>();
 builder.Services.AddSingleton<NavigationMode>();
 
 

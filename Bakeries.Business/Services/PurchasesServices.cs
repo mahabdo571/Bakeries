@@ -52,7 +52,7 @@ namespace Bakeries.Business.Services
                 }
               
 
-                await unitOfWork.PurchasesRepository.UpdateStockOnPurchase(model.ItemId, model.Quantity);
+                await unitOfWork.PurchasesRepository.UpdateStockOnPurchase((int)model.ItemId!, model.Quantity);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
 
@@ -129,7 +129,7 @@ namespace Bakeries.Business.Services
                     var dbContext = scope.ServiceProvider.GetRequiredService<clsDbContext>();
 
                     // جلب تفاصيل العنصر باستخدام DbContext من خلال _getStockDetailsFromItemId
-                    var itemDetails = await unitOfWork.PurchasesRepository.GetStockDetailsFromItemId(purchase.ItemId, dbContext);
+                    var itemDetails = await unitOfWork.PurchasesRepository.GetStockDetailsFromItemId((int)purchase.ItemId, dbContext);
 
                     purchase.ItemName = itemDetails?.ItemName;  // إضافة بيانات إضافية
                     purchase.ItemDescription = itemDetails?.Notes;
@@ -213,7 +213,7 @@ namespace Bakeries.Business.Services
 
 
             // جلب بيانات المخزون
-            var stockModel = await _stockServices.GetByIdAsync(model.ItemId);
+            var stockModel = await _stockServices.GetByIdAsync((int)model.ItemId);
 
             if (stockModel == null)
             {
@@ -236,7 +236,7 @@ namespace Bakeries.Business.Services
         
 
 
-            var stockModel = await _stockServices.GetByIdAsync(model.ItemId);
+            var stockModel = await _stockServices.GetByIdAsync((int)model.ItemId);
         
 
             if (stockModel == null)

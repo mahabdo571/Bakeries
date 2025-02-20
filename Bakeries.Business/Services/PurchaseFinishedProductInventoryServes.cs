@@ -33,7 +33,7 @@ namespace Bakeries.Business.Services
                 }
 
 
-                await unitOfWork.PurchaseFinishedProductInventoryRepository.UpdateAvailableQuantityOnFinishedProductInventoryAfterPurchase(model.FinishedProductInventoryId, model.Quantity);
+                await unitOfWork.PurchaseFinishedProductInventoryRepository.UpdateAvailableQuantityOnFinishedProductInventoryAfterPurchase((int)model.FinishedProductInventoryId!, model.Quantity);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
 
@@ -46,6 +46,8 @@ namespace Bakeries.Business.Services
                 throw;
             }
         }
+
+
 
         public async Task DeleteAsync(int id)
         {
@@ -74,7 +76,11 @@ namespace Bakeries.Business.Services
 
             return newModel;
         }
-
+        public async Task<IEnumerable<PurchaseFinishedProductInventoryDTO>> GetAllByItemIdAsync(int itemId)
+        {
+            var newModel = mapper.Map<IEnumerable<PurchaseFinishedProductInventoryDTO>>(await unitOfWork.PurchaseFinishedProductInventoryRepository.GetAllByItemIdAsync(itemId));
+            return newModel;
+        }
         public async Task<PurchaseFinishedProductInventoryDTO> GetByIdAsync(int id)
         {
             return mapper.Map<PurchaseFinishedProductInventoryDTO>(await unitOfWork.PurchaseFinishedProductInventoryRepository.GetByIdAsync(id));

@@ -7,9 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Shared.Enums;
 
+
 namespace Business.Shared.DTOs
 {
-    public class PurchaseFinishedProductInventoryDTO
+    public class PurchaseFinishedProductInventoryDTO 
     {
 
         public int Id { get; set; } 
@@ -55,8 +56,9 @@ namespace Business.Shared.DTOs
         public string Status { get; set; } // حالة العملية
 
 
-        public int FinishedProductInventoryId { get; set; }
+        public int? FinishedProductInventoryId { get; set; }
 
+        public FinishedProductInventoryDTO? FinishedProductInventory { get;set; }
 
         public DateTime? CreatedAt { get; set; }
 
@@ -64,7 +66,6 @@ namespace Business.Shared.DTOs
 
         public string Notes { get; set; }
 
-
-
+       
     }
 }

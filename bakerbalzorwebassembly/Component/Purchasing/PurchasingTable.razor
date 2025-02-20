@@ -14,7 +14,10 @@
                 <th class="d-none d-md-table-cell">الملاحظات</th>
                 <th class="d-none d-md-table-cell">تاريخ الإنشاء</th>
                 <th class="d-none d-md-table-cell">تاريخ التعديل</th>
-                <th>الإجراءات</th>
+                @if (navMod is not null)
+                {
+                    <th>الإجراءات</th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -32,7 +35,7 @@
                 {
                     <tr @onclick="() => OnDetails.InvokeAsync(item)" style="cursor: pointer;">
                         <td class="d-none d-md-table-cell">@item.Id</td>
-                        <td>@item.item.ItemName</td>
+                        <td>@item.item?.ItemName</td>
                         <td>@item.Quantity</td>
                         <td>@item.TotalPrice</td>
                         <td class="d-none d-md-table-cell">@item.Status</td>
@@ -43,20 +46,22 @@
                         <td class="d-none d-md-table-cell">
                             @(item.UpdatedAt.HasValue ? item.UpdatedAt.Value.ToString("yyyy-MM-dd") : "-")
                         </td>
+                        @if (navMod is not null)
+                        {
+                            <td>
 
-                        <td>
-                       
-                            <button class="btn btn-sm btn-warning me-1"
-                            @onclick:stopPropagation
-                                    @onclick="() => OnEdit.InvokeAsync(item)">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger"
-                            @onclick:stopPropagation
-                                    @onclick="() => OnDelete.InvokeAsync(item)">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
+                                <button class="btn btn-sm btn-warning me-1"
+                                @onclick:stopPropagation
+                                @onclick="() => OnEdit.InvokeAsync(item)">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger"
+                                @onclick:stopPropagation
+                                @onclick="() => OnDelete.InvokeAsync(item)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        }
                     </tr>
                 }
             }
@@ -69,4 +74,6 @@
     [Parameter] public EventCallback<PurchasesDTO> OnDetails { get; set; }
     [Parameter] public EventCallback<PurchasesDTO> OnEdit { get; set; }
     [Parameter] public EventCallback<PurchasesDTO> OnDelete { get; set; }
+    [Parameter] public StockDTO? navMod { get; set; }
+
 }
