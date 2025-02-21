@@ -21,9 +21,8 @@ namespace Bakeries.DataAccess.Entities
         [Column(TypeName = "decimal(18,4)")]
         public decimal Price { get; set; } // سعر المنتج النهائي
 
-        [Required]
-        [MaxLength(50)]
-        public string Unit { get; set; } // مثل "قطعة" أو "كيلوغرام"
+ 
+        public int UnitOfMeasure { get; set; }
         public int? FinishedProductInventoryId { get; set; } //اذا فارغ اذا هو منتج لا يتم تصنيعه ويتم شرائه من الخارج اما اذا لديه قيمة فهو منتج يتم تصنيعه ومرتبط بالمنتج بقسم الانتاج
         [ForeignKey("FinishedProductInventoryId")]
         public virtual FinishedProductInventoryModel FinishedProductInventory { get; set; }

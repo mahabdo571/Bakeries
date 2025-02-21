@@ -4,11 +4,11 @@ using System.Net.Http.Json;
 
 namespace bakerbalzorwebassembly.Services
 {
-    public class ProductService
+    public class FinishedGoodsProductService
     {
         private readonly HttpClient _httpClient;
 
-        public ProductService(HttpClient httpClient)
+        public FinishedGoodsProductService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }

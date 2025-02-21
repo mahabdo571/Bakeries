@@ -6,6 +6,9 @@ namespace Business.Shared.Enums
 {
     public enum UnitOfMeasure
     {
+        [Display(Name = "لم يحدد بعد")]
+        nono = 0,
+
         [Display(Name = "كيلو غرام")]
         Kilogram = 1,
         [Display(Name = "غرام")]

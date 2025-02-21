@@ -36,7 +36,7 @@
         </li>
 
         <li>
-            <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri)">
+            <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri+"FinishedGoodsProduct")" @onclick="@FinishedGoodsProduct">
                 <i class="bi bi-gear-wide-connected"></i> قسم الانتاج
             </NavLink>
         </li>   
@@ -63,6 +63,15 @@
         var baseUri = Navigation.BaseUri;
 
         Navigation.NavigateTo($"{baseUri}RawMaterialStock");
+
+
+    }    
+    
+    private void FinishedGoodsProduct()
+    {
+        var baseUri = Navigation.BaseUri;
+
+        Navigation.NavigateTo($"{baseUri}FinishedGoodsProduct");
 
 
     } 

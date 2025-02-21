@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Business.Shared\Business.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Component\FinishedGoodsProduct\" />
+  </ItemGroup>
+
 </Project>

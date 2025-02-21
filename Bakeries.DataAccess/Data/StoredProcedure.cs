@@ -76,7 +76,7 @@ namespace Bakeries.DataAccess.Data
         P.Name,
         P.Description,
         P.Price,
-        P.Unit,
+        P.UnitOfMeasure,
         P.CreatedAt,
         P.UpdatedAt,
         P.DeletedAt,

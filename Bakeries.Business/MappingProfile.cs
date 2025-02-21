@@ -11,13 +11,20 @@ namespace Bakeries.Business
         public MappingProfile()
         {
           
-            CreateMap<ProductModel, ProductDTO>().ReverseMap();
+      
             CreateMap<ProductIngredientModel, ProductIngredientDTO>().ReverseMap();
 
             CreateMap<StockModel, StockDTO>()
     .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (UnitOfMeasure)src.UnitOfMeasure))
     .ReverseMap()
+    .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (int)src.UnitOfMeasure!));   
+            
+            
+            CreateMap<ProductModel, ProductDTO>()
+    .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (UnitOfMeasure)src.UnitOfMeasure))
+    .ReverseMap()
     .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (int)src.UnitOfMeasure!));
+
          
             CreateMap<PurchaseModel, PurchasesDTO>()
     .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (UnitOfMeasure)src.UnitOfMeasure))

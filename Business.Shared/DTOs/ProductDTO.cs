@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,9 +23,13 @@ namespace Business.Shared.DTOs
         [Range(0, double.MaxValue)]
         public decimal Price { get; set; } // سعر المنتج النهائي
 
-        [Required(ErrorMessage = "is Requird")]
-        [MaxLength(50)]
-        public string Unit { get; set; } // مثل "قطعة" أو "كيلوغرام"
+
+        public UnitOfMeasure UnitOfMeasure { get; set; } // وحدة القياس
+        public int UnitOfMeasureId
+        {
+            get => (int)UnitOfMeasure;
+            set => UnitOfMeasure = (UnitOfMeasure)value;
+        }
         public string? Notes { get; set; } = "لا يوجد ملاحظات";
         public DateTime? CreatedAt { get; set; }
 
