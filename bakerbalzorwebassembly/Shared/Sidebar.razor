@@ -8,12 +8,12 @@
     <hr class="border-light">
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <NavLink class="nav-link text-white sidebar-item" href="/">
+            <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri+"Home")">
                 <i class="bi bi-house-door me-2"></i> الصفحة الرئيسية
             </NavLink>
         </li>
         <li>
-            <NavLink class="nav-link text-white sidebar-item" href="/PurchasingAndInvoc" @onclick="@PurchasingAndInvoc">
+            <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri+"PurchasingAndInvoc")" @onclick="@PurchasingAndInvoc">
                 <i class="bi bi-receipt"></i> المشتريات والفواتير
             </NavLink>
         </li>
@@ -24,26 +24,26 @@
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <NavLink class="dropdown-item" href="/RawMaterialStock" @onclick="@RawMaterialStock">
+                    <NavLink class="dropdown-item" href="@(Navigation.BaseUri+"RawMaterialStock")" @onclick="@RawMaterialStock">
                         <i class="bi bi-boxes"></i> مخزون المادة الخام
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink class="dropdown-item" href="/FinishedProductInventory" @onclick="@FinishedProductInventory">
+                    <NavLink class="dropdown-item" href="@(Navigation.BaseUri+"FinishedProductInventory")" @onclick="@FinishedProductInventory">
                         <i class="bi bi-inboxes"></i> مخزون المعرض
                     </NavLink></li>
             </ul>
         </li>
 
         <li>
-            <NavLink class="nav-link text-white sidebar-item" href="/#">
+            <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri)">
                 <i class="bi bi-gear-wide-connected"></i> قسم الانتاج
             </NavLink>
         </li>   
 
 
         <li>
-            <NavLink class="nav-link text-white sidebar-item" href="/#">
+            <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri)">
                 <i class="bi bi-basket2"></i> المبيعات
             </NavLink>
         </li>
