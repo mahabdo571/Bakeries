@@ -149,12 +149,12 @@ namespace Bakeries.API.Controllers
             catch (KeyNotFoundException ex)
             {
                 logger.LogError(ex.Message);
-                return NotFound($"Purchases with ID {Id} not found. {ex.Message}");
+                return NotFound(new { Message = $"خطأ في عملية الحذف", Details = ex.Message });
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = $"خطأ في عملية الحذف", Details = ex.Message });
             }
         }
 

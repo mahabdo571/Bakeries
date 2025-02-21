@@ -213,7 +213,7 @@ namespace Bakeries.Business.Services
 
 
             // جلب بيانات المخزون
-            var stockModel = await _stockServices.GetByIdAsync((int)model.ItemId);
+            var stockModel = await _stockServices.GetByIdAsync((int)model.ItemId!);
 
             if (stockModel == null)
             {

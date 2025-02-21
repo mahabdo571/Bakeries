@@ -33,6 +33,7 @@ namespace Bakeries.DataAccess.Repo
 
             if (model is not null)
             {
+ 
                 model.DeletedAt = DateTime.Now;
 
                 context.PurchasesFinishedProductInventorys.Update(model);

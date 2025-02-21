@@ -94,11 +94,22 @@ namespace Bakeries.Business.Services
         {
             var newModel = mapper.Map<PurchaseFinishedProductInventoryModel>(model);
             newModel.UpdatedAt = DateTime.Now;
-
-            var temp = await unitOfWork.PurchaseFinishedProductInventoryRepository.GetByIdAsync(model.Id);
+            await unitOfWork.BeginTransactionAsync();
+            try
+            {
+                var temp = await unitOfWork.PurchaseFinishedProductInventoryRepository.GetByIdAsync(model.Id);
             newModel.CreatedAt = temp.CreatedAt;
-
+            await UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(model);
             await unitOfWork.PurchaseFinishedProductInventoryRepository.UpdateAsync(newModel);
+
+                await unitOfWork.SaveChangesAsync();
+                await unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await unitOfWork.RollbackAsync();
+                throw;
+            }
         }
 
         private async Task UpdateInventoryQuantityBasedOnDeleteInInvoiceStatusAsync(PurchaseFinishedProductInventoryDTO model)
@@ -123,6 +134,53 @@ namespace Bakeries.Business.Services
 
             // تحديث المخزون
             await unitOfWork.FinishedProductInventoryRepository.UpdateAsync(temp);
+        }
+
+        private async Task UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(PurchaseFinishedProductInventoryDTO model)
+        {
+            // جلب الفاتورة القديمة
+            var oldPurchase = await this.GetByIdAsync(model.Id);
+            if (oldPurchase == null)
+            {
+                throw new NullReferenceException("Old purchase not found.");
+            }
+            decimal quantityDifference = 0;
+
+            if (model.Status.Equals("ملغي") && !oldPurchase.Status.Equals("ملغي"))
+            {
+                quantityDifference = -model.Quantity;
+
+            }
+
+            else if (!model.Status.Equals("ملغي"))
+            {
+                if (oldPurchase.Status.Equals("ملغي"))
+                {
+                    quantityDifference = model.Quantity;
+                }
+                else
+                {
+                    quantityDifference = model.Quantity - oldPurchase.Quantity;
+                }
+
+            }
+
+
+            // جلب بيانات المخزون
+            var stockModel = await unitOfWork.FinishedProductInventoryRepository.GetByIdAsync((int)model.FinishedProductInventoryId!);
+
+            if (stockModel == null)
+            {
+
+                throw new NullReferenceException("Stock item not found.");
+            }
+
+            // تعديل الكمية المتاحة
+            stockModel.AvailableQuantity += quantityDifference;
+
+
+            // تحديث المخزون
+            await unitOfWork.FinishedProductInventoryRepository.UpdateAsync(stockModel);
         }
     }
 }

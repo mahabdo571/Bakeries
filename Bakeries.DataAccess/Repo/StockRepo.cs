@@ -24,9 +24,9 @@ namespace Bakeries.DataAccess.Repo
         {
             var model = await context.Stocks.WhereNotDeleted().FirstOrDefaultAsync(s=>s.Id == id);
 
-            var purchases = await context.Purchases.WhereNotDeleted().FirstOrDefaultAsync((p) => p.ItemId == model.Id);
+            var purchases = await context.Purchases.WhereNotDeleted().AnyAsync((p) => p.ItemId == model.Id);
 
-            if (purchases is not null)
+            if (purchases)
                 throw new Exception("المنتج مرتبط بعمليات شراء وفواتير معرفة بالنظام يجب عليك حذفها اولا");
 
             model.DeletedAt  = DateTime.Now;
