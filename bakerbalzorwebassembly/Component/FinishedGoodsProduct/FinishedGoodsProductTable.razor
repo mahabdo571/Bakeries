@@ -9,7 +9,7 @@
                 <th class="d-none d-md-table-cell">#</th>
                 <th>اسم المنتج</th>
                 <th>تكلفة الانتاج</th>
-                <th>التفاصيل</th>
+                <th class="d-none d-md-table-cell">التفاصيل</th>
                 <th class="d-none d-md-table-cell">ملاحظات</th>
                 <th class="d-none d-md-table-cell">تاريخ الإنشاء</th>
                 <th class="d-none d-md-table-cell">تاريخ التعديل</th>
@@ -35,7 +35,7 @@
                         <td class="d-none d-md-table-cell">@item.Id</td>
                         <td>@item.Name</td>
                         <td>@item.Price</td>
-                        <td>@item.Description</td>
+                        <td class="d-none d-md-table-cell">@item.Description</td>
                         <td class="d-none d-md-table-cell">@item.Notes</td>
                         <td class="d-none d-md-table-cell">
                             @(item.CreatedAt.HasValue ? item.CreatedAt.Value.ToString("yyyy-MM-dd") : "-")
@@ -46,6 +46,16 @@
 
                         <td>
 
+                            <button title="عمليات الانتاج" class="btn btn-sm btn-info me-1"
+                            @onclick:stopPropagation
+                                    @onclick="() => OnClickToOpenProduction.InvokeAsync(item)">
+                                <i class="bi bi-basket"></i>
+                            </button>
+                            <button title="مكونات المنتج" class="btn btn-sm btn-success me-1"
+                            @onclick:stopPropagation
+                                    @onclick="() => OnClickToOpenProductComponents.InvokeAsync(item)">
+                                <i class="bi bi-cookie"></i>
+                            </button>
                             <button class="btn btn-sm btn-warning me-1"
                             @onclick:stopPropagation
                                     @onclick="() => OnEdit.InvokeAsync(item)">
@@ -70,6 +80,8 @@
     [Parameter] public EventCallback<ProductDTO> OnDetails { get; set; }
     [Parameter] public EventCallback<ProductDTO> OnEdit { get; set; }
     [Parameter] public EventCallback<ProductDTO> OnDelete { get; set; }
+    [Parameter] public EventCallback<ProductDTO> OnClickToOpenProductComponents { get; set; }
+    [Parameter] public EventCallback<ProductDTO> OnClickToOpenProduction { get; set; }
 
 
 }

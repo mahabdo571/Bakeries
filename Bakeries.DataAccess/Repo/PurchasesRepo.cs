@@ -61,6 +61,14 @@ namespace Bakeries.DataAccess.Repo
 
          
         return model;
+        }   
+        
+        public async Task<IEnumerable<CombinedPurchase>> GetAllCombinedPurchaseAsync()
+        {
+            var model =  await context.CombinedPurchases.ToListAsync();
+
+         
+        return model;
         }     
         
         public async Task<IEnumerable<PurchaseModel>> GetAllByItemIdAsync(int itemId)

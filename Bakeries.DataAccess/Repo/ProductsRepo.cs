@@ -13,44 +13,55 @@ namespace Bakeries.DataAccess.Repo
     public class ProductsRepo(clsDbContext context) : IProductsRepo
     {
 
-     
 
-        public async  Task AddAsync(ProductModel model)
+
+        public async Task AddAsync(ProductModel model)
         {
             await context.Products.AddAsync(model);
             await context.SaveChangesAsync();
-           // return model.Id;
+            // return model.Id;
         }
 
         public async Task DeleteAsync(int id)
         {
-           
 
 
-                var product = await context.Products
-                    .WhereNotDeleted()
-                    .FirstOrDefaultAsync(p => p.Id == id);
 
-                if (product == null)
-                {
-                    throw new KeyNotFoundException($"Product with ID {id} not found.");
-                }
+            var product = await context.Products
+                .WhereNotDeleted()
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-
-                var ingredients = await context.ProductIngredients
-                    .WhereNotDeleted()
-                    .Where(i => i.ProductId == id)
-                    .ToListAsync();
-
-          
-                product.DeletedAt = DateTime.UtcNow;
-
-                foreach (var ingredient in ingredients)
-                {
-                    ingredient.DeletedAt = DateTime.UtcNow;
-
+            if (product == null)
+            {
+                throw new KeyNotFoundException($"Product with ID {id} not found.");
             }
+            var ingredients = await context.ProductIngredients.WhereNotDeleted().AnyAsync((p) => p.ProductId ==id);
 
+            if (ingredients)
+                throw new Exception("هذا النتج مرتبط بمكونات معرفة بالنظام احذف هذه المكونات اولا");   
+            
+            var Production = await context.Productions.WhereNotDeleted().AnyAsync((p) => p.ProductId ==id);
+
+            if (Production)
+                throw new Exception("هذا النتج مرتبط بعمليات انتاج معرفة بالنظام احذف هذه العمليات  اولا");
+
+            //TODD
+            //حذف المكونات المرتبطة اثناء حذف المنتج ميزة للمستقبل  
+            /*                                    var ingredients = await context.ProductIngredients
+                                                    .WhereNotDeleted()
+                                                    .Where(i => i.ProductId == id)
+                                                    .ToListAsync();
+                        foreach (var ingredient in ingredients)
+                        {
+                            ingredient.DeletedAt = DateTime.UtcNow;
+
+                        }
+            */
+
+            product.DeletedAt = DateTime.UtcNow;
+                          
+
+                                    
 
         }
 
@@ -70,7 +81,7 @@ namespace Bakeries.DataAccess.Repo
             await context.SaveChangesAsync();
         }
 
-        public  async Task<IEnumerable<ProductModel>> GetProductsWithComponents()
+        public async Task<IEnumerable<ProductModel>> GetProductsWithComponents()
         {
             var products = await context.Products
     .FromSqlRaw("EXEC GetProductsWithComponents")
@@ -79,7 +90,7 @@ namespace Bakeries.DataAccess.Repo
             return products;
         }
 
-     
+
 
     }
 }

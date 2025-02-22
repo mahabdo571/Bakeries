@@ -16,7 +16,6 @@ namespace bakerbalzorwebassembly.Services
         public async Task<List<ProductDTO>> GetAllAsync()
         {
             var response = await _httpClient.GetFromJsonAsync<List<ProductDTO>>("api/Product/All");
-
             return response ?? new List<ProductDTO>();
         }
 

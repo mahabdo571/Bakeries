@@ -174,17 +174,17 @@ namespace Bakeries.API.Controllers
             try
             {
                 await _productServices.DeleteAsync(Id);
-                return Ok(new { message = $"Purchases with ID {Id} has been successfully deleted." });
+                return Ok(new { Message = $"تم بنجاح", Details = "" });
             }
             catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex.Message);
-                return NotFound($"Purchases with ID {Id} not found. {ex.Message}");
+                return NotFound(new { Message = $"خطأ في عملية الحذف", Details = ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = $"خطأ في عملية الحذف", Details = ex.Message });
             }
         }
 

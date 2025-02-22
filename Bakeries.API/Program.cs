@@ -136,6 +136,7 @@ if (app.Environment.IsDevelopment())
         var context = scope.ServiceProvider.GetRequiredService<clsDbContext>();
         context.Database.Migrate(); // لتطبيق الميجريشن
         context.EnsureStoredProcedure(); // لتأكد من وجود الستورد بروسيجر
+        context.EnsureViweSql();
     }
 
     app.UseSwagger();

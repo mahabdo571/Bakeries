@@ -8,5 +8,6 @@ namespace Bakeries.Business.Services.IServices
     {
         Task<IEnumerable<PurchasesDTO>> GetAllPurchasesWithItemDetailsAsync();
         Task<IEnumerable<PurchasesDTO>> GetAllByItemIdAsync(int itemId);
+        Task<IEnumerable<CombinedPurchaseDTO>> GetAllCombinedPurchaseAsync();
     }
 }

@@ -12,11 +12,14 @@ namespace bakerbalzorwebassembly.Pages
     {
 
         protected List<PurchasesDTO> PurchasingModel;
+        protected List<CombinedPurchaseDTO> CombinedPurchase;
         protected string searchText = "";
+        protected CombinedPurchaseDTO selectedCombinedPurchaseForDetails;
         protected PurchasesDTO selectedPurchasingForDetails;
         protected PurchasesDTO selectedPurchasingForEdit;
         protected PurchasesDTO selectedPurchasingForDelete;
         protected List<PurchasesDTO> filteredPurchasing;
+        protected List<CombinedPurchaseDTO> filteredCombinedPurchase;
         protected List<StockDTO> stockItem; 
         protected bool isSaving = false;
         protected string? messageError;
@@ -34,6 +37,10 @@ namespace bakerbalzorwebassembly.Pages
 
             await LoadPurchasing(navigationMode?.stockDTO?.Id ?? -1);
             stockItem =await stockService.GetAllAsync();
+            if (navigationMode is not null &&  navigationMode.isAllRested())
+            {
+               await LoadCombinedPurchase();
+            }
         }
 
         protected async Task LoadPurchasing(int? itemId)
@@ -44,6 +51,15 @@ namespace bakerbalzorwebassembly.Pages
             FilterPurchasing();
 
 
+        } 
+        
+        protected async Task LoadCombinedPurchase()
+        {
+      
+
+            CombinedPurchase = await PurchasingService.GetAllCombinedPurchaseAsync();
+            FilterCombinedPurchaseing();
+
         }
 
 
@@ -51,6 +67,7 @@ namespace bakerbalzorwebassembly.Pages
         {
             searchText = e;
             FilterPurchasing();
+            FilterCombinedPurchaseing();
             return Task.CompletedTask;
         }
 
@@ -66,17 +83,41 @@ namespace bakerbalzorwebassembly.Pages
                 filteredPurchasing = PurchasingModel.Where(s => s.Notes != null &&
                                                 s.Notes.Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
             }
+        }    
+        
+        protected void FilterCombinedPurchaseing()
+        {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                filteredCombinedPurchase = CombinedPurchase;
+            }
+            else
+            {
+                filteredCombinedPurchase = CombinedPurchase.Where(s => (s?.Notes != null &&
+                                                  s.Notes.Contains(searchText, StringComparison.OrdinalIgnoreCase)) ||
+                                                  (s?.ItemName != null &&
+                                                  s.ItemName.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+
+                                                ).ToList();
+            }
         }
 
         protected List<PurchasesDTO> FilteredPurchases => filteredPurchasing;
+        protected List<CombinedPurchaseDTO> FilteredCombinedPurchase => filteredCombinedPurchase;
 
         protected void ShowDetails(PurchasesDTO model)
         {
             selectedPurchasingForDetails = model;
+        }  
+        
+        protected void ShowDetailsCombinedPurchase(CombinedPurchaseDTO model)
+        {
+            selectedCombinedPurchaseForDetails = model;
         }
         protected void CloseDetails()
         {
             selectedPurchasingForDetails = null;
+            selectedCombinedPurchaseForDetails = null;
         }
 
         protected void ShowEdit(PurchasesDTO model)

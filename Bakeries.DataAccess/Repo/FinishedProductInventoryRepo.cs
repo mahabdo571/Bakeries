@@ -26,7 +26,9 @@ namespace Bakeries.DataAccess.Repo
             try
             {
                 await context.FinishedProductInventorys.AddAsync(model);
+
                 await context.SaveChangesAsync();
+               
               
             }
             catch

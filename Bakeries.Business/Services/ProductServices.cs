@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bakeries.Business.Services.IServices;
+using Bakeries.DataAccess;
 using Bakeries.DataAccess.Entities;
 using Bakeries.DataAccess.Repo;
 using Bakeries.DataAccess.Repo.IRepo;
@@ -26,11 +27,47 @@ namespace Bakeries.Business.Services
 
         public async Task<int> AddAsync(ProductDTO model)
         {
-            var newModel = _mapper.Map<ProductModel>(model);
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                var newModel = _mapper.Map<ProductModel>(model);
             newModel.CreatedAt = DateTime.Now;
             newModel.UpdatedAt = DateTime.Now;
+
              await _unitOfWork.ProductRepository.AddAsync(newModel);
-            return newModel.Id;
+
+             await _unitOfWork.FinishedProductInventoryRepository.AddAsync(new FinishedProductInventoryModel
+                {
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                    ItemName = model.Name,
+                    Notes = model.Notes,
+                    ProductId = newModel.Id,
+                    CostPrice = model.Price,
+                    UnitOfMeasure = (int)model.UnitOfMeasure,
+                    Discount=0,
+                    UnitPriceForPeople=0,
+                    UnitPriceForResellers=0,
+                    Location="-",
+                    Tax=0,
+                    UniPtriceForDealers=0,
+                    ReorderLevel=0,
+                    AvailableQuantity=0,
+                    Code="-",
+  
+                });
+
+
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitAsync();
+
+                return newModel.Id;
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task DeleteAsync(int id)

@@ -15,6 +15,7 @@ builder.Services.AddScoped<PurchasingService>();
 builder.Services.AddScoped<FinishedProductInventoryService>();
 builder.Services.AddScoped<PurchaseFinishedProductInventoryService>();
 builder.Services.AddScoped<FinishedGoodsProductService>();
+builder.Services.AddScoped<ProductIngredientService>();
 builder.Services.AddSingleton<NavigationMode>();
 
 

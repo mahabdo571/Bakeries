@@ -105,6 +105,12 @@ namespace Bakeries.Business.Services
             var newModel = _mapper.Map<IEnumerable<PurchasesDTO>>(await unitOfWork.PurchasesRepository.GetAllAsync());
             return newModel;
         }    
+             
+        public async Task<IEnumerable<CombinedPurchaseDTO>> GetAllCombinedPurchaseAsync()
+        {
+            var newModel = _mapper.Map<IEnumerable<CombinedPurchaseDTO>>(await unitOfWork.PurchasesRepository.GetAllCombinedPurchaseAsync());
+            return newModel;
+        }    
         
         public async Task<IEnumerable<PurchasesDTO>> GetAllByItemIdAsync(int itemId)
         {

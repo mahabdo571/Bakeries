@@ -11,7 +11,7 @@ namespace Bakeries.DataAccess.Repo.IRepo
     {
         Task<StockModel> GetStockDetailsFromItemId(int itemId, clsDbContext dbContext);
         Task UpdateStockOnPurchase(int? stockId, decimal Quantity);
-
+        Task<IEnumerable<CombinedPurchase>> GetAllCombinedPurchaseAsync();
         Task<IEnumerable<PurchaseModel>> GetAllByItemIdAsync(int itemId);
     }
 }

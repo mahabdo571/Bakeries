@@ -27,7 +27,7 @@ namespace bakerbalzorwebassembly.Pages
         protected override async Task OnInitializedAsync()
         {
 
-            // await LoadMyData();
+             await LoadMyData();
 
         }
 
@@ -58,12 +58,12 @@ namespace bakerbalzorwebassembly.Pages
             }
             else
             {
-                //filteredData = MyModel.Where(s => (s?.Notes != null &&
-                //                                  s.Notes.Contains(searchText, StringComparison.OrdinalIgnoreCase)) ||
-                //                                  (s?.Name != null &&
-                //                                  s.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                filteredData = MyModel.Where(s => (s?.Notes != null &&
+                                                  s.Notes.Contains(searchText, StringComparison.OrdinalIgnoreCase)) ||
+                                                  (s?.Name != null &&
+                                                  s.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase))
 
-                //                                ).ToList();
+                                                ).ToList();
             }
         }
 
@@ -84,9 +84,11 @@ namespace bakerbalzorwebassembly.Pages
             {
                 Id = model.Id,
                 Notes = model.Notes,
-
-
-
+                Description=model.Description,
+                Name = model.Name,
+                Price=model.Price,
+                UnitOfMeasure = model.UnitOfMeasure,
+                
             };
         }
 

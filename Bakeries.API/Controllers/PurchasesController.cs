@@ -38,6 +38,29 @@ namespace Bakeries.API.Controllers
                 _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
             }
+        }   
+        
+        [HttpGet("AllCombinedPurchase")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<CombinedPurchaseDTO>>> GetAllCombinedPurchaseAsync()
+        {
+            try
+            {
+                var model = await _purchasesServices.GetAllCombinedPurchaseAsync();
+                if (model is null)
+                {
+                    _logger.LogWarning("model is null  - not found.");
+                    return NotFound($" not found.");
+                }
+                return Ok(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"{ex.Message}");
+            }
         } 
         
         

@@ -22,6 +22,8 @@ namespace Bakeries.DataAccess
         public DbSet<PurchaseFinishedProductInventoryModel> PurchasesFinishedProductInventorys { get; set; }
         public DbSet<SalesDetailModel> SalesDetails { get; set; }
         public DbSet<DailySaleModel> DailySales { get; set; }
+        public DbSet<CombinedPurchase> CombinedPurchases { get; set; }
+
         public clsDbContext(DbContextOptions op) : base(op)
         {
          
@@ -47,7 +49,9 @@ namespace Bakeries.DataAccess
             //.IsUnique()
             //.HasDatabaseName("IX_ProductIngredient_StockId");
 
-
+            modelBuilder.Entity<CombinedPurchase>()
+    .HasNoKey()
+    .ToView("vCombinedPurchases");
             // إضافة فهرس على ProductId في جدول ProductIngredientModel
             modelBuilder.Entity<ProductIngredientModel>()
                 .HasIndex(pi => pi.ProductId)
@@ -96,6 +100,16 @@ namespace Bakeries.DataAccess
             StoredProcedure.UpdateStockOnPurchase(this);
             StoredProcedure.GetProductsWithComponents(this);
             StoredProcedure.UpdateFinishedProductInventoryAfterPurchase(this);
+
+
+       
+        }  
+        
+        public void EnsureViweSql()
+        {
+
+            ViweSql.vCombinedPurchases(this);
+      
 
 
        

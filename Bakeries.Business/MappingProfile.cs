@@ -13,6 +13,7 @@ namespace Bakeries.Business
           
       
             CreateMap<ProductIngredientModel, ProductIngredientDTO>().ReverseMap();
+            CreateMap<CombinedPurchase, CombinedPurchaseDTO>().ReverseMap();
 
             CreateMap<StockModel, StockDTO>()
     .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (UnitOfMeasure)src.UnitOfMeasure))

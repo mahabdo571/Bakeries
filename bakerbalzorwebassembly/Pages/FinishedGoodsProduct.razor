@@ -10,18 +10,59 @@
     <i class="bi bi-inboxes"></i> المنتجات التي يتم تصنيعها
 </h3>
 
-<PageToolbar SearchText="@searchText" 
-              OnSearch="@Search" 
-              OnAdd="ShowAddModal" 
-              ShowButtonAddNew="@true" /> 
+<PageToolbar SearchText="@searchText"
+             OnSearch="@Search"
+             OnAdd="ShowAddModal"
+             ShowButtonAddNew="@true" />
 
-              
+
 <FinishedGoodsProductTable Items="@filteredData"
-                                       OnDetails="ShowDetails"
-                                       OnEdit="ShowEdit"
-                                       OnDelete="ShowDelete" />
+                           OnDetails="ShowDetails"
+                           OnEdit="ShowEdit"
+                           OnDelete="ShowDelete"
+                           OnClickToOpenProductComponents="OpenProductComponents"
+                           OnClickToOpenProduction="OpenProduction" />
 
- <LoadingModal IsVisible="@isSaving" /> 
 
- <ErrorModal Message="@messageError" 
+<DetailsModal Item="@selectedForDetails"
+              OnClose="CloseDetails" />
+
+<EditModal Item="@selectedForEdit"
+           OnSave="@SavePurchases"
+           OnClose="@CloseEditModal" />
+
+
+<DeleteModal Item="@selectedForDelete"
+             OnConfirm="ConfirmDelete"
              OnClose="CloseDeleteModal" />
+
+<LoadingModal IsVisible="@isSaving" />
+
+<ErrorModal Message="@messageError"
+            OnClose="CloseDeleteModal" />
+
+@code {
+    @inject NavigationManager Navigation;
+    @inject NavigationMode navModel;
+    private void OpenProductComponents(ProductDTO model)
+    {
+        var baseUri = Navigation.BaseUri;
+        navModel.restState();
+        navModel.productDTO = model;
+
+        Navigation.NavigateTo($"{baseUri}ProductComponents");
+
+
+    }  
+    
+    private void OpenProduction(ProductDTO model)
+    {
+        var baseUri = Navigation.BaseUri;
+        navModel.restState();
+        navModel.productDTO = model;
+
+        Navigation.NavigateTo($"{baseUri}Production");
+
+
+    }
+}

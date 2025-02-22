@@ -5,7 +5,7 @@
 @using bakerbalzorwebassembly.Component.Shared
 @using bakerbalzorwebassembly.Models
 @inherits ComponentBase
-    
+
 <h3 class="mb-4">
     <i class="bi bi-receipt"></i>
     المشتريات والفواتير @(!string.IsNullOrEmpty(navigationMode?.stockDTO?.ItemName) ? " للمنتج " + navigationMode?.stockDTO?.ItemName : "للعرض فقط")
@@ -13,21 +13,33 @@
 
 
 <PageToolbar SearchText="@searchText"
-    OnSearch= "@SearchPurchasing"
-    OnAdd="ShowAddModal" 
-    ShowButtonAddNew="@(navigationMode?.stockDTO is not null)"
-    />
+OnSearch= "@SearchPurchasing"
+OnAdd="ShowAddModal" 
+ShowButtonAddNew="@(navigationMode?.stockDTO is not null)"
+/>
+@if(navigationMode is not null && navigationMode.isAllRested()){
+  <CombinedPurchaseTable Items="@FilteredCombinedPurchase"
+      OnDetails="ShowDetailsCombinedPurchase"
+          />
 
-<PurchasingTable 
-    Items="@FilteredPurchases"
-    OnDetails="ShowDetails"
-    OnEdit="ShowEdit"
-    OnDelete="ShowDelete"
-                 navMod="navigationMode?.stockDTO" />
+    <CombinedPurchaseDetails Item="@selectedCombinedPurchaseForDetails"
+                             OnClose="CloseDetails" />
+}
+else
+{
+    <PurchasingTable Items="@FilteredPurchases"
+                     OnDetails="ShowDetails"
+                     OnEdit="ShowEdit"
+                     OnDelete="ShowDelete"
+                     navMod="navigationMode?.stockDTO" />
 
-<DetailsModal 
-    Item="@selectedPurchasingForDetails"
-    OnClose="CloseDetails" />
+    <DetailsModal Item="@selectedPurchasingForDetails"
+                  OnClose="CloseDetails" />
+}
+
+
+
+
 
 <EditModal
     Item="@selectedPurchasingForEdit"
