@@ -8,12 +8,13 @@ namespace Business.Shared.Enums
     {
         [Display(Name = "لم يحدد بعد")]
         nono = 0,
-
         [Display(Name = "كيلو غرام")]
         Kilogram = 1,
         [Display(Name = "غرام")]
         Gram = 2,
         [Display(Name = "لتر")]
-        Liter = 3
+        Liter = 3,     
+        [Display(Name = "حبة")]
+        Unit = 4
     }
 }
