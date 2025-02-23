@@ -1,4 +1,4 @@
-﻿@page "/RawMaterialStock"
+﻿@page "/rawMaterialStock"
 @using Business.Shared.DTOs
 @using Business.Shared.Enums
 @using System.Text.Json
@@ -7,7 +7,7 @@
 @using bakerbalzorwebassembly.Models
 @inherits ComponentBase
 
-
+<PageTitle>مخزن المواد الخام</PageTitle>
 <h3 class="mb-4">
     <i class="bi bi-boxes"></i> مخزن المواد الخام
 </h3>
@@ -50,7 +50,7 @@ OnClose="CloseDeleteModal" />
 
         navModel.stockDTO = stock;
 
-        Navigation.NavigateTo($"{baseUri}PurchasingAndInvoc");
+        Navigation.NavigateTo($"{baseUri}purchasingAndInvoc");
 
 
     }

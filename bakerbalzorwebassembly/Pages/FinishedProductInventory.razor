@@ -1,11 +1,11 @@
-﻿@page "/FinishedProductInventory"
+﻿@page "/finishedProductInventory"
 @using Business.Shared.DTOs
 @using Business.Shared.Enums
 @using bakerbalzorwebassembly.Component.FinishedProductInventory
 @using bakerbalzorwebassembly.Component.Shared
 @using bakerbalzorwebassembly.Models
 @inherits ComponentBase
-
+<PageTitle>مخزن المعرض</PageTitle>
 <h3 class="mb-4">
     <i class="bi bi-inboxes"></i> مخزن المعرض
 </h3>
@@ -47,7 +47,7 @@
         navModel.restState();
         navModel.FPIDTO = model;
 
-        Navigation.NavigateTo($"{baseUri}PurchaseFinishedProductInventory");
+        Navigation.NavigateTo($"{baseUri}purchaseFinishedProductInventory");
 
 
     }

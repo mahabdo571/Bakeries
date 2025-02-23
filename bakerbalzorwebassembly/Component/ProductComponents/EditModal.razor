@@ -1,0 +1,88 @@
+﻿@inherits ComponentBase
+@using Business.Shared.DTOs
+@using Business.Shared.Enums
+@using Business.Shared.Enums.Extensions
+
+
+
+@if (Item is not null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @(Item.Id == 0 ? "إضافة مكون جديد للمنتج "+CurrntProduct.Name : "تعديل مكون المنتج "+CurrntProduct.Name)
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="@OnClose"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="Item" OnValidSubmit="@HandleSave">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="mb-3">
+                            <label class="form-label">اهتر عنصر من مخزون المادة الخام</label>
+                            <InputSelect class="form-control" @bind-Value="Item.stockId">
+                                <option value="0">اختر العنصر</option>
+                                @foreach (var stock in StockModel)
+                                {
+                                    <option value="@(stock.Id)">@stock.ItemName</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">الكمية</label>
+                            <InputNumber class="form-control"
+                                         @bind-Value="Item.Quantity" />
+
+
+                        </div>
+
+                         <div class="mb-3"> 
+                             <label class="form-label">وحدة القياس</label> 
+                             <InputSelect class="form-control" @bind-Value="Item.UnitOfMeasureId"> 
+                                 <option value="0">اختر وحدة القياس</option> 
+                                 @foreach (var unit in Enum.GetValues<UnitOfMeasure>()) 
+                                 { 
+                                     <option value="@((int)unit)">@unit.GetDisplayName()</option> 
+                                 } 
+                             </InputSelect> 
+                         </div> 
+
+                        <div class="mb-3">
+                            <label class="form-label">الملاحظات</label>
+                            <InputTextArea class="form-control" @bind-Value="Item.Notes" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                            <button type="button" class="btn btn-secondary" @onclick="OnClose">إغلاق</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+
+
+
+
+    [Parameter] public ProductIngredientAddUpdateDTO Item { get; set; }
+    [Parameter] public List<StockDTO> StockModel { get; set; }
+    [Parameter] public ProductDTO CurrntProduct { get; set; }
+    [Parameter] public EventCallback OnSave { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+
+
+    private async Task HandleSave()
+    {
+        await OnSave.InvokeAsync();
+    }
+
+
+}

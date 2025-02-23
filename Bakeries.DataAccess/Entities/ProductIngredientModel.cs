@@ -19,9 +19,8 @@ namespace Bakeries.DataAccess.Entities
         [Column(TypeName = "decimal(18,4)")]
         public decimal Quantity { get; set; } // الكمية المطلوبة من المكون لإنتاج المنتج
    
-        [Required]
-        [StringLength(50)] // تحديد الحد الأقصى لعدد الحروف
-        public string UnitOfMeasure { get; set; } // وحدة القياس
+
+        public int UnitOfMeasure { get; set; } // وحدة القياس
 
 
         [Required]
