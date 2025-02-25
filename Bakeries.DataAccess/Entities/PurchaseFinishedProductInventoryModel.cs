@@ -48,7 +48,8 @@ namespace Bakeries.DataAccess.Entities
         public string Status { get; set; } // حالة العملية
 
 
-
+        [Required]
+        public bool IsReceivingProduction { get; set; }=false;
 
 
 

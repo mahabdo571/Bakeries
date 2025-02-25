@@ -345,6 +345,9 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<int>("FinishedProductInventoryId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsReceivingProduction")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 

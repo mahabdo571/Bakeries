@@ -3,11 +3,12 @@ using Bakeries.Business.Services.IServices;
 using Bakeries.DataAccess.Entities;
 using Bakeries.DataAccess.Repo.IRepo;
 using Business.Shared.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Bakeries.Business.Services
 {
-    public class ProductionServices(IUnitOfWork unitOfWork, IMapper mapper, IStockServices stockServices, ProductionEventsHelpers productionEventsHelpers) : IProductionServices
+    public class ProductionServices(IUnitOfWork unitOfWork, IMapper mapper, IStockServices stockServices, ProductionEventsHelpers productionEventsHelpers, IPurchaseFinishedProductInventoryServes purchaseFinishedProductInventoryServes) : IProductionServices
     {
 
         public async Task<IEnumerable<ProductionDTO>> GetAllAsync()
@@ -37,18 +38,36 @@ namespace Bakeries.Business.Services
             {
 
                 await unitOfWork.ProductionRepository.AddAsync(newModel);
-          
-                await productionEventsHelpers.RaiseProductionAddedEvent(unitOfWork, newModel);
+               
+                var fpi =await unitOfWork.FinishedProductInventoryRepository.GetByProuductIdAsync(newModel.ProductId);
+                if (fpi == null) throw new Exception("خطأ في جلب بيانات المنتج في المعرض");
+                await purchaseFinishedProductInventoryServes.AddAsync(new PurchaseFinishedProductInventoryDTO
+                {
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                    FinishedProductInventoryId = fpi.Id,
+                    Quantity = (decimal.Parse(model.QuantityProduced.ToString()) - decimal.Parse(model.QuantityDamaged.ToString())),
+                    IsReceivingProduction = true,
+                    PaymentMethod = "none",
+                    Status = "none",
+                    TotalPrice = 0,
+                    UnitPrice = 0,
+                    UnitOfMeasureId = 1,
+                    Notes = "عملية انتاج تلقائية مسجلة من النظام ",
+                    SupplierName="تصنيع",
+                    SupplierInvoiceNumber="تصنيع",            
 
+                });
+                await productionEventsHelpers.RaiseProductionAddedEvent(unitOfWork, newModel);
 
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
                 return newModel.Id;
             }
-            catch(Exception ex) 
+            catch
             {
                 await unitOfWork.RollbackAsync();
-                Console.WriteLine($"Error raising event: {ex.Message}");
+
 
                 throw;
             }

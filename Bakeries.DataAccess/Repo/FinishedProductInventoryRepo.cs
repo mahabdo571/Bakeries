@@ -19,6 +19,11 @@ namespace Bakeries.DataAccess.Repo
         public async Task<FinishedProductInventoryModel> GetByIdAsync(int id)
         {
             return await context.FinishedProductInventorys.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.Id == id);
+        }   
+        
+        public async Task<FinishedProductInventoryModel> GetByProuductIdAsync(int productId)
+        {
+            return await context.FinishedProductInventorys.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.ProductId == productId);
         }
 
         public async Task AddAsync(FinishedProductInventoryModel model)

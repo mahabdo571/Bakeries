@@ -9,6 +9,6 @@ namespace Bakeries.DataAccess.Repo.IRepo
 {
     public  interface IFinishedProductInventoryRepo : IRepoBase<FinishedProductInventoryModel>
     {
-
+        Task<FinishedProductInventoryModel> GetByProuductIdAsync(int productId);
     }
 }
