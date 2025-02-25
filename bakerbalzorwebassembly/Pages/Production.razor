@@ -1,16 +1,48 @@
 ﻿@page "/production"
 @using Business.Shared.DTOs
 @using Business.Shared.Enums
-@using bakerbalzorwebassembly.Component.FinishedGoodsProduct
+@using bakerbalzorwebassembly.Component.Production
 @using bakerbalzorwebassembly.Component.Shared
 @using bakerbalzorwebassembly.Models
 @inherits ComponentBase
-<PageTitle>عمليات التصنيع للمنتج - </PageTitle>
+<PageTitle>عمليات التصنيع للمنتج - @navigationMode.productDTO!.Name</PageTitle>
 <h3 class="mb-4">
-    <i class="bi bi-inboxes"></i> عمليات التصنيع للمنتج - 
+    <i class="bi bi-inboxes"></i> عمليات التصنيع للمنتج - @navigationMode.productDTO!.Name
 </h3>
 
-@* <PageToolbar SearchText="@searchText" *@
-@*              OnSearch="@Search" *@
-@*              OnAdd="ShowAddModal" *@
-@*              ShowButtonAddNew="@true" /> *@
+<PageToolbar SearchText="@searchText"
+             OnSearch="@Search"
+             OnAdd="ShowAddModal"
+             ShowButtonAddNew="@true" />
+
+
+<ProductionTable Items="@filteredData"
+                 OnDetails="ShowDetails"
+                 OnEdit="ShowEdit"
+                 OnDelete="ShowDelete"
+                 OnProcessDetail="ShowProcessDetail"
+                 Product="@navigationMode.productDTO" />
+
+
+<DetailsModal Item="@selectedForDetails"
+              Product="@navigationMode.productDTO"
+              OnClose="CloseDetails" />
+
+<ProcessDetailModal Items="@selectedForProcessDetail"
+            
+              OnClose="CloseProcessDetail" />
+
+<EditModal Item="@selectedForEdit"
+           OnSave="@SavePurchases"
+           Product="@navigationMode.productDTO"
+           OnClose="@CloseEditModal" />
+
+<DeleteModal Item="@selectedForDelete"
+             Product="@navigationMode.productDTO"
+             OnConfirm="ConfirmDelete"
+             OnClose="CloseDeleteModal" />
+
+<LoadingModal IsVisible="@isSaving" />
+
+<ErrorModal Message="@messageError"
+            OnClose="CloseDeleteModal" />

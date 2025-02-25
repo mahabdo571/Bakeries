@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,7 +15,7 @@ namespace Business.Shared.DTOs
 
         [Column(TypeName = "decimal(18,4)")]
         public decimal Quantity { get; set; }
-        public string UnitOfMeasure { get; set; }
+        public UnitOfMeasure UnitOfMeasure { get; set; }
 
         public string ItemName { get; set; }
         public DateTime? CreatedAt { get; set; }

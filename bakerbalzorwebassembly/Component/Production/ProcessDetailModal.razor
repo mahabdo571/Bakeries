@@ -1,0 +1,77 @@
+﻿@inherits ComponentBase
+@using Business.Shared.DTOs
+@using Business.Shared.Enums.Extensions
+
+@if (Items != null){
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">العنصار المستهلكة</h5>
+                    <button type="button" class="btn-close" @onclick="@OnClose"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table-striped table-hover table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <!-- تظهر فقط على سطح المكتب -->
+                                    <th class="d-none d-md-table-cell">#</th>
+                                    <th>اسم العنصر</th>
+                                    <th>الكمية</th>
+                                    <th >الوحدة</th>
+                                    <th class="d-none d-md-table-cell">تاريخ الإنشاء</th>
+                                    <th class="d-none d-md-table-cell">تاريخ التعديل</th>
+
+                                 
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Items == null)
+                                {
+                                    <tr><td colspan="10" class="text-center">جاري التحميل...</td></tr>
+                                }
+                                else if (!Items.Any())
+                                {
+                                    <tr><td colspan="10" class="text-center">لا توجد بيانات</td></tr>
+                                }
+                                else
+                                {
+                                    @foreach (var item in Items)
+                                    {
+                                        <tr style="cursor: pointer;">
+                                            <td class="d-none d-md-table-cell">@item.Id</td>
+                                            <td>@item.ItemName</td>
+                                            <td>@item.Quantity</td>
+                                            <td>@item.UnitOfMeasure.GetDisplayName()</td>
+                                         
+                                            <td class="d-none d-md-table-cell">
+                                                @(item.CreatedAt.HasValue ? item.CreatedAt.Value.ToString("yyyy-MM-dd") : "-")
+                                            </td>
+                                            <td class="d-none d-md-table-cell">
+                                                @(item.UpdatedAt.HasValue ? item.UpdatedAt.Value.ToString("yyyy-MM-dd") : "-")
+                                            </td>
+
+                                  
+
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="Close">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@code {
+    [Parameter] public List<ProductionProcessDetailDTO> Items { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    private void Close() => OnClose.InvokeAsync();
+}
