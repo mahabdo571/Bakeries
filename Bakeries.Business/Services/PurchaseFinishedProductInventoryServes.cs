@@ -98,7 +98,8 @@ namespace Bakeries.Business.Services
             try
             {
                 var temp = await unitOfWork.PurchaseFinishedProductInventoryRepository.GetByIdAsync(model.Id);
-            newModel.CreatedAt = temp.CreatedAt;
+                if (temp == null) throw new Exception(".PurchaseFinishedProductInventoryRepository.GetByIdAsync null");
+                newModel.CreatedAt = temp.CreatedAt;
             await UpdateInventoryQuantityBasedOnChangesInInvoiceStatusAsync(model);
             await unitOfWork.PurchaseFinishedProductInventoryRepository.UpdateAsync(newModel);
 
@@ -182,5 +183,7 @@ namespace Bakeries.Business.Services
             // تحديث المخزون
             await unitOfWork.FinishedProductInventoryRepository.UpdateAsync(stockModel);
         }
+
+   
     }
 }

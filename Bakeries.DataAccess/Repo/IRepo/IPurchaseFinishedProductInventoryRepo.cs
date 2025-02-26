@@ -12,6 +12,6 @@ namespace Bakeries.DataAccess.Repo.IRepo
         Task UpdateAvailableQuantityOnFinishedProductInventoryAfterPurchase(int? finishedProductInventoryId, decimal Quantity);
         Task<IEnumerable<PurchaseFinishedProductInventoryModel>> GetAllByItemIdAsync(int itemId);
 
-
+        Task<PurchaseFinishedProductInventoryModel> GetByProductionIdAsync(int productionId);
     }
 }

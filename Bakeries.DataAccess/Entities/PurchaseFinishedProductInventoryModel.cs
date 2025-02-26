@@ -48,16 +48,13 @@ namespace Bakeries.DataAccess.Entities
         public string Status { get; set; } // حالة العملية
 
 
-        [Required]
-        public bool IsReceivingProduction { get; set; }=false;
+        public int? ProductionId { get; set; } =null; //اذا فارغ فهم عملية شراء خارجية واذا به قيمة فهو مرتبط بعملية انتاج
 
-
-
-
-        // العلاقة مع المخزن الأول (nullable لأن العملية قد تكون من المخزن الثاني)
+    
+        public virtual ProductionModel ProductionModel { get; set; }
 
         public int FinishedProductInventoryId { get; set; }
-        [ForeignKey("FinishedProductInventoryId")]
+        [ForeignKey(nameof(FinishedProductInventoryId))]
         public virtual FinishedProductInventoryModel FinishedProductInventory { get; set; }
 
     }

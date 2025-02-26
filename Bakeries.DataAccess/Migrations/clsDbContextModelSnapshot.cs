@@ -345,9 +345,6 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<int>("FinishedProductInventoryId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsReceivingProduction")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
@@ -355,6 +352,9 @@ namespace Bakeries.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("ProductionId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18,4)");
@@ -389,6 +389,10 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FinishedProductInventoryId");
+
+                    b.HasIndex("ProductionId")
+                        .IsUnique()
+                        .HasFilter("[ProductionId] IS NOT NULL");
 
                     b.ToTable("PurchasesFinishedProductInventorys");
                 });
@@ -615,7 +619,14 @@ namespace Bakeries.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Bakeries.DataAccess.Entities.ProductionModel", "ProductionModel")
+                        .WithOne("PFPIM")
+                        .HasForeignKey("Bakeries.DataAccess.Entities.PurchaseFinishedProductInventoryModel", "ProductionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("FinishedProductInventory");
+
+                    b.Navigation("ProductionModel");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.PurchaseModel", b =>
@@ -668,6 +679,9 @@ namespace Bakeries.DataAccess.Migrations
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductionModel", b =>
                 {
                     b.Navigation("Details");
+
+                    b.Navigation("PFPIM")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.StockModel", b =>

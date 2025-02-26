@@ -38,28 +38,15 @@ namespace Bakeries.Business.Services
             {
 
                 await unitOfWork.ProductionRepository.AddAsync(newModel);
-               
-                var fpi =await unitOfWork.FinishedProductInventoryRepository.GetByProuductIdAsync(newModel.ProductId);
-                if (fpi == null) throw new Exception("خطأ في جلب بيانات المنتج في المعرض");
-                await purchaseFinishedProductInventoryServes.AddAsync(new PurchaseFinishedProductInventoryDTO
-                {
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
-                    FinishedProductInventoryId = fpi.Id,
-                    Quantity = (decimal.Parse(model.QuantityProduced.ToString()) - decimal.Parse(model.QuantityDamaged.ToString())),
-                    IsReceivingProduction = true,
-                    PaymentMethod = "none",
-                    Status = "none",
-                    TotalPrice = 0,
-                    UnitPrice = 0,
-                    UnitOfMeasureId = 1,
-                    Notes = "عملية انتاج تلقائية مسجلة من النظام ",
-                    SupplierName="تصنيع",
-                    SupplierInvoiceNumber="تصنيع",            
+              
+     await AddToPurchaseFinishedProductInventory(unitOfWork, purchaseFinishedProductInventoryServes, model, newModel);
+             
+              
 
-                });
+                await unitOfWork.SaveChangesAsync();
                 await productionEventsHelpers.RaiseProductionAddedEvent(unitOfWork, newModel);
 
+                await unitOfWork.ProductionRepository.UpdateAsync(newModel);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
                 return newModel.Id;
@@ -75,7 +62,61 @@ namespace Bakeries.Business.Services
 
         }
 
-    
+        private  async Task<int> AddToPurchaseFinishedProductInventory(IUnitOfWork unitOfWork, IPurchaseFinishedProductInventoryServes purchaseFinishedProductInventoryServes, ProductionDTO model, ProductionModel newModel)
+        {
+            var fpi = await unitOfWork.FinishedProductInventoryRepository.GetByProuductIdAsync(newModel.ProductId);
+            if (fpi == null) throw new Exception("خطأ في جلب بيانات المنتج في المعرض");
+   
+          return  await purchaseFinishedProductInventoryServes.AddAsync(new PurchaseFinishedProductInventoryDTO
+          {
+              CreatedAt = DateTime.Now,
+              UpdatedAt = DateTime.Now,
+              FinishedProductInventoryId = fpi.Id,
+              Quantity = (decimal.Parse(model.QuantityProduced.ToString()) - decimal.Parse(model.QuantityDamaged.ToString())),
+              ProductionId = newModel.Id,
+              PaymentMethod = "none",
+              Status = "none",
+              TotalPrice = 0,
+              UnitPrice = 0,
+              UnitOfMeasureId = 1,
+              Notes = "عملية انتاج تلقائية مسجلة من النظام ",
+              SupplierName = "تصنيع",
+              SupplierInvoiceNumber = "تصنيع",
+
+          });
+         
+        
+        } 
+        
+        
+        private  async Task UpdateToPurchaseFinishedProductInventory(IUnitOfWork unitOfWork, IPurchaseFinishedProductInventoryServes purchaseFinishedProductInventoryServes, ProductionDTO model, ProductionModel newModel)
+        {
+            var fpi = await unitOfWork.FinishedProductInventoryRepository.GetByProuductIdAsync(newModel.ProductId);
+            if (fpi == null) throw new Exception("خطأ في جلب بيانات المنتج في المعرض");
+
+            Console.WriteLine($"ID {newModel.PFPIM.Id}");
+        
+         
+            await purchaseFinishedProductInventoryServes.UpdateAsync(new PurchaseFinishedProductInventoryDTO
+            {
+                Id = newModel.PFPIM.Id,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                FinishedProductInventoryId = fpi.Id,
+                Quantity = (decimal.Parse(model.QuantityProduced.ToString()) - decimal.Parse(model.QuantityDamaged.ToString())),
+                ProductionId = newModel.Id,
+                PaymentMethod = "none",
+                Status = "none",
+                TotalPrice = 0,
+                UnitPrice = 0,
+                UnitOfMeasureId = 1,
+                Notes = "عملية انتاج تلقائية مسجلة من النظام ",
+                SupplierName = "تصنيع",
+                SupplierInvoiceNumber = "تصنيع",
+
+            });
+        }
+
 
         public async Task UpdateAsync(ProductionDTO model)
         {
@@ -91,6 +132,8 @@ namespace Bakeries.Business.Services
                 await unitOfWork.ProductionRepository.UpdateAsync(orginalModel);
                 var  newModel = await unitOfWork.ProductionRepository.GetProductionWithProductAndIngredientsAsync(model.Id);
 
+                await UpdateToPurchaseFinishedProductInventory(unitOfWork, purchaseFinishedProductInventoryServes, model, newModel);
+
                 await productionEventsHelpers.RaiseProductionUpdatedEvent(unitOfWork, newModel);
              
 
@@ -102,8 +145,9 @@ namespace Bakeries.Business.Services
            
                 
             }
-            catch { 
+            catch (Exception ex){ 
                 await unitOfWork.RollbackAsync();
+                Console.Write(ex.Message + ex.InnerException);
                 throw;
             }
         }
@@ -114,9 +158,11 @@ namespace Bakeries.Business.Services
 
             try
             {
+             var model = await unitOfWork.PurchaseFinishedProductInventoryRepository.GetByProductionIdAsync(id);
                 await stockServices.UpdateStockAfterDeleteProductionProcess(id);
                 await unitOfWork.ProductionProcessDetailRepository.DeleteWhereProductionIdAsync(id);
                 await unitOfWork.ProductionRepository.DeleteAsync(id);
+                await purchaseFinishedProductInventoryServes.DeleteAsync(model.Id);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
             }

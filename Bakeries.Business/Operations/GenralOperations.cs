@@ -9,7 +9,7 @@ namespace Bakeries.Business.Operations
 
         public static async Task AddingTheQuantitiesConsumedInTheProductionProcess(IUnitOfWork unitOfWork, ProductionModel newModel)
         {
-
+            if (newModel is null || newModel.Product is null || newModel.Product.Ingredients is null) return;
 
             await unitOfWork.ProductionProcessDetailRepository.AddRangeAsync(
                 newModel.Product.Ingredients
@@ -30,10 +30,12 @@ namespace Bakeries.Business.Operations
 
         public static async Task UpdatingTheQuantitiesConsumedInTheProductionProcess(IUnitOfWork unitOfWork, ProductionModel newModel)
         {
+            if (newModel is null || newModel.Product is null || newModel.Product.Ingredients is null) return;
+
             foreach (var item in newModel.Product.Ingredients)
             {
                 var PPDM = await unitOfWork.ProductionProcessDetailRepository.GetByStockIdAndProductionIdAsync(newModel.Id, item.stockId);
-
+                if(PPDM is null) return;
                 await unitOfWork.ProductionProcessDetailRepository.UpdateAsync(new ProductionProcessDetailModel
                 {
                     Id = PPDM.Id,

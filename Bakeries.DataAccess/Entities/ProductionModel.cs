@@ -20,10 +20,13 @@ namespace Bakeries.DataAccess.Entities
 
 
         [Required]
-        [ForeignKey("Product")]
         public int ProductId { get; set; }
-        public  ProductModel Product { get; set; }
 
+        [ForeignKey(nameof(ProductId))]
+        public ProductModel Product { get; set; }
+
+
+        public PurchaseFinishedProductInventoryModel PFPIM { get; set; }
 
         public ICollection<ProductionProcessDetailModel> Details { get; set; } = new List<ProductionProcessDetailModel>();
 

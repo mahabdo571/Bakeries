@@ -92,6 +92,11 @@ namespace Bakeries.DataAccess
             modelBuilder.Entity<ProductIngredientModel>().HasQueryFilter(i => i.DeletedAt == null);
 
 
+            modelBuilder.Entity<ProductionModel>()
+     .HasOne(p => p.PFPIM)
+     .WithOne(c => c.ProductionModel)
+     .HasForeignKey<PurchaseFinishedProductInventoryModel>(c => c.ProductionId)
+     .OnDelete(DeleteBehavior.Restrict); // تحديد السلوك عند الحذف
 
         }
         public void EnsureStoredProcedure()

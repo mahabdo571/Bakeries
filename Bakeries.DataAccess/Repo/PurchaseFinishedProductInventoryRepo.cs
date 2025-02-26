@@ -78,5 +78,11 @@ namespace Bakeries.DataAccess.Repo
                 throw new ArgumentNullException(nameof(model));
             }
         }
+
+        public async Task<PurchaseFinishedProductInventoryModel> GetByProductionIdAsync(int productionId)
+        {
+            return await context.PurchasesFinishedProductInventorys.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.ProductionId == productionId);
+
+        }
     }
 }
