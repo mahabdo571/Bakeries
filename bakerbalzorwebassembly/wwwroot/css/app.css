@@ -124,3 +124,20 @@ body {
         display: none;
     }
 }
+
+
+
+/* بشكل افتراضي تخفي أيقونة السهم للأعلى */
+.icon-up {
+    display: none;
+}
+
+/* لما يكون العنصر مفتوح (aria-expanded="true") يخفي السهم لأسفل ويعرض السهم للأعلى */
+.nav-link[aria-expanded="true"] .icon-down {
+    display: none;
+}
+
+.nav-link[aria-expanded="true"] .icon-up {
+    display: inline;
+}
+

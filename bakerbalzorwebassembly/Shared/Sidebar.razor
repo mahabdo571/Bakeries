@@ -1,14 +1,14 @@
 ﻿@using bakerbalzorwebassembly.Models
 
 <div class="d-flex flex-column p-3 bg-dark sidebar flex-shrink-0" id="sidebar">
-    <a href="@(Navigation.BaseUri)" class="d-flex align-items-center mb-3 mb-md-0 text-white text-decoration-none">
+    <a href="@(Navigation.BaseUri+"home")" class="d-flex align-items-center mb-3 mb-md-0 text-white text-decoration-none">
         <i class="bi bi-layout-sidebar fs-3 me-2"></i>
         <span class="fs-4 fw-bold">مخبز التوفيق</span>
     </a>
     <hr class="border-light">
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri)">
+            <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri+"home")" @onclick="@home">
                 <i class="bi bi-house-door me-2"></i> الصفحة الرئيسية
             </NavLink>
         </li>
@@ -17,33 +17,38 @@
                 <i class="bi bi-receipt"></i> المشتريات والفواتير
             </NavLink>
         </li>
-
-        <li class="nav-item dropdown">
-            <button class="nav-link text-white sidebar-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        
+        <li class="nav-item">
+            <a class="nav-link text-white sidebar-item" data-bs-toggle="collapse" href="#inventorySubmenu" role="button" aria-expanded="false" aria-controls="inventorySubmenu">
                 <i class="bi bi-arrow-bar-down"></i> المخزون
-            </button>
-            <ul class="dropdown-menu">
-                <li>
-                    <NavLink class="dropdown-item" href="@(Navigation.BaseUri+"rawMaterialStock")" @onclick="@RawMaterialStock">
-                        <i class="bi bi-boxes"></i> مخزون المادة الخام
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink class="dropdown-item" href="@(Navigation.BaseUri+"finishedProductInventory")" @onclick="@FinishedProductInventory">
-                        <i class="bi bi-inboxes"></i> مخزون المعرض
-                    </NavLink></li>
-            </ul>
+            </a>
+            <div class="collapse" id="inventorySubmenu">
+                <ul class="list-unstyled ps-3">
+                    <li>
+                        <NavLink class="nav-link text-white" href="@(Navigation.BaseUri + "rawMaterialStock")" @onclick="@RawMaterialStock">
+                            <i class="bi bi-boxes"></i> مخزون المادة الخام
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="nav-link text-white" href="@(Navigation.BaseUri + "finishedProductInventory")" @onclick="@FinishedProductInventory">
+                            <i class="bi bi-inboxes"></i> مخزون المعرض
+                        </NavLink>
+                    </li>
+                </ul>
+            </div>
         </li>
+
+
 
         <li>
             <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri+"finishedGoodsProduct")" @onclick="@FinishedGoodsProduct">
                 <i class="bi bi-gear-wide-connected"></i> قسم الانتاج
             </NavLink>
         </li>   
-
+        
 
         <li>
-            <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri)">
+            <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri+"order")" @onclick="@Order">
                 <i class="bi bi-basket2"></i> المبيعات
             </NavLink>
         </li>
@@ -63,6 +68,24 @@
         var baseUri = Navigation.BaseUri;
 
         Navigation.NavigateTo($"{baseUri}rawMaterialStock");
+
+
+    }    
+    
+    private void home()
+    {
+        var baseUri = Navigation.BaseUri;
+
+        Navigation.NavigateTo($"{baseUri}home");
+
+
+    }      
+    
+    private void Order()
+    {
+        var baseUri = Navigation.BaseUri;
+
+        Navigation.NavigateTo($"{baseUri}order");
 
 
     }    

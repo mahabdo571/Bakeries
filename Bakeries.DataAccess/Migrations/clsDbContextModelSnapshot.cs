@@ -68,34 +68,6 @@ namespace Bakeries.DataAccess.Migrations
                     b.ToView("vCombinedPurchases", (string)null);
                 });
 
-            modelBuilder.Entity("Bakeries.DataAccess.Entities.DailySaleModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalSales")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DailySales");
-                });
-
             modelBuilder.Entity("Bakeries.DataAccess.Entities.FinishedProductInventoryModel", b =>
                 {
                     b.Property<int>("Id")
@@ -165,6 +137,49 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("FinishedProductInventorys");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.OrderModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ProfitMargin")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalItems")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("cashierId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductIngredientModel", b =>
@@ -640,7 +655,7 @@ namespace Bakeries.DataAccess.Migrations
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.SalesDetailModel", b =>
                 {
-                    b.HasOne("Bakeries.DataAccess.Entities.DailySaleModel", "DailySales")
+                    b.HasOne("Bakeries.DataAccess.Entities.OrderModel", "DailySales")
                         .WithMany("SalesDetails")
                         .HasForeignKey("DailySalesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -657,16 +672,16 @@ namespace Bakeries.DataAccess.Migrations
                     b.Navigation("FinishedProductInventory");
                 });
 
-            modelBuilder.Entity("Bakeries.DataAccess.Entities.DailySaleModel", b =>
-                {
-                    b.Navigation("SalesDetails");
-                });
-
             modelBuilder.Entity("Bakeries.DataAccess.Entities.FinishedProductInventoryModel", b =>
                 {
                     b.Navigation("Details");
 
                     b.Navigation("PurchaseFinishedProductInventory");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.OrderModel", b =>
+                {
+                    b.Navigation("SalesDetails");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.ProductModel", b =>

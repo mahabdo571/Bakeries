@@ -13,8 +13,8 @@ namespace Bakeries.DataAccess.Entities
 
         // المفتاح الخارجي لربط التفاصيل بعملية المبيعات اليومية
         public int DailySalesId { get; set; }
-        [ForeignKey("DailySalesId")]
-        public virtual DailySaleModel DailySales { get; set; }
+        [ForeignKey(nameof(DailySalesId))]
+        public virtual OrderModel DailySales { get; set; }
 
 
 

@@ -92,6 +92,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IProductionProcessDetailRepo, ProductionProcessDetailRepo>();
 builder.Services.AddScoped<IFinishedProductInventoryRepo, FinishedProductInventoryRepo>();
 builder.Services.AddScoped<IPurchaseFinishedProductInventoryRepo, PurchaseFinishedProductInventoryRepo>();
+builder.Services.AddScoped<IOrderRepo, OrderRepo>();
 
 //Services
 builder.Services.AddScoped<IPurchasesServices, PurchasesServices>();
@@ -102,6 +103,7 @@ builder.Services.AddScoped<IProductionServices, ProductionServices>();
 builder.Services.AddScoped<IProductionProcessDetailService, ProductionProcessDetailServices>();
 builder.Services.AddScoped<IFinishedProductInventoryService, FinishedProductInventoryService>();
 builder.Services.AddScoped<IPurchaseFinishedProductInventoryServes, PurchaseFinishedProductInventoryServes>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 
 //Event

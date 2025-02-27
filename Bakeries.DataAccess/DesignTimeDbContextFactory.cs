@@ -9,19 +9,19 @@ namespace DAevthERP
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<clsDbContext>
     {
 
-            
+
 
         public clsDbContext CreateDbContext(string[] args)
         {
-           
 
-                var optionsBuilder = new DbContextOptionsBuilder<clsDbContext>();
+
+            var optionsBuilder = new DbContextOptionsBuilder<clsDbContext>();
 
 
             var configuration = new ConfigurationBuilder()
-               
+
               .SetBasePath("C:\\Programming works\\Bakeries\\Bakeries.API\\")//
-             // .SetBasePath("C:\\devlop\\Bakeries\\Bakeries.API")//Directory.GetCurrentDirectory()
+                                                                             // .SetBasePath("C:\\devlop\\Bakeries\\Bakeries.API")//Directory.GetCurrentDirectory()
                 .AddJsonFile("appsettings.json")
                 .Build();
 
@@ -34,7 +34,7 @@ namespace DAevthERP
 
 
 
-}
+    }
 #endif
 }
 

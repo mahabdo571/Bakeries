@@ -12,6 +12,14 @@ namespace Bakeries.DataAccess
 {
     public class clsDbContext : DbContext
     {
+        public clsDbContext() { }
+        public clsDbContext(DbContextOptions<clsDbContext> op) : base(op)
+        {
+
+
+        }
+
+
         public DbSet<PurchaseModel> Purchases { get; set; }
         public DbSet<StockModel> Stocks { get; set; }
         public DbSet<ProductModel> Products { get; set; }
@@ -21,14 +29,10 @@ namespace Bakeries.DataAccess
         public DbSet<FinishedProductInventoryModel> FinishedProductInventorys { get; set; }
         public DbSet<PurchaseFinishedProductInventoryModel> PurchasesFinishedProductInventorys { get; set; }
         public DbSet<SalesDetailModel> SalesDetails { get; set; }
-        public DbSet<DailySaleModel> DailySales { get; set; }
+        public DbSet<OrderModel> Orders { get; set; }
         public DbSet<CombinedPurchase> CombinedPurchases { get; set; }
 
-        public clsDbContext(DbContextOptions op) : base(op)
-        {
-         
-
-        }
+   
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

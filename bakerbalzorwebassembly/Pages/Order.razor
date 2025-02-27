@@ -1,0 +1,21 @@
+﻿@page "/order"
+@using bakerbalzorwebassembly.Component.Order
+@using bakerbalzorwebassembly.Component.Shared
+
+@inherits ComponentBase
+<PageTitle>المبيعات اليومية</PageTitle>
+<h3 class="mb-4">
+    <i class="bi bi-basket2"></i> المبيعات اليومية
+</h3>
+
+<PageToolbar SearchText="@searchText" 
+             OnSearch="@Search"
+             OnAdd="ShowAddModal"
+             ShowButtonAddNew="@true" />
+
+             
+<DailySaleTable Items="@filteredData"
+                           OnDetails="ShowDetails"
+                           OnEdit="ShowEdit"
+                           OnDelete="ShowDelete"
+                         />

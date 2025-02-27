@@ -12,7 +12,8 @@ namespace Bakeries.DataAccess
         IProductionRepo productionRepository, IStockRepo stockRepository,
         IProductIngredientRepo productIngredientRepository, IPurchasesRepo purchasesRepository,
         IProductionProcessDetailRepo productionProcessDetailRepo,IFinishedProductInventoryRepo finishedProductInventoryRepo,
-        IPurchaseFinishedProductInventoryRepo purchaseFinishedProductInventoryRepo
+        IPurchaseFinishedProductInventoryRepo purchaseFinishedProductInventoryRepo,
+        IOrderRepo dailySaleRepo
         ) : IUnitOfWork
     {
 
@@ -22,6 +23,7 @@ namespace Bakeries.DataAccess
 
 
         public IProductsRepo ProductRepository { get; } = productRepository;
+        public IOrderRepo dailySaleRepository { get; } = dailySaleRepo;
         public IProductionRepo ProductionRepository { get; } = productionRepository;
         public IStockRepo StockRepository { get; } = stockRepository;
         public IProductIngredientRepo ProductIngredientRepository { get; } = productIngredientRepository;
@@ -54,7 +56,7 @@ namespace Bakeries.DataAccess
         {
             if (_transaction != null)
             {
-                Console.WriteLine("Rolling back transaction...");
+              
 
                 await _transaction.RollbackAsync();
                 await _transaction.DisposeAsync();

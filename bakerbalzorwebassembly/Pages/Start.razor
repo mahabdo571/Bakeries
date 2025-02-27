@@ -1,0 +1,9 @@
+﻿@page "/"
+
+@{
+    @inject NavigationManager Navigation
+
+    var baseUri = Navigation.BaseUri;
+
+    Navigation.NavigateTo($"{baseUri}home");
+}
