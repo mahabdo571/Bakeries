@@ -13,7 +13,7 @@ namespace Bakeries.DataAccess
         IProductIngredientRepo productIngredientRepository, IPurchasesRepo purchasesRepository,
         IProductionProcessDetailRepo productionProcessDetailRepo,IFinishedProductInventoryRepo finishedProductInventoryRepo,
         IPurchaseFinishedProductInventoryRepo purchaseFinishedProductInventoryRepo,
-        IOrderRepo dailySaleRepo
+        IOrderRepo orderRepo , ISalesDetailRepo salesDetailRepo
         ) : IUnitOfWork
     {
 
@@ -23,7 +23,7 @@ namespace Bakeries.DataAccess
 
 
         public IProductsRepo ProductRepository { get; } = productRepository;
-        public IOrderRepo dailySaleRepository { get; } = dailySaleRepo;
+        public IOrderRepo OrderRepository { get; } = orderRepo;
         public IProductionRepo ProductionRepository { get; } = productionRepository;
         public IStockRepo StockRepository { get; } = stockRepository;
         public IProductIngredientRepo ProductIngredientRepository { get; } = productIngredientRepository;
@@ -32,6 +32,9 @@ namespace Bakeries.DataAccess
 
         public IFinishedProductInventoryRepo FinishedProductInventoryRepository { get; } = finishedProductInventoryRepo;
         public IPurchaseFinishedProductInventoryRepo PurchaseFinishedProductInventoryRepository { get; } = purchaseFinishedProductInventoryRepo;
+        public ISalesDetailRepo SalesDetailRepository { get; } = salesDetailRepo;
+
+       
 
         public async Task BeginTransactionAsync()
         {

@@ -12,9 +12,9 @@ namespace Bakeries.DataAccess.Entities
     {
 
         // المفتاح الخارجي لربط التفاصيل بعملية المبيعات اليومية
-        public int DailySalesId { get; set; }
-        [ForeignKey(nameof(DailySalesId))]
-        public virtual OrderModel DailySales { get; set; }
+        public int OrderId { get; set; }
+        [ForeignKey(nameof(OrderId))]
+        public virtual OrderModel Order { get; set; }
 
 
 
@@ -30,12 +30,7 @@ namespace Bakeries.DataAccess.Entities
         // قيمة الخصم (إن وجد)
         public decimal Discount { get; set; }
 
-        // ممكن نحسب إجمالي قيمة المنتج بعد الخصم (خاصية محسوبة)
-        [NotMapped]
-        public decimal Total
-        {
-            get { return (UnitPrice * Quantity) - Discount; }
-        }
+
 
         [Required]
         public int FinishedProductInventoryId { get; set; }

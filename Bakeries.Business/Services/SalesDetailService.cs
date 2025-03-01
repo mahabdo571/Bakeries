@@ -3,21 +3,25 @@ using Bakeries.Business.Services.IServices;
 using Bakeries.DataAccess.Entities;
 using Bakeries.DataAccess.Repo.IRepo;
 using Business.Shared.DTOs;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Bakeries.Business.Services
 {
-    public class OrderService(IUnitOfWork unitOfWork,IMapper mapper) : IOrderService
+    public class SalesDetailService(IUnitOfWork unitOfWork , IMapper mapper ) : ISalesDetailService
     {
-        public async Task<int> AddAsync(OrderDTO model)
+        public async Task<int> AddAsync(SalesDetailDTO model)
         {
             await unitOfWork.BeginTransactionAsync();
             try
             {
-                var newModel = mapper.Map<OrderModel>(model);
+                var newModel = mapper.Map<SalesDetailModel>(model);
                 newModel.CreatedAt = DateTime.Now;
                 newModel.UpdatedAt = DateTime.Now;
-                await unitOfWork.OrderRepository.AddAsync(newModel);
+                await unitOfWork.SalesDetailRepository.AddAsync(newModel);
 
 
                 await unitOfWork.SaveChangesAsync();
@@ -30,6 +34,7 @@ namespace Bakeries.Business.Services
                 await unitOfWork.RollbackAsync();
                 throw;
             }
+
         }
 
         public async Task DeleteAsync(int id)
@@ -37,7 +42,7 @@ namespace Bakeries.Business.Services
             await unitOfWork.BeginTransactionAsync();
             try
             {
-                await unitOfWork.OrderRepository.DeleteAsync(id);
+                await unitOfWork.SalesDetailRepository.DeleteAsync(id);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
 
@@ -50,35 +55,34 @@ namespace Bakeries.Business.Services
             }
         }
 
-        public async Task<IEnumerable<OrderDTO>> GetAllAsync()
+        public async Task<IEnumerable<SalesDetailDTO>> GetAllAsync()
         {
-            var model = await unitOfWork.OrderRepository.GetAllAsync(); ;
+            var model = await unitOfWork.SalesDetailRepository.GetAllAsync(); ;
 
-            var newModel = mapper.Map<IEnumerable<OrderDTO>>(model);
+            var newModel = mapper.Map<IEnumerable<SalesDetailDTO>>(model);
 
 
             return newModel;
         }
 
-        public async Task<OrderDTO> GetByIdAsync(int id)
+        public async Task<SalesDetailDTO> GetByIdAsync(int id)
         {
-            return mapper.Map<OrderDTO>(await unitOfWork.OrderRepository.GetByIdAsync(id));
-
+            return mapper.Map<SalesDetailDTO>(await unitOfWork.SalesDetailRepository.GetByIdAsync(id));
         }
 
-        public async Task UpdateAsync(OrderDTO model)
+        public async Task UpdateAsync(SalesDetailDTO model)
         {
             await unitOfWork.BeginTransactionAsync();
             try
             {
-                var newModel = mapper.Map<OrderModel>(model);
+                var newModel = mapper.Map<SalesDetailModel>(model);
                 newModel.UpdatedAt = DateTime.Now;
 
-                var temp = await unitOfWork.OrderRepository.GetByIdAsync(newModel.Id);
+                var temp = await unitOfWork.SalesDetailRepository.GetByIdAsync(newModel.Id);
                 newModel.CreatedAt = temp.CreatedAt;
-             
 
-                await unitOfWork.OrderRepository.UpdateAsync(newModel);
+
+                await unitOfWork.SalesDetailRepository.UpdateAsync(newModel);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
 

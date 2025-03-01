@@ -485,9 +485,6 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DailySalesId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
@@ -499,6 +496,9 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -515,9 +515,9 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DailySalesId");
-
                     b.HasIndex("FinishedProductInventoryId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("SalesDetails");
                 });
@@ -655,21 +655,21 @@ namespace Bakeries.DataAccess.Migrations
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.SalesDetailModel", b =>
                 {
-                    b.HasOne("Bakeries.DataAccess.Entities.OrderModel", "DailySales")
-                        .WithMany("SalesDetails")
-                        .HasForeignKey("DailySalesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Bakeries.DataAccess.Entities.FinishedProductInventoryModel", "FinishedProductInventory")
                         .WithMany("Details")
                         .HasForeignKey("FinishedProductInventoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DailySales");
+                    b.HasOne("Bakeries.DataAccess.Entities.OrderModel", "Order")
+                        .WithMany("SalesDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("FinishedProductInventory");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.FinishedProductInventoryModel", b =>

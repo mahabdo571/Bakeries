@@ -10,14 +10,14 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://rahaftec.runasp.net/") });
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5000/") });
-builder.Services.AddScoped<StockService>();
-builder.Services.AddScoped<PurchasingService>();
-builder.Services.AddScoped<FinishedProductInventoryService>();
-builder.Services.AddScoped<PurchaseFinishedProductInventoryService>();
-builder.Services.AddScoped<FinishedGoodsProductService>();
-builder.Services.AddScoped<ProductIngredientService>();
-builder.Services.AddScoped<ProductionService>();
-builder.Services.AddScoped<OrderService>();
+builder.Services.AddTransient<StockService>();
+builder.Services.AddTransient<PurchasingService>();
+builder.Services.AddTransient<FinishedProductInventoryService>();
+builder.Services.AddTransient<PurchaseFinishedProductInventoryService>();
+builder.Services.AddTransient<FinishedGoodsProductService>();
+builder.Services.AddTransient<ProductIngredientService>();
+builder.Services.AddTransient<ProductionService>();
+builder.Services.AddTransient<OrderService>();
 builder.Services.AddSingleton<NavigationMode>();
 
 

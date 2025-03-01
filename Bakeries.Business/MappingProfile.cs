@@ -14,6 +14,8 @@ namespace Bakeries.Business
 
 
             CreateMap<CombinedPurchase, CombinedPurchaseDTO>().ReverseMap();
+            CreateMap<SalesDetailModel, SalesDetailDTO>().ReverseMap();
+
             CreateMap<OrderModel, OrderDTO>()
                 .ForMember(dest=>dest.OrderType , opt=>opt.MapFrom(src=>(OrderType)src.OrderType))
                 .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => (PaymentMethod)src.PaymentMethod))
