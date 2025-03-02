@@ -9,8 +9,9 @@ namespace Bakeries.Business.Operations
 
         public static async Task AddingTheQuantitiesConsumedInTheProductionProcess(IUnitOfWork unitOfWork, ProductionModel newModel)
         {
+      
             if (newModel is null || newModel.Product is null || newModel.Product.Ingredients is null) return;
-
+    
             await unitOfWork.ProductionProcessDetailRepository.AddRangeAsync(
                 newModel.Product.Ingredients
                 .Where(item => item.DeletedAt is null)

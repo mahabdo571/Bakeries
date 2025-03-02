@@ -83,29 +83,29 @@ builder.Services.AddControllers()
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //Repo
-builder.Services.AddTransient<IPurchasesRepo, PurchasesRepo>();
-builder.Services.AddTransient<IStockRepo, StockRepo>();
-builder.Services.AddTransient<IProductsRepo, ProductsRepo>();
-builder.Services.AddTransient<IProductIngredientRepo, ProductIngredientRepo>();
-builder.Services.AddTransient<IProductionRepo, ProductionRepo>();
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddTransient<IProductionProcessDetailRepo, ProductionProcessDetailRepo>();
-builder.Services.AddTransient<IFinishedProductInventoryRepo, FinishedProductInventoryRepo>();
-builder.Services.AddTransient<IPurchaseFinishedProductInventoryRepo, PurchaseFinishedProductInventoryRepo>();
-builder.Services.AddTransient<IOrderRepo, OrderRepo>();
-builder.Services.AddTransient<ISalesDetailRepo, SalesDetailRepo>();
+builder.Services.AddScoped<IPurchasesRepo, PurchasesRepo>();
+builder.Services.AddScoped<IStockRepo, StockRepo>();
+builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
+builder.Services.AddScoped<IProductIngredientRepo, ProductIngredientRepo>();
+builder.Services.AddScoped<IProductionRepo, ProductionRepo>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IProductionProcessDetailRepo, ProductionProcessDetailRepo>();
+builder.Services.AddScoped<IFinishedProductInventoryRepo, FinishedProductInventoryRepo>();
+builder.Services.AddScoped<IPurchaseFinishedProductInventoryRepo, PurchaseFinishedProductInventoryRepo>();
+builder.Services.AddScoped<IOrderRepo, OrderRepo>();
+builder.Services.AddScoped<ISalesDetailRepo, SalesDetailRepo>();
 
 //Services
-builder.Services.AddTransient<IPurchasesServices, PurchasesServices>();
-builder.Services.AddTransient<IStockServices, StockServices>();
-builder.Services.AddTransient<IProductServices, ProductServices>();
-builder.Services.AddTransient<IProductIngredientService, ProductIngredientService>();
-builder.Services.AddTransient<IProductionServices, ProductionServices>();
-builder.Services.AddTransient<IProductionProcessDetailService, ProductionProcessDetailServices>();
-builder.Services.AddTransient<IFinishedProductInventoryService, FinishedProductInventoryService>();
-builder.Services.AddTransient<IPurchaseFinishedProductInventoryServes, PurchaseFinishedProductInventoryServes>();
-builder.Services.AddTransient<IOrderService, OrderService>();
-builder.Services.AddTransient<ISalesDetailService, SalesDetailService>();
+builder.Services.AddScoped<IPurchasesServices, PurchasesServices>();
+builder.Services.AddScoped<IStockServices, StockServices>();
+builder.Services.AddScoped<IProductServices, ProductServices>();
+builder.Services.AddScoped<IProductIngredientService, ProductIngredientService>();
+builder.Services.AddScoped<IProductionServices, ProductionServices>();
+builder.Services.AddScoped<IProductionProcessDetailService, ProductionProcessDetailServices>();
+builder.Services.AddScoped<IFinishedProductInventoryService, FinishedProductInventoryService>();
+builder.Services.AddScoped<IPurchaseFinishedProductInventoryServes, PurchaseFinishedProductInventoryServes>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ISalesDetailService, SalesDetailService>();
 
 
 //Event

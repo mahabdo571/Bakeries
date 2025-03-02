@@ -11,6 +11,7 @@ namespace Bakeries.DataAccess.Repo.IRepo
     public interface IProductionRepo : IRepoBase<ProductionModel>
     {
         Task<ProductionModel> GetProductionWithProductAndIngredientsAsync(int productionId);
+        Task<ProductionModel> GetProductionWithnewWithPFPIMAsync(int productionId);
         Task<StockModel> GetStockItemAsync(int stockId);
         Task UpdateStockAsync(StockModel stockItems);
         Task SaveChangesAsync();

@@ -61,11 +61,21 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<ProductionModel> GetProductionWithProductAndIngredientsAsync(int productionId)
         {
-            return await context.Productions.WhereNotDeleted().AsNoTracking()
-                .Include(pp => pp.PFPIM).WhereNotDeleted()
+            return await context.Productions.WhereNotDeleted()
+        
                .Include(p => p.Product).
  ThenInclude(p => p.Ingredients).WhereNotDeleted()
  
+                .FirstOrDefaultAsync(p => p.Id == productionId);
+        }  
+        
+        
+        public async Task<ProductionModel> GetProductionWithnewWithPFPIMAsync(int productionId)
+        {
+            return await context.Productions.WhereNotDeleted().AsNoTracking()
+
+           .Include(pp => pp.PFPIM).WhereNotDeleted()
+
                 .FirstOrDefaultAsync(p => p.Id == productionId);
         }
 

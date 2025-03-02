@@ -94,7 +94,6 @@ namespace Bakeries.Business.Services
             var fpi = await unitOfWork.FinishedProductInventoryRepository.GetByProuductIdAsync(newModel.ProductId);
             if (fpi == null) throw new Exception("خطأ في جلب بيانات المنتج في المعرض");
 
-            Console.WriteLine($"ID {newModel.PFPIM.Id}");
         
          
             await purchaseFinishedProductInventoryServes.UpdateAsync(new PurchaseFinishedProductInventoryDTO
@@ -131,9 +130,10 @@ namespace Bakeries.Business.Services
 
                 await unitOfWork.ProductionRepository.UpdateAsync(orginalModel);
                 var  newModel = await unitOfWork.ProductionRepository.GetProductionWithProductAndIngredientsAsync(model.Id);
+                var newWithPFPIM = await unitOfWork.ProductionRepository.GetProductionWithnewWithPFPIMAsync(model.Id);
 
-                await UpdateToPurchaseFinishedProductInventory(unitOfWork, purchaseFinishedProductInventoryServes, model, newModel);
-
+                   await UpdateToPurchaseFinishedProductInventory(unitOfWork, purchaseFinishedProductInventoryServes, model, newWithPFPIM);
+          
                 await productionEventsHelpers.RaiseProductionUpdatedEvent(unitOfWork, newModel);
              
 
