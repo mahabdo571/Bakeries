@@ -82,7 +82,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-//Repo
+#region Repo
 builder.Services.AddScoped<IPurchasesRepo, PurchasesRepo>();
 builder.Services.AddScoped<IStockRepo, StockRepo>();
 builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
@@ -94,6 +94,7 @@ builder.Services.AddScoped<IFinishedProductInventoryRepo, FinishedProductInvento
 builder.Services.AddScoped<IPurchaseFinishedProductInventoryRepo, PurchaseFinishedProductInventoryRepo>();
 builder.Services.AddScoped<IOrderRepo, OrderRepo>();
 builder.Services.AddScoped<ISalesDetailRepo, SalesDetailRepo>();
+#endregion
 
 //Services
 builder.Services.AddScoped<IPurchasesServices, PurchasesServices>();

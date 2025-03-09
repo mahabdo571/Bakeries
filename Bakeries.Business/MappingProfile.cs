@@ -12,7 +12,6 @@ namespace Bakeries.Business
         {
 
 
-
             CreateMap<CombinedPurchase, CombinedPurchaseDTO>().ReverseMap();
             CreateMap<SalesDetailModel, SalesDetailDTO>().ReverseMap();
 

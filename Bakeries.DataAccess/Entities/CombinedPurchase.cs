@@ -8,7 +8,7 @@ namespace Bakeries.DataAccess.Entities
 {
    public class CombinedPurchase
     {
-        public string ItemName { get; set; }
+        public string? ItemName { get; set; }
 
         public string SupplierName { get; set; }
         public string SupplierInvoiceNumber { get; set; }

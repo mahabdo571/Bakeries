@@ -98,7 +98,7 @@ namespace bakerbalzorwebassembly.Pages
         {
             selectedForEdit = null;
         }
-        protected async Task SavePurchases()
+        protected async Task Save()
         {
             selectedForEdit.OrderType = (OrderType)selectedForEdit.OrderTypeId;
             selectedForEdit.PaymentMethod = (PaymentMethod)selectedForEdit.PaymentMethodId;

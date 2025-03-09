@@ -10,11 +10,11 @@ namespace Business.Shared.Enums
     public enum OrderType
     {
         [Display(Name = "استلام من المحل")]
-        PickUpFromStore = 0,
+        PickUpFromStore = 1,
         [Display(Name = "توصيل")]
-        delivery = 1,
+        delivery = 2,
         [Display(Name = "موزع")]
-        Dealer = 2,
+        Dealer = 3,
     
     }
 }

@@ -10,10 +10,10 @@ namespace Business.Shared.Enums
     public enum PaymentMethod
     {
         [Display(Name = "كاش")]
-        cash = 0,
+        cash = 1,
         [Display(Name = "شيك")]
-        Acheck = 1,
+        Acheck = 2,
         [Display(Name = "دين")]
-        debt = 2,
+        debt = 3,
     }
 }

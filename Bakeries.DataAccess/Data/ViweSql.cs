@@ -13,7 +13,7 @@ namespace Bakeries.DataAccess.Data
         {
             dbContext.Database.ExecuteSqlRaw(@"
 
-CREATE OR ALTER VIEW [dbo].[vCombinedPurchases] AS
+CREATE OR ALTER VIEW vCombinedPurchases AS
 SELECT 
     Id,
     SupplierName,
@@ -49,8 +49,8 @@ FROM (
         pfp.DeletedAt,
         pfp.Notes,
         'PurchasesFinishedProductInventorys' AS SourceTable
-    FROM bakerTest.dbo.PurchasesFinishedProductInventorys pfp
-    LEFT JOIN bakerTest.dbo.FinishedProductInventorys fpi 
+    FROM PurchasesFinishedProductInventorys pfp
+    LEFT JOIN FinishedProductInventorys fpi 
         ON pfp.FinishedProductInventoryId = fpi.Id
     WHERE pfp.DeletedAt IS NULL
 
@@ -73,8 +73,8 @@ FROM (
         p.DeletedAt,
         p.Notes,
         'Purchases' AS SourceTable
-    FROM bakerTest.dbo.Purchases p
-    LEFT JOIN bakerTest.dbo.Stocks s 
+    FROM Purchases p
+    LEFT JOIN Stocks s 
         ON p.ItemId = s.Id
     WHERE p.DeletedAt IS NULL
 ) Combined;
