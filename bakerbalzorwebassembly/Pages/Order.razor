@@ -1,6 +1,8 @@
 ﻿@page "/order"
+@using Business.Shared.DTOs
 @using bakerbalzorwebassembly.Component.Order
 @using bakerbalzorwebassembly.Component.Shared
+@using bakerbalzorwebassembly.Models
 
 @inherits ComponentBase
 <PageTitle>المبيعات اليومية</PageTitle>
@@ -8,25 +10,42 @@
     <i class="bi bi-basket2"></i> المبيعات اليومية
 </h3>
 
-<PageToolbar SearchText="@searchText" 
+<PageToolbar SearchText="@searchText"
              OnSearch="@Search"
              OnAdd="ShowAddModal"
              ShowButtonAddNew="@true" />
 
-             
+
 <OrderTable Items="@filteredData"
-                           OnDetails="ShowDetails"
-                           OnEdit="ShowEdit"
-                           OnDelete="ShowDelete"
-                         />
+            OnDetails="ShowDetails"
+            OnEdit="ShowEdit"
+            OnDelete="ShowDelete"
+            OnSalesDetail="SalesDetail" />
 
 <EditModal Item="@selectedForEdit"
            OnSave="@Save"
            OnClose="@CloseEditModal" />
 
 
-
+<DetailsModal Item="@selectedForDetails"
+              OnClose="CloseDetails" />
 <LoadingModal IsVisible="@isSaving" />
 
 <ErrorModal Message="@messageError"
             OnClose="CloseDeleteModal" />
+
+@code {
+    @inject NavigationManager Navigation ;
+    @inject NavigationMode navMode;
+
+    private void SalesDetail(OrderDTO model)
+    {
+        var baseUri = Navigation.BaseUri;
+        navMode.restState();
+        navMode.orderDTO = model;
+
+        Navigation.NavigateTo($"{baseUri}salesDetail");
+
+
+    }
+}

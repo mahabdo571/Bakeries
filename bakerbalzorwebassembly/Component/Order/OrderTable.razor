@@ -9,7 +9,6 @@
                 <th class="d-none d-md-table-cell">#</th>
                 <th>المبلغ الكلي</th>
                 <th>عدد العناصر المباعة</th>
-                <th >مربح اليوم</th>
                 <th class="d-none d-md-table-cell">ملاحظات</th>
                 <th class="d-none d-md-table-cell">تاريخ الإنشاء</th>
                 <th class="d-none d-md-table-cell">تاريخ التعديل</th>
@@ -35,7 +34,6 @@
                         <td class="d-none d-md-table-cell">@item.Id</td>
                         <td>@item.TotalAmount</td>
                         <td>@item.TotalItems</td>
-                        <td >@item.ProfitMargin</td>
                         <td class="d-none d-md-table-cell">@item.Notes</td>
                         <td class="d-none d-md-table-cell">
                             @(item.CreatedAt.HasValue ? item.CreatedAt.Value.ToString("yyyy-MM-dd") : "-")
@@ -47,6 +45,12 @@
                         <td>
 
               
+                            <button class="btn btn-sm btn-success me-1"
+                            @onclick:stopPropagation
+                                    @onclick="() => OnSalesDetail.InvokeAsync(item)">
+                                <i class="bi bi-list-check"></i>
+                            </button>
+                            
                             <button class="btn btn-sm btn-warning me-1"
                             @onclick:stopPropagation
                                     @onclick="() => OnEdit.InvokeAsync(item)">
@@ -71,6 +75,7 @@
     [Parameter] public EventCallback<OrderDTO> OnDetails { get; set; }
     [Parameter] public EventCallback<OrderDTO> OnEdit { get; set; }
     [Parameter] public EventCallback<OrderDTO> OnDelete { get; set; }
+    [Parameter] public EventCallback<OrderDTO> OnSalesDetail { get; set; }
 
 
 

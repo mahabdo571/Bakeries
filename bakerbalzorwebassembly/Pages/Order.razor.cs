@@ -84,8 +84,8 @@ namespace bakerbalzorwebassembly.Pages
          ProfitMargin = model.ProfitMargin,
          TotalAmount = model.TotalAmount,
          TotalItems = model.TotalItems,
-         PaymentMethod = model.PaymentMethod,
-         OrderType = model.OrderType,
+         enPaymentMethod = model.enPaymentMethod,
+         enOrderType = model.enOrderType,
          
             };
         }
@@ -100,8 +100,8 @@ namespace bakerbalzorwebassembly.Pages
         }
         protected async Task Save()
         {
-            selectedForEdit.OrderType = (OrderType)selectedForEdit.OrderTypeId;
-            selectedForEdit.PaymentMethod = (PaymentMethod)selectedForEdit.PaymentMethodId;
+            selectedForEdit.enOrderType = (OrderType)selectedForEdit.enOrderType;
+            selectedForEdit.enPaymentMethod = (PaymentMethod)selectedForEdit.PaymentMethodId;
 
             isSaving = true;
             if (selectedForEdit.Id == 0)

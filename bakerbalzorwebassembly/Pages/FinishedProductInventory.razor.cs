@@ -73,7 +73,7 @@ namespace bakerbalzorwebassembly.Pages
                 Id = finishedProductInventory.Id,
                 ItemName = finishedProductInventory.ItemName,
                 AvailableQuantity = finishedProductInventory.AvailableQuantity,
-                UnitOfMeasure = finishedProductInventory.UnitOfMeasure,
+                enUnitOfMeasure = finishedProductInventory.enUnitOfMeasure,
                 ReorderLevel = finishedProductInventory.ReorderLevel,
                 Location = finishedProductInventory.Location,
                 Notes = finishedProductInventory.Notes,
@@ -101,7 +101,7 @@ namespace bakerbalzorwebassembly.Pages
         }
         protected async Task SaveStock()
         {
-            selectedFinishedProductInventoryForEdit.UnitOfMeasure = (UnitOfMeasure)selectedFinishedProductInventoryForEdit.UnitOfMeasure;
+            selectedFinishedProductInventoryForEdit.enUnitOfMeasure = (UnitOfMeasure)selectedFinishedProductInventoryForEdit.enUnitOfMeasure;
 
             isSaving = true;
             if (selectedFinishedProductInventoryForEdit.Id == 0)

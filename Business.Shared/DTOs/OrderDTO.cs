@@ -8,10 +8,10 @@ namespace Business.Shared.DTOs
         public int Id { get; set; }
         public decimal TotalAmount { get; set; }
         public int TotalItems { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
+        public PaymentMethod enPaymentMethod { get; set; }
 
         public decimal ProfitMargin { get; set; } //الربح المحقق من البيع
-        public OrderType OrderType { get; set; } //من المحل - توصيل - موزع 
+        public OrderType enOrderType { get; set; } //من المحل - توصيل - موزع 
         public string? Notes { get; set; } = "لا يوجد ملاحظات";
 
 
@@ -21,14 +21,14 @@ namespace Business.Shared.DTOs
 
         public int OrderTypeId
         {
-            get => (int)OrderType;
-            set => OrderType = (OrderType)value;
-        }   
-        
+            get => (int)enOrderType;
+            set => enOrderType = (OrderType)value;
+        }
+       
         public int PaymentMethodId
         {
-            get => (int)OrderType;
-            set => PaymentMethod = (PaymentMethod)value;
+            get => (int)enPaymentMethod;
+            set => enPaymentMethod = (PaymentMethod)value;
         }
     }
 }

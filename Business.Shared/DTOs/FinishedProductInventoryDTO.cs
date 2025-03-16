@@ -59,11 +59,11 @@ namespace Business.Shared.DTOs
 
       
     
-        public UnitOfMeasure UnitOfMeasure { get; set; }
+        public UnitOfMeasure enUnitOfMeasure { get; set; }
         public int UnitOfMeasureId
         {
-            get => (int)UnitOfMeasure;
-            set => UnitOfMeasure = (UnitOfMeasure)value;
+            get => (int)enUnitOfMeasure;
+            set => enUnitOfMeasure = (UnitOfMeasure)value;
         }
     }
 }

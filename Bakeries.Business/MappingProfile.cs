@@ -16,11 +16,11 @@ namespace Bakeries.Business
             CreateMap<SalesDetailModel, SalesDetailDTO>().ReverseMap();
 
             CreateMap<OrderModel, OrderDTO>()
-                .ForMember(dest=>dest.OrderType , opt=>opt.MapFrom(src=>(OrderType)src.OrderType))
-                .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => (PaymentMethod)src.PaymentMethod))
+                .ForMember(dest=>dest.enOrderType , opt=>opt.MapFrom(src=>(OrderType)src.OrderType))
+                .ForMember(dest => dest.enPaymentMethod, opt => opt.MapFrom(src => (PaymentMethod)src.PaymentMethod))
                 .ReverseMap()
-                .ForMember(dest => dest.OrderType, opt => opt.MapFrom(src => (int)src.OrderType))
-                .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => (int)src.PaymentMethod))
+                .ForMember(dest => dest.OrderType, opt => opt.MapFrom(src => (int)src.enOrderType))
+                .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => (int)src.enPaymentMethod))
 ;
 
             CreateMap<StockModel, StockDTO>()
@@ -46,9 +46,9 @@ namespace Bakeries.Business
     .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (int)src.UnitOfMeasure!));
 
             CreateMap<FinishedProductInventoryModel, FinishedProductInventoryDTO>()
-    .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (UnitOfMeasure)src.UnitOfMeasure))
+    .ForMember(dest => dest.enUnitOfMeasure, opt => opt.MapFrom(src => (UnitOfMeasure)src.UnitOfMeasure))
     .ReverseMap()
-    .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (int)src.UnitOfMeasure!));
+    .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => (int)src.enUnitOfMeasure!));
 
 
             CreateMap<PurchaseFinishedProductInventoryModel, PurchaseFinishedProductInventoryDTO>()
