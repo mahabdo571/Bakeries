@@ -9,6 +9,8 @@ namespace Business.Shared.Enums
 {
     public enum PaymentMethod
     {
+        [Display(Name = "غير معرف")]
+        none = 0,
         [Display(Name = "كاش")]
         cash = 1,
         [Display(Name = "شيك")]

@@ -10,6 +10,7 @@ namespace bakerbalzorwebassembly.Models
 
         public ProductionDTO? productionDTO { get; set; }
         public OrderDTO? orderDTO { get; set; }
+        public SalesDetailDTO? salesDetailDTO { get; set; }
         public void restState()
         {
             stockDTO = null;
@@ -17,6 +18,7 @@ namespace bakerbalzorwebassembly.Models
             FPIDTO = null;
             productionDTO = null;
             orderDTO = null;
+            salesDetailDTO = null;
         } 
 
         public bool isAllRested()
@@ -25,6 +27,7 @@ namespace bakerbalzorwebassembly.Models
                 FPIDTO is null && 
                 productDTO is null && 
                 productionDTO is null &&
+                salesDetailDTO is null &&
                 orderDTO is null
 
                 ;

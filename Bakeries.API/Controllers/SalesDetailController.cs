@@ -11,16 +11,16 @@ namespace Bakeries.API.Controllers
     {
 
 
-        [HttpGet("All")]
+        [HttpGet("GetAllByOrderId/{orderId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<SalesDetailDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<SalesDetailDTO>>> GetAllByOrderId([FromRoute]int orderId)
         {
 
             try
             {
-                var model = await salesDetailService.GetAllAsync();
+                var model = await salesDetailService.GetAllByOrderIdAsync(orderId);
                 if (model is null)
                 {
                     logger.LogWarning("model is null  - not found.");

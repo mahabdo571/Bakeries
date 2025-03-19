@@ -1,3 +1,33 @@
 ﻿@page "/salesDetail"
+@using bakerbalzorwebassembly.Component.Shared
+@using bakerbalzorwebassembly.Component.SalesDetail
 
 <PageTitle>تفاصيل الفاتورة</PageTitle>
+<h3 class="mb-4">
+    <i class="bi bi-basket2"></i> تفاصيل الفاتورة
+</h3>
+
+<PageToolbar SearchText="@searchText"
+             OnSearch="@Search"
+             OnAdd="ShowAddModal"
+             ShowButtonAddNew="@true" />
+
+
+<SalesDetailTable Items="@filteredData"
+            OnDetails="ShowDetails"
+            OnEdit="ShowEdit"
+            OnDelete="ShowDelete"
+            totalSum="totalSum"
+            
+            />
+
+            <EditModal 
+                Item="@selectedForEdit"
+           Fpi="FPIModel"
+           OnSave="@Save"
+           OnClose="@CloseEditModal" />
+
+<LoadingModal IsVisible="@isSaving" />
+
+<ErrorModal Message="@messageError"
+            OnClose="CloseDeleteModal" />

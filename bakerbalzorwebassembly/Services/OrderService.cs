@@ -14,10 +14,10 @@ namespace bakerbalzorwebassembly.Services
             _httpClient = httpClient;
         }
 
-        public async Task<List<OrderDTO>> GetAllAsync()
+        public async Task<IQueryable<OrderDTO>> GetAllAsync()
         {
             var response = await _httpClient.GetFromJsonAsync<List<OrderDTO>>("api/Order/All");
-            return response ?? new List<OrderDTO>();
+            return response is not null ? response.AsQueryable<OrderDTO>() : new List<OrderDTO>().AsQueryable<OrderDTO>();
         }
 
 

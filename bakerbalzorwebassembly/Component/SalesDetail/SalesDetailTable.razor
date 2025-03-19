@@ -1,5 +1,4 @@
-﻿@inherits ComponentBase
-@using Business.Shared.DTOs
+﻿@using Business.Shared.DTOs
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Business.Shared.Enums.Extensions
 <style>
@@ -37,42 +36,38 @@
         font-size: 14px;
     }
 
-
 </style>
 
 
 <div class="table-responsive">
-  
 
 
 
 
-        @if (Items == null)
-        {
-            <p colspan="10" class="text-center">جاري التحميل...</p>
-        }
-        else if (!Items.Any())
-        {
-            <p colspan="10" class="text-center">لا توجد بيانات</p>
-        }
-        else
-        {
-        <QuickGrid Items="Items" TGridItem="OrderDTO" class="table-striped table-hover table">
+
+    @if (Items == null)
+    {
+        <p colspan="10" class="text-center">جاري التحميل...</p>
+    }
+    else if (!Items.Any())
+    {
+        <p colspan="10" class="text-center">لا توجد بيانات</p>
+    }
+    else
+    {
+        <QuickGrid Items="Items" TGridItem="SalesDetailDTO" class="table-striped table-hover table">
             <PropertyColumn Property="@(e=>e.Id)" Title="#" Sortable="true" />
-            <PropertyColumn Property="@(e=>e.TotalAmount)" Title="قيمة الفاتورة الكلية" />
-            <PropertyColumn Property="@(e=>e.TotalItems)" class="d-none d-md-table-cell" Title="عدد العناصر" />
-            <PropertyColumn Property="@(e=>e.enOrderType.GetDisplayName())" class="d-none d-md-table-cell" Title="نوع الطلب" />
-            <PropertyColumn Property="@(e=>e.enPaymentMethod.GetDisplayName())" class="d-none d-md-table-cell" Title="طريقة الدفع" />
+            <PropertyColumn Property="@(e=>e.ProductName)" Title="قيمة الفاتورة الكلية" />
+            <PropertyColumn Property="@(e=>e.UnitPrice)" class="d-none d-md-table-cell" Title="عدد العناصر" />
+            <PropertyColumn Property="@(e=>e.Quantity)" class="d-none d-md-table-cell" Title="نوع الطلب" />
+            <PropertyColumn Property="@(e => e.Discount > 0 ? $"{e.Discount * 100} %" :"")" class="d-none d-md-table-cell" Title="طريقة الدفع" />
+            <PropertyColumn Property="@(e=>e.Total)" class="d-none d-md-table-cell" Title="طريقة الدفع" />
             <PropertyColumn Property="@(e=>e.CreatedAt)" Sortable="true" Title="تاريخ الانشاء" />
             <PropertyColumn Property="@(e=>e.UpdatedAt)" Sortable="true" class="d-none d-md-table-cell" Title="تاريخ التحديث" />
 
 
             <TemplateColumn Context="item" Title="خيارات">
-                <button class="btn btn-sm btn-success me-1"
-                @onclick:stopPropagation
-                        @onclick="() => OnSalesDetail.InvokeAsync(item)">
-                    <i class="bi bi-list-check"></i>
-                </button>
+
 
                 <button class="btn btn-sm btn-warning me-1"
                 @onclick:stopPropagation
@@ -92,19 +87,24 @@
                 </button>
 
             </TemplateColumn>
-  </QuickGrid>
-        }
-  
+        </QuickGrid>
+    }
+
+    <h3>المجموع الكلي: @totalSum</h3>
+
 </div>
 
 @code {
-    [Parameter] public IQueryable<OrderDTO> Items { get; set; }
-    [Parameter] public EventCallback<OrderDTO> OnDetails { get; set; }
-    [Parameter] public EventCallback<OrderDTO> OnEdit { get; set; }
-    [Parameter] public EventCallback<OrderDTO> OnDelete { get; set; }
-    [Parameter] public EventCallback<OrderDTO> OnSalesDetail { get; set; }
 
 
+    [Parameter] public IQueryable<SalesDetailDTO> Items { get; set; }
+    [Parameter] public EventCallback<SalesDetailDTO> OnDetails { get; set; }
+    [Parameter] public EventCallback<SalesDetailDTO> OnEdit { get; set; }
+    [Parameter] public EventCallback<SalesDetailDTO> OnDelete { get; set; }
+    [Parameter] public decimal totalSum { get; set; }
+
+
+   
 
 }
 

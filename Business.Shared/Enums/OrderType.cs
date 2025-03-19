@@ -9,6 +9,8 @@ namespace Business.Shared.Enums
 {
     public enum OrderType
     {
+        [Display(Name = "غير معرف")]
+        none = 0,  
         [Display(Name = "استلام من المحل")]
         PickUpFromStore = 1,
         [Display(Name = "توصيل")]

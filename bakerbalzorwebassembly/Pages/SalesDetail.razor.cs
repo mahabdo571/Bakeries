@@ -3,40 +3,55 @@ using bakerbalzorwebassembly.Services;
 using Business.Shared.DTOs;
 using Business.Shared.Enums;
 using Microsoft.AspNetCore.Components;
+using System.Reflection;
 
 namespace bakerbalzorwebassembly.Pages
 {
-    public partial class Order : ComponentBase
+    public partial class SalesDetail : ComponentBase
     {
-        protected IQueryable<OrderDTO> MyModel;
+        protected IQueryable<SalesDetailDTO> MyModel;
+        protected List<FinishedProductInventoryDTO> FPIModel;
         protected string searchText = "";
-        protected OrderDTO selectedForDetails;
-        protected OrderDTO selectedForEdit;
-        protected OrderDTO selectedForDelete;
-        protected IQueryable<OrderDTO> filteredData;
+        protected SalesDetailDTO selectedForDetails;
+        protected SalesDetailDTO selectedForEdit;
+        protected SalesDetailDTO selectedForDelete;
+      
+        protected IQueryable<SalesDetailDTO> filteredData;
         protected bool isSaving = false;
         protected string? messageError;
-
+        protected decimal totalSum;
+        private int orderId;
+        private FinishedProductInventoryDTO fpiModel;
         [Inject]
-        protected OrderService MyService { get; set; }
+        protected SalesDetailService MyService { get; set; }    
+        [Inject]
+        protected FinishedProductInventoryService FPIservice { get; set; }
 
         [Inject]
         protected NavigationMode navigationMode { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-
+            orderId = navigationMode.orderDTO!.Id;
             await LoadMyData();
+            await getAllFPI();
+    
+
 
         }
 
+        protected async Task getAllFPI()
+        {
+            FPIModel =  await FPIservice.GetAllAsync();
+        }
         protected async Task LoadMyData()
         {
+     
+                MyModel = await MyService.GetAllByOrderId(orderId);
+       
 
-
-            MyModel = await MyService.GetAllAsync();
             FilterMyModel();
-          
+            CalculateTotalSum();
 
         }
 
@@ -57,16 +72,17 @@ namespace bakerbalzorwebassembly.Pages
             }
             else
             {
-                filteredData =MyModel.Where(s => (s.Notes != null &&
+                filteredData = MyModel.Where(s => (s.Notes != null &&
                                                   s.Notes.Contains(searchText, StringComparison.OrdinalIgnoreCase))
 
                                                 ).AsQueryable();
             }
+            CalculateTotalSum();
         }
 
-        protected IQueryable<OrderDTO> Filtered => filteredData;
+        protected IQueryable<SalesDetailDTO> Filtered => filteredData;
 
-        protected void ShowDetails(OrderDTO model)
+        protected void ShowDetails(SalesDetailDTO model)
         {
             selectedForDetails = model;
         }
@@ -75,24 +91,23 @@ namespace bakerbalzorwebassembly.Pages
             selectedForDetails = null;
         }
 
-        protected void ShowEdit(OrderDTO model)
+        protected async void ShowEdit(SalesDetailDTO model)
         {
-            selectedForEdit = new OrderDTO
+            selectedForEdit = new SalesDetailDTO
             {
                 Id = model.Id,
                 Notes = model.Notes,
-         ProfitMargin = model.ProfitMargin,
-         TotalAmount = model.TotalAmount,
-         TotalItems = model.TotalItems,
-         enPaymentMethod = model.enPaymentMethod,
-         enOrderType = model.enOrderType,
-         
+                OrderId = orderId,
+                Discount = model.Discount,
+                 Quantity = model.Quantity,
+
+
             };
         }
 
         protected void ShowAddModal()
         {
-            selectedForEdit = new OrderDTO();
+            selectedForEdit = new SalesDetailDTO();
         }
         protected void CloseEditModal()
         {
@@ -100,9 +115,11 @@ namespace bakerbalzorwebassembly.Pages
         }
         protected async Task Save()
         {
-            selectedForEdit.enOrderType = (OrderType)selectedForEdit.enOrderType;
-            selectedForEdit.enPaymentMethod = (PaymentMethod)selectedForEdit.PaymentMethodId;
+            fpiModel = await FPIservice.GetByIdAsync(selectedForEdit.FinishedProductInventoryId);
 
+            selectedForEdit.OrderId = orderId;
+            selectedForEdit.ProductName = fpiModel.ItemName;
+            selectedForEdit.UnitPrice = fpiModel.UnitPriceForPeople;
             isSaving = true;
             if (selectedForEdit.Id == 0)
             {
@@ -120,7 +137,7 @@ namespace bakerbalzorwebassembly.Pages
             isSaving = false;
         }
 
-        protected void ShowDelete(OrderDTO model)
+        protected void ShowDelete(SalesDetailDTO model)
         {
             selectedForDelete = model;
         }
@@ -152,6 +169,10 @@ namespace bakerbalzorwebassembly.Pages
             }
             isSaving = false;
 
+        }
+        private void CalculateTotalSum()
+        {
+            totalSum = MyModel.Sum(item => item.Total);
         }
 
 

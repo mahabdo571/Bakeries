@@ -23,15 +23,18 @@ namespace Business.Shared.DTOs
 
 
         public decimal Discount { get; set; }
+        public string Notes { get; set; }
 
 
         [NotMapped]
         public decimal Total
         {
-            get { return (UnitPrice * Quantity) - (Discount*100); }
+            get { return (UnitPrice * Quantity) -(Discount*100); }
         }
 
+        public DateTime? CreatedAt { get; set; }
 
+        public DateTime? UpdatedAt { get; set; }
         public int FinishedProductInventoryId { get; set; }
     }
 }
