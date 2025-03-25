@@ -51,13 +51,14 @@
              <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri+"order")" @onclick="@Order"> 
                  <i class="bi bi-basket2"></i> مبيعات 
              </NavLink> 
+         </li>       
+         <li>
+             <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri+"salesReport")" @onclick="@Order"> 
+                 <i class="bi bi-basket2"></i> تقارير مبيعات 
+             </NavLink> 
          </li>   
         
-        @* <li> *@
-        @*     <NavLink class="nav-link text-white sidebar-item" href="@(Navigation.BaseUri+"pos")" @onclick="@POS"> *@
-        @*         <i class="bi bi-basket2"></i> نقطة بيع *@
-        @*     </NavLink> *@
-        @* </li> *@
+   
     </ul>
 </div>
 @code{

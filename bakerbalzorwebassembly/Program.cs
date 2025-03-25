@@ -19,6 +19,7 @@ builder.Services.AddTransient<FinishedGoodsProductService>();
 builder.Services.AddTransient<ProductIngredientService>();
 builder.Services.AddTransient<ProductionService>();
 builder.Services.AddTransient<OrderService>();
+builder.Services.AddTransient<SalesReportService>();
 builder.Services.AddSingleton<NavigationMode>();
 
 
