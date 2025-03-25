@@ -31,8 +31,10 @@ namespace Bakeries.DataAccess
         public DbSet<SalesDetailModel> SalesDetails { get; set; }
         public DbSet<OrderModel> Orders { get; set; }
         public DbSet<CombinedPurchase> CombinedPurchases { get; set; }
+        public DbSet<SalesReport> SalesReports { get; set; }
 
-   
+      
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -46,16 +48,16 @@ namespace Bakeries.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
 
+     
+            base.OnModelCreating(modelBuilder);
             //  modelBuilder.Entity<ProductIngredientModel>()
             //.HasIndex(e => e.stockId)
             //.IsUnique()
             //.HasDatabaseName("IX_ProductIngredient_StockId");
-
-            modelBuilder.Entity<CombinedPurchase>()
-    .HasNoKey()
-    .ToView("vCombinedPurchases");
+            modelBuilder.Entity<SalesReport>().HasNoKey();
+            modelBuilder.Entity<CombinedPurchase>().HasNoKey().ToView("vCombinedPurchases");
+          
             // إضافة فهرس على ProductId في جدول ProductIngredientModel
             modelBuilder.Entity<ProductIngredientModel>()
                 .HasIndex(pi => pi.ProductId)
@@ -109,11 +111,11 @@ namespace Bakeries.DataAccess
             StoredProcedure.UpdateStockOnPurchase(this);
             StoredProcedure.GetProductsWithComponents(this);
             StoredProcedure.UpdateFinishedProductInventoryAfterPurchase(this);
+            StoredProcedure.sp_SalesReport(this);
 
 
-       
-        }  
-        
+        }
+
         public void EnsureViweSql()
         {
 

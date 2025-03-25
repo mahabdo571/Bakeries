@@ -71,6 +71,25 @@ namespace Bakeries.DataAccess.Repo
             }
         }
 
+        public async Task<SalesDetailModel?> IsTheItemOnTheInvoice(int FinishedProductInventoryId)
+        {
+            try
+            {
+                var model = await context.SalesDetails.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.FinishedProductInventoryId == FinishedProductInventoryId);
+
+                if (model is not null)
+                {
+                    return model;
+                }
+
+                return null;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task UpdateAsync(SalesDetailModel model)
         {
             if (model is null) throw new ArgumentNullException($"error in model : {nameof(model)} is null");

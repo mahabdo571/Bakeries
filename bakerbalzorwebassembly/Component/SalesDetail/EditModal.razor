@@ -10,7 +10,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        @(Item.Id == 0 ? "اضافة طلبية جديدة" : "تعديل الطلب")
+                        @(Item.Id == 0 ? "اضافة عنصر جديدة" : "تعديل الطلب")
                     </h5>
                     <button type="button" class="btn-close" @onclick="@OnClose"></button>
                 </div>
@@ -20,12 +20,14 @@
                         <ValidationSummary />
                         <div class="mb-3">
                             <label class="form-label">اختر المنتج</label>
-                            <InputSelect class="form-control" @bind-Value="@Item.FinishedProductInventoryId">
+                           
+                            <InputSelect TValue="int" class="form-control" @bind-Value="Item.FinishedProductInventoryId">
                                 @foreach (var unit in Fpi)
                                 {
-                                    <option value="@(unit.Id)">@unit.ItemName</option>
+                                    <option value="@unit.Id">@unit.ItemName</option>
                                 }
                             </InputSelect>
+
                         </div>
                         <div class="mb-3">
                             <label class="form-label">الكمية</label>

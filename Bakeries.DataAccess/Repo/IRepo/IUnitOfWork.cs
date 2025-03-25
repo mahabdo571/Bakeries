@@ -22,6 +22,7 @@ namespace Bakeries.DataAccess.Repo.IRepo
         IPurchaseFinishedProductInventoryRepo PurchaseFinishedProductInventoryRepository { get; }
         IOrderRepo OrderRepository { get; }
         ISalesDetailRepo SalesDetailRepository { get; }
+        ISalesReportRepo SalesReportRepository { get; }
 
     }
 }

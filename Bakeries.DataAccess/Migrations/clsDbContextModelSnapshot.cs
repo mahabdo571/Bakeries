@@ -28,7 +28,6 @@ namespace Bakeries.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ItemName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Notes")
@@ -520,6 +519,24 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("SalesDetails");
+                });
+
+            modelBuilder.Entity("Bakeries.DataAccess.Entities.SalesReport", b =>
+                {
+                    b.Property<string>("DayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SaleDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TotalItems")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalSales")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.ToTable("SalesReports");
                 });
 
             modelBuilder.Entity("Bakeries.DataAccess.Entities.StockModel", b =>

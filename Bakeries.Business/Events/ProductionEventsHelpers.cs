@@ -14,23 +14,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading.Tasks;
 
-public  class ProductionEventsHelpers 
+public class ProductionEventsHelpers
 {
-    public  event Func<IUnitOfWork, ProductionModel, Task> OnProductionAdded;
-    public  event Func<IUnitOfWork, ProductionModel , Task> OnProductionUpdated;
-    public  async Task RaiseProductionAddedEvent(IUnitOfWork unitOfWork, ProductionModel model)
+    public event Func<IUnitOfWork, ProductionModel, Task> OnProductionAdded;
+    public event Func<IUnitOfWork, ProductionModel, Task> OnProductionUpdated;
+    public async Task RaiseProductionAddedEvent(IUnitOfWork unitOfWork, ProductionModel model)
     {
 
         await (OnProductionAdded?.Invoke(unitOfWork, model) ?? Task.CompletedTask);
 
 
-       
+
     }
 
-        public  async Task RaiseProductionUpdatedEvent(IUnitOfWork unitOfWork, ProductionModel NewModel)
-        {
+    public async Task RaiseProductionUpdatedEvent(IUnitOfWork unitOfWork, ProductionModel NewModel)
+    {
         await (OnProductionUpdated?.Invoke(unitOfWork, NewModel) ?? Task.CompletedTask);
 
-     
-        }
+
+    }
 }

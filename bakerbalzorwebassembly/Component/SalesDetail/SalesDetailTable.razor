@@ -57,11 +57,11 @@
     {
         <QuickGrid Items="Items" TGridItem="SalesDetailDTO" class="table-striped table-hover table">
             <PropertyColumn Property="@(e=>e.Id)" Title="#" Sortable="true" />
-            <PropertyColumn Property="@(e=>e.ProductName)" Title="قيمة الفاتورة الكلية" />
-            <PropertyColumn Property="@(e=>e.UnitPrice)" class="d-none d-md-table-cell" Title="عدد العناصر" />
-            <PropertyColumn Property="@(e=>e.Quantity)" class="d-none d-md-table-cell" Title="نوع الطلب" />
-            <PropertyColumn Property="@(e => e.Discount > 0 ? $"{e.Discount * 100} %" :"")" class="d-none d-md-table-cell" Title="طريقة الدفع" />
-            <PropertyColumn Property="@(e=>e.Total)" class="d-none d-md-table-cell" Title="طريقة الدفع" />
+            <PropertyColumn Property="@(e=>e.ProductName)" Title="اسم المنتج" />
+            <PropertyColumn Property="@(e=>e.UnitPrice)" class="d-none d-md-table-cell" Title="السعر" />
+            <PropertyColumn Property="@(e=>e.Quantity)" class="d-none d-md-table-cell" Title="الكمية" />
+            <PropertyColumn Property="@(e => e.Discount > 0 ? $"{e.Discount * 100} %" :"")" class="d-none d-md-table-cell" Title="نسبة الخصم" />
+            <PropertyColumn Property="@(e=>e.Total)" class="d-none d-md-table-cell" Title="المجموع" />
             <PropertyColumn Property="@(e=>e.CreatedAt)" Sortable="true" Title="تاريخ الانشاء" />
             <PropertyColumn Property="@(e=>e.UpdatedAt)" Sortable="true" class="d-none d-md-table-cell" Title="تاريخ التحديث" />
 

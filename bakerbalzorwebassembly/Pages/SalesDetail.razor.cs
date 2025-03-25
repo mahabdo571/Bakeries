@@ -32,14 +32,15 @@ namespace bakerbalzorwebassembly.Pages
 
         protected override async Task OnInitializedAsync()
         {
+                     await getAllFPI();
             orderId = navigationMode.orderDTO!.Id;
             await LoadMyData();
-            await getAllFPI();
+ 
     
 
 
         }
-
+  
         protected async Task getAllFPI()
         {
             FPIModel =  await FPIservice.GetAllAsync();
@@ -100,7 +101,7 @@ namespace bakerbalzorwebassembly.Pages
                 OrderId = orderId,
                 Discount = model.Discount,
                  Quantity = model.Quantity,
-
+                 FinishedProductInventoryId = model.FinishedProductInventoryId
 
             };
         }

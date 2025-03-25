@@ -88,6 +88,37 @@ namespace Bakeries.DataAccess.Data
             
             END;
         ");
+        }     
+        
+        
+        public static void sp_SalesReport(clsDbContext dbContext)
+        {
+            dbContext.Database.ExecuteSqlRaw(@"
+           
+CREATE OR ALTER PROCEDURE dbo.sp_SalesReport
+    @StartDate DATE,
+    @EndDate DATE
+AS
+BEGIN
+    SELECT 
+         SaleDate,
+         FORMAT(SaleDate, 'dddd', 'ar-SA') AS DayName,  
+         TotalSales,
+         TotalItems
+    FROM
+    (
+         SELECT 
+              CAST(CreatedAt AS DATE) AS SaleDate,
+              SUM(TotalAmount) AS TotalSales,
+              SUM(TotalItems) AS TotalItems
+         FROM [db12750].[dbo].[Orders]
+         WHERE CAST(CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate
+         GROUP BY CAST(CreatedAt AS DATE)
+    ) AS T
+    ORDER BY SaleDate;
+END;
+
+        ");
         }
     }
 }

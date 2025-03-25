@@ -94,6 +94,7 @@ builder.Services.AddScoped<IFinishedProductInventoryRepo, FinishedProductInvento
 builder.Services.AddScoped<IPurchaseFinishedProductInventoryRepo, PurchaseFinishedProductInventoryRepo>();
 builder.Services.AddScoped<IOrderRepo, OrderRepo>();
 builder.Services.AddScoped<ISalesDetailRepo, SalesDetailRepo>();
+builder.Services.AddScoped<ISalesReportRepo, SalesReportRepo>();
 #endregion
 
 //Services
@@ -107,6 +108,7 @@ builder.Services.AddScoped<IFinishedProductInventoryService, FinishedProductInve
 builder.Services.AddScoped<IPurchaseFinishedProductInventoryServes, PurchaseFinishedProductInventoryServes>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ISalesDetailService, SalesDetailService>();
+builder.Services.AddScoped<ISalesReportService, SalesReportService>();
 
 
 //Event
