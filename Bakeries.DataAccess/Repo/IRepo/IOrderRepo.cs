@@ -9,5 +9,6 @@ namespace Bakeries.DataAccess.Repo.IRepo
 {
     public interface IOrderRepo : IRepoBase<OrderModel>
     {
+        Task<IEnumerable<OrderModel>> GetAllByDayAsync(DateTime date);
     }
 }

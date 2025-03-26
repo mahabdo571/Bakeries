@@ -71,11 +71,15 @@ namespace Bakeries.DataAccess.Repo
             }
         }
 
-        public async Task<SalesDetailModel?> IsTheItemOnTheInvoice(int FinishedProductInventoryId)
+        public async Task<SalesDetailModel?> IsTheItemOnTheInvoice(int FinishedProductInventoryId,int orderId)
         {
             try
             {
-                var model = await context.SalesDetails.AsNoTracking().WhereNotDeleted().FirstOrDefaultAsync(p => p.FinishedProductInventoryId == FinishedProductInventoryId);
+                var model = await context
+                    .SalesDetails
+                    .AsNoTracking()
+                    .WhereNotDeleted()
+                    .FirstOrDefaultAsync(p => p.FinishedProductInventoryId == FinishedProductInventoryId && p.OrderId == orderId);
 
                 if (model is not null)
                 {

@@ -9,6 +9,6 @@ namespace Bakeries.Business.Services.IServices
 {
     public interface IOrderService : IServices<OrderDTO>
     {
-
+        Task<IEnumerable<OrderDTO>> GetAllByDayAsync(DateTime date);
     }
 }

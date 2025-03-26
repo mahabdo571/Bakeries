@@ -23,7 +23,7 @@ namespace Bakeries.Business.Services
                 newModel.CreatedAt = DateTime.Now;
                 newModel.UpdatedAt = DateTime.Now;
 
-                var isTheItemOnTheInvoice = await unitOfWork.SalesDetailRepository.IsTheItemOnTheInvoice(model.FinishedProductInventoryId);
+                var isTheItemOnTheInvoice = await unitOfWork.SalesDetailRepository.IsTheItemOnTheInvoice(model.FinishedProductInventoryId,model.OrderId);
 
                 if (isTheItemOnTheInvoice is not null)
                 {

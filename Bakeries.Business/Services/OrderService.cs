@@ -52,7 +52,17 @@ namespace Bakeries.Business.Services
 
         public async Task<IEnumerable<OrderDTO>> GetAllAsync()
         {
-            var model = await unitOfWork.OrderRepository.GetAllAsync(); ;
+            var model = await unitOfWork.OrderRepository.GetAllAsync(); 
+
+            var newModel = mapper.Map<IEnumerable<OrderDTO>>(model);
+
+
+            return newModel;
+        }    
+        
+        public async Task<IEnumerable<OrderDTO>> GetAllByDayAsync(DateTime date)
+        {
+            var model = await unitOfWork.OrderRepository.GetAllByDayAsync(date); 
 
             var newModel = mapper.Map<IEnumerable<OrderDTO>>(model);
 

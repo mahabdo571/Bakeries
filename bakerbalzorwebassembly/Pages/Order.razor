@@ -7,37 +7,44 @@
 @inherits ComponentBase
 <PageTitle>فواتير المبيعات</PageTitle>
 <h3 class="mb-4">
-    <i class="bi bi-basket2"></i> فواتير المبيعات
+    <i class="bi bi-basket2"></i> فواتير المبيعات @(navigationMode.dateTody != DateTime.MinValue ? "في التاريخ " + @navigationMode.dateTody.ToShortDateString() : "")
 </h3>
 
 <PageToolbar SearchText="@searchText"
-             OnSearch="@Search"
-             OnAdd="ShowAddModal"
-             ShowButtonAddNew="@true" />
+OnSearch="@Search"
+OnAdd="ShowAddModal"
+ShowButtonAddNew="@true" />
+@if(navigationMode.dateTody != DateTime.MinValue){
+    <button @onclick="()=>resTable()">مسح الفلتر</button>
+}
+
 
 
 <OrderTable Items="@filteredData"
-            OnDetails="ShowDetails"
-            OnEdit="ShowEdit"
-            OnDelete="ShowDelete"
-            OnSalesDetail="SalesDetail" />
+OnDetails="ShowDetails"
+OnEdit="ShowEdit"
+OnDelete="ShowDelete"
+OnSalesDetail="SalesDetail" />
 
 <EditModal Item="@selectedForEdit"
-           OnSave="@Save"
-           OnClose="@CloseEditModal" />
+OnSave="@Save"
+OnClose="@CloseEditModal" />
 
 
 <DetailsModal Item="@selectedForDetails"
-              OnClose="CloseDetails" />
+OnClose="CloseDetails" />
 <LoadingModal IsVisible="@isSaving" />
 
 <ErrorModal Message="@messageError"
-            OnClose="CloseDeleteModal" />
+OnClose="CloseDeleteModal" />
 
 @code {
     @inject NavigationManager Navigation ;
     @inject NavigationMode navMode;
-
+    private async Task resTable(){
+        navigationMode.dateTody = DateTime.MinValue;
+        await  LoadMyData();
+    }
     private void SalesDetail(OrderDTO model)
     {
         var baseUri = Navigation.BaseUri;

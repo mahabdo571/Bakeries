@@ -1,9 +1,10 @@
 ﻿@page "/salesReport"
 @using System.Globalization
 @using Business.Shared.DTOs
+@using bakerbalzorwebassembly.Models
 @using bakerbalzorwebassembly.Services
-
-<h3 class="page-title">تقرير البيانات  </h3>
+<PageTitle> تقارير المبيعات </PageTitle>
+<h3 class="page-title">تقارير المبيعات  </h3>
 
 <div class="filter-section">
     <div class="date-filters">
@@ -49,31 +50,22 @@ else if (filteredData.Any())
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th>اليوم</th>
                     <th>التاريخ</th>
-                    <th>العنوان</th>
-                    <th>المبلغ</th>
-                    <th>الحالة</th>
+                    <th>المبلغ الكلي</th>
+                    <th>عدد العناصر</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in filteredData)
                 {
-                    <tr>
-                        <td>@item.TotalSales</td>
-                        <td>@item.SaleDate.ToShortDateString()</td>
+                    <tr @onclick="() => onclickrow(item.SaleDate)" style="cursor: pointer;">
                         <td>@item.DayName</td>
+                        <td>@item.SaleDate.ToShortDateString()</td>
+                      
                         <td class="@GetAmountClass(item.TotalSales)">@item.TotalSales.ToString("C")</td>
-                        <td>
-                            @if (item.TotalItems ==1)
-                            {
-                                <i class="fas fa-check-circle text-success"></i>
-                            }
-                            else
-                            {
-                                <i class="fas fa-times-circle text-danger"></i>
-                            }
-                        </td>
+                        <td>@item.TotalItems</td>
+                      
                     </tr>
                 }
             </tbody>
@@ -99,6 +91,17 @@ else
     private List<SalesReportDTO> filteredData = new();
     private bool isLoading = true;
     private bool hasError = false;
+    @inject NavigationManager Navigation ;
+    @inject NavigationMode navMode;
+    void onclickrow(DateTime data){
+
+        var baseUri = Navigation.BaseUri;
+        navMode.restState();
+        navMode.dateTody = data;
+
+        Navigation.NavigateTo($"{baseUri}order");
+
+    }
 
     [Inject]
     protected SalesReportService MyService { get; set; }
@@ -133,8 +136,123 @@ else
     }
 
     private string GetAmountClass(decimal amount) =>
-        amount > 100 ? "high-amount" : amount > 50 ? "medium-amount" : "";
+        amount < 100 ? "high-amount" : amount < 50 ? "medium-amount" : "";
 
  
 }
+
+
+<style>
+    .page-title {
+        color: #2c3e50;
+        margin-bottom: 2rem;
+    }
+
+    .filter-section {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .date-filters {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        align-items: end;
+    }
+
+    .date-input {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .filter-btn {
+        background: #3498db;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+        .filter-btn:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+
+    .responsive-table {
+        overflow-x: auto;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        min-width: 600px;
+    }
+
+        .data-table th {
+            background: #3498db;
+            color: white;
+            padding: 1rem;
+            text-align: right;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .data-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+    .high-amount {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+
+    .medium-amount {
+        color: #f1c40f;
+    }
+
+    .summary {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+    }
+
+
+    .no-data, .loading {
+        text-align: center;
+        padding: 2rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin: 2rem 0;
+    }
+
+    .fa-spinner {
+        margin-left: 0.5rem;
+    }
+
+    @@media (max-width: 768px) {
+        .date-filters {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-btn {
+            width: 100%;
+        }
+    }
+</style>
 

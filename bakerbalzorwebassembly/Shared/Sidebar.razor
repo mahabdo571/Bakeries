@@ -100,7 +100,7 @@
     private void Order()
     {
         var baseUri = Navigation.BaseUri;
-
+        navigationMode?.restState();
         Navigation.NavigateTo($"{baseUri}order");
 
 

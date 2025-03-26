@@ -44,6 +44,17 @@ namespace Bakeries.DataAccess.Repo
         {
             return await context.Orders.WhereNotDeleted().ToListAsync();
 
+        } 
+        
+        public async Task<IEnumerable<OrderModel>> GetAllByDayAsync(DateTime date)
+        {
+            
+            return await context.Orders
+                .WhereNotDeleted()
+               .Where(e => EF.Functions.DateDiffDay(e.CreatedAt, date) == 0)
+
+                .ToListAsync();
+
         }
 
         public async Task<OrderModel> GetByIdAsync(int id)

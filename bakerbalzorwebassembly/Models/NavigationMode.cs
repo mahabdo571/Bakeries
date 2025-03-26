@@ -11,6 +11,7 @@ namespace bakerbalzorwebassembly.Models
         public ProductionDTO? productionDTO { get; set; }
         public OrderDTO? orderDTO { get; set; }
         public SalesDetailDTO? salesDetailDTO { get; set; }
+        public DateTime dateTody { get; set; }
         public void restState()
         {
             stockDTO = null;
@@ -19,6 +20,7 @@ namespace bakerbalzorwebassembly.Models
             productionDTO = null;
             orderDTO = null;
             salesDetailDTO = null;
+            dateTody = DateTime.MinValue;
         } 
 
         public bool isAllRested()
@@ -28,7 +30,7 @@ namespace bakerbalzorwebassembly.Models
                 productDTO is null && 
                 productionDTO is null &&
                 salesDetailDTO is null &&
-                orderDTO is null
+                orderDTO is null 
 
                 ;
         }

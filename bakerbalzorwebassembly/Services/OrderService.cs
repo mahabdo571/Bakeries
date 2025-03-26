@@ -19,6 +19,12 @@ namespace bakerbalzorwebassembly.Services
             var response = await _httpClient.GetFromJsonAsync<List<OrderDTO>>("api/Order/All");
             return response is not null ? response.AsQueryable<OrderDTO>() : new List<OrderDTO>().AsQueryable<OrderDTO>();
         }
+          
+        public async Task<IQueryable<OrderDTO>> GetAllByDayAsync(string date)
+        {
+            var response = await _httpClient.GetFromJsonAsync<List<OrderDTO>>($"api/Order/getAllByDay?date={date}");
+            return response is not null ? response.AsQueryable<OrderDTO>() : new List<OrderDTO>().AsQueryable<OrderDTO>();
+        }
 
 
 

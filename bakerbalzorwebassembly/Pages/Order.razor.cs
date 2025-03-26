@@ -14,9 +14,10 @@ namespace bakerbalzorwebassembly.Pages
         protected OrderDTO selectedForEdit;
         protected OrderDTO selectedForDelete;
         protected IQueryable<OrderDTO> filteredData;
+        protected IQueryable<OrderDTO> DataByDay;
         protected bool isSaving = false;
         protected string? messageError;
-
+     
         [Inject]
         protected OrderService MyService { get; set; }
 
@@ -35,7 +36,15 @@ namespace bakerbalzorwebassembly.Pages
 
 
             MyModel = await MyService.GetAllAsync();
-            FilterMyModel();
+            DataByDay = await MyService.GetAllByDayAsync(navigationMode.dateTody.ToShortDateString());
+            if (navigationMode.dateTody != DateTime.MinValue)
+            {
+                filteredData = DataByDay;
+            }
+            else
+            {
+                FilterMyModel();
+            }
           
 
         }
@@ -45,6 +54,10 @@ namespace bakerbalzorwebassembly.Pages
         {
             searchText = e;
             FilterMyModel();
+            if (!string.IsNullOrEmpty(e))
+            {
+                navigationMode.dateTody = DateTime.MinValue;
+            }
             return Task.CompletedTask;
         }
 
@@ -53,14 +66,18 @@ namespace bakerbalzorwebassembly.Pages
         {
             if (string.IsNullOrEmpty(searchText))
             {
-                filteredData = MyModel;
+                
+          
+               filteredData = MyModel;
             }
-            else
+            else 
             {
-                filteredData =MyModel.Where(s => (s.Notes != null &&
+                filteredData = MyModel.Where(s => (s.Notes != null &&
                                                   s.Notes.Contains(searchText, StringComparison.OrdinalIgnoreCase))
 
                                                 ).AsQueryable();
+
+
             }
         }
 
