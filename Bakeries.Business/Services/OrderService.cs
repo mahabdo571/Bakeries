@@ -7,7 +7,7 @@ using Business.Shared.DTOs;
 
 namespace Bakeries.Business.Services
 {
-    public class OrderService(IUnitOfWork unitOfWork,IMapper mapper) : IOrderService
+    public class OrderService(IUnitOfWork unitOfWork,IMapper mapper ) : IOrderService
     {
         public async Task<int> AddAsync(OrderDTO model)
         {
@@ -34,18 +34,20 @@ namespace Bakeries.Business.Services
 
         public async Task DeleteAsync(int id)
         {
-            await unitOfWork.BeginTransactionAsync();
+     
             try
             {
+             
+                
+     
                 await unitOfWork.OrderRepository.DeleteAsync(id);
-                await unitOfWork.SaveChangesAsync();
-                await unitOfWork.CommitAsync();
+         
 
 
             }
             catch
             {
-                await unitOfWork.RollbackAsync();
+              
                 throw;
             }
         }

@@ -681,7 +681,7 @@ namespace Bakeries.DataAccess.Migrations
                     b.HasOne("Bakeries.DataAccess.Entities.OrderModel", "Order")
                         .WithMany("SalesDetails")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("FinishedProductInventory");

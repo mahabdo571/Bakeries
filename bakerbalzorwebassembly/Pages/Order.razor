@@ -11,39 +11,48 @@
 </h3>
 
 <PageToolbar SearchText="@searchText"
-OnSearch="@Search"
-OnAdd="ShowAddModal"
-ShowButtonAddNew="@true" />
-@if(navigationMode.dateTody != DateTime.MinValue){
+             OnSearch="@Search"
+             OnAdd="ShowAddModal"
+             ShowButtonAddNew="@true" />
+@if (navigationMode.dateTody != DateTime.MinValue)
+{
     <button @onclick="()=>resTable()">مسح الفلتر</button>
 }
 
 
 
 <OrderTable Items="@filteredData"
-OnDetails="ShowDetails"
-OnEdit="ShowEdit"
-OnDelete="ShowDelete"
-OnSalesDetail="SalesDetail" />
+            OnDetails="ShowDetails"
+            OnEdit="ShowEdit"
+            OnDelete="ShowDelete"
+            OnSalesDetail="SalesDetail" />
 
 <EditModal Item="@selectedForEdit"
-OnSave="@Save"
-OnClose="@CloseEditModal" />
+           OnSave="@Save"
+           OnClose="@CloseEditModal" />
 
 
 <DetailsModal Item="@selectedForDetails"
-OnClose="CloseDetails" />
+              OnClose="CloseDetails" />
+
+              <DeleteModal Item="@selectedForDelete"
+            
+             OnConfirm="ConfirmDelete"
+             OnClose="CloseDeleteModal" />
+
+
 <LoadingModal IsVisible="@isSaving" />
 
 <ErrorModal Message="@messageError"
-OnClose="CloseDeleteModal" />
+            OnClose="CloseDeleteModal" />
 
 @code {
     @inject NavigationManager Navigation ;
     @inject NavigationMode navMode;
-    private async Task resTable(){
+    private async Task resTable()
+    {
         navigationMode.dateTody = DateTime.MinValue;
-        await  LoadMyData();
+        await LoadMyData();
     }
     private void SalesDetail(OrderDTO model)
     {

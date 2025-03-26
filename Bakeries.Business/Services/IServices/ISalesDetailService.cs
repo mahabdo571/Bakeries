@@ -10,6 +10,7 @@ namespace Bakeries.Business.Services.IServices
     public interface ISalesDetailService : IServices<SalesDetailDTO>
     {
         Task<IEnumerable<SalesDetailDTO>> GetAllByOrderIdAsync(int orderId);
+
         
     }
 }

@@ -4,6 +4,7 @@ using Bakeries.DataAccess;
 using Bakeries.DataAccess.Entities;
 using Bakeries.DataAccess.Repo.IRepo;
 using Business.Shared.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -145,14 +146,18 @@ namespace Bakeries.Business.Services
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
 
-
+                 
             }
             catch
             {
                 await unitOfWork.RollbackAsync();
                 throw;
             }
-        }
+        }   
+        
+ 
+
+       
 
         public async Task<IEnumerable<SalesDetailDTO>> GetAllAsync()
         {
@@ -166,7 +171,7 @@ namespace Bakeries.Business.Services
 
         public async Task<IEnumerable<SalesDetailDTO>> GetAllByOrderIdAsync(int orderId)
         {
-            var model = await unitOfWork.SalesDetailRepository.GetAllByOrderIdAsync(orderId); ;
+            var model = await unitOfWork.SalesDetailRepository.GetAllByOrderIdAsync(orderId);
 
             var newModel = mapper.Map<IEnumerable<SalesDetailDTO>>(model);
 

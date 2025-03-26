@@ -26,11 +26,13 @@
            Fpi="FPIModel"
            OnSave="@Save"
            OnClose="@CloseEditModal" />
+           
 
 <DeleteModal Item="@selectedForDelete"
              OnConfirm="ConfirmDelete"
              OnClose="CloseDeleteModal" />
-
+<DetailsModal Item="@selectedForDetails"
+              OnClose="CloseDetails" />
 <LoadingModal IsVisible="@isSaving" />
 
 <ErrorModal Message="@messageError"

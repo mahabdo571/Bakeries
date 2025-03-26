@@ -13,12 +13,11 @@ namespace Bakeries.DataAccess.Entities
 
         // المفتاح الخارجي لربط التفاصيل بعملية المبيعات اليومية
         public int OrderId { get; set; }
-        [ForeignKey(nameof(OrderId))]
+       
         public virtual OrderModel Order { get; set; }
 
 
 
-        // اسم المنتج (للتوثيق في حال تغيرت بيانات المنتج لاحقاً)
         public string ProductName { get; set; }
 
         // السعر للوحدة

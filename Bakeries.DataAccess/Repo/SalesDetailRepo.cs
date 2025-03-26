@@ -51,9 +51,11 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task<IEnumerable<SalesDetailModel>> GetAllByOrderIdAsync(int orderId)
         {
-            return await context.SalesDetails.WhereNotDeleted().Where(e=>e.OrderId==orderId).ToListAsync();
-
-        }
+         return   await context.SalesDetails.WhereNotDeleted().AsNoTracking().Where(e=>e.OrderId==orderId).ToListAsync();
+           
+        } 
+        
+    
 
         public async Task<SalesDetailModel> GetByIdAsync(int id)
         {

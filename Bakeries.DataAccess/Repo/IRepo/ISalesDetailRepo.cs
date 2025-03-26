@@ -11,6 +11,6 @@ namespace Bakeries.DataAccess.Repo.IRepo
     {
         Task<IEnumerable<SalesDetailModel>> GetAllByOrderIdAsync(int orderId);
         Task<SalesDetailModel> IsTheItemOnTheInvoice(int FinishedProductInventoryId, int orderId);
-        
+
     }
 }

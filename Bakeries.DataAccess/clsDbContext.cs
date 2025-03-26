@@ -104,6 +104,12 @@ namespace Bakeries.DataAccess
      .HasForeignKey<PurchaseFinishedProductInventoryModel>(c => c.ProductionId)
      .OnDelete(DeleteBehavior.Restrict); // تحديد السلوك عند الحذف
 
+            modelBuilder.Entity<SalesDetailModel>()
+      .HasOne(s => s.Order)
+      .WithMany(o => o.SalesDetails)
+      .HasForeignKey(s => s.OrderId)
+      .OnDelete(DeleteBehavior.Restrict);
+
         }
         public void EnsureStoredProcedure()
         {

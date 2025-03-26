@@ -112,7 +112,7 @@ BEGIN
               SUM(TotalAmount) AS TotalSales,
               SUM(TotalItems) AS TotalItems
          FROM [db12750].[dbo].[Orders]
-         WHERE CAST(CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate
+         WHERE CAST(CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate AND DeletedAt is  NULL
          GROUP BY CAST(CreatedAt AS DATE)
     ) AS T
     ORDER BY SaleDate;

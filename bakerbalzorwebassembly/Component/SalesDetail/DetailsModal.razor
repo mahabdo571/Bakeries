@@ -1,0 +1,39 @@
+﻿@inherits ComponentBase
+@using Business.Shared.DTOs
+@using Business.Shared.Enums.Extensions
+
+@if (Item != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تفاصيل الطلب</h5>
+                    <button type="button" class="btn-close" @onclick="@OnClose"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>الرقم:</strong> @Item.Id</p>
+                    <p><strong> اسم المنتج:</strong> @Item.ProductName</p>
+                    <p><strong>السعر:</strong> @Item.UnitPrice</p>
+                    <p><strong>الكمية:</strong> @Item.Quantity</p>
+                    <p><strong>المجموع:</strong> @Item.Total</p>
+
+                    <p><strong>ملاحظات:</strong> @Item.Notes</p>
+                    <p><strong>تاريخ الإنشاء:</strong> @(Item.CreatedAt?.ToString("yyyy-MM-dd | hh:mm:ss") ?? "-")</p>
+                    <p><strong>تاريخ التعديل:</strong> @(Item.UpdatedAt?.ToString("yyyy-MM-dd | hh:mm:ss") ?? "-")</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="Close">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public SalesDetailDTO Item { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    private void Close() => OnClose.InvokeAsync();
+}
