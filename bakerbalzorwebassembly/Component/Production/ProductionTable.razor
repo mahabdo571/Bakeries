@@ -9,6 +9,7 @@
                 <!-- تظهر فقط على سطح المكتب -->
                 <th class="d-none d-md-table-cell">#</th>
                 <th>الكمية المنتجة</th>
+                <th>التكلفة</th>
                 <th>الوحدة</th>
                 <th class="d-none d-md-table-cell">الكمية التالفة</th>
                 <th class="d-none d-md-table-cell">ملاحظات</th>
@@ -35,6 +36,7 @@
                     <tr @onclick="() => OnDetails.InvokeAsync(item)" style="cursor: pointer;">
                         <td class="d-none d-md-table-cell">@item.Id</td>
                         <td>@item.QuantityProduced</td>
+                        <td>@item.TotalCost</td>
                         <td>@Product.UnitOfMeasure.GetDisplayName()</td>
                         <td class="d-none d-md-table-cell">@item.QuantityDamaged</td>
                         <td class="d-none d-md-table-cell">@item.Notes</td>

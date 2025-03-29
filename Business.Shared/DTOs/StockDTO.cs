@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,10 @@ namespace Business.Shared.DTOs
 
         [Required]
         public decimal AvailableQuantity { get; set; }
+      
+        [Range(0.00001, double.MaxValue)] // التأكد من أن السعر الإجمالي أكبر من 0
+        [Column(TypeName = "decimal(18,5)")]
+        public decimal lastPriceCost { get; set; }
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
 

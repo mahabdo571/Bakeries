@@ -10,6 +10,7 @@
                 <th class="d-none d-md-table-cell">#</th>
                 <th>اسم العنصر</th>
                 <th>الكمية المتوفرة</th>
+                <th class="d-none d-md-table-cell">سعر الوحدة لاخر عملية شراء</th>
                 <th class="d-none d-md-table-cell">وحدة القياس</th>
                 <th class="d-none d-md-table-cell">الحد الأدنى</th>
                 <th class="d-none d-md-table-cell">الموقع</th>
@@ -37,6 +38,7 @@
                         <td class="d-none d-md-table-cell">@item.Id</td>
                         <td>@item.ItemName</td>
                         <td>@item.AvailableQuantity</td>
+                        <td class="d-none d-md-table-cell">@item.lastPriceCost</td>
                         <td class="d-none d-md-table-cell">@item.UnitOfMeasure.GetDisplayName()</td>
                         <td class="d-none d-md-table-cell">@item.ReorderLevel</td>
                         <td class="d-none d-md-table-cell">@item.Location</td>

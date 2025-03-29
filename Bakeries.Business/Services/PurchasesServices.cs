@@ -44,7 +44,7 @@ namespace Bakeries.Business.Services
             await unitOfWork.BeginTransactionAsync();
             try
             {
-                await unitOfWork.PurchasesRepository.AddAsync(newModel);
+                 await unitOfWork.PurchasesRepository.AddAsync(newModel);
 
                 if (model.Status.Equals("ملغي"))
                 {
@@ -52,7 +52,7 @@ namespace Bakeries.Business.Services
                 }
               
 
-                await unitOfWork.PurchasesRepository.UpdateStockOnPurchase((int)model.ItemId!, model.Quantity);
+                await unitOfWork.PurchasesRepository.UpdateStockOnPurchase(newModel);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
 
@@ -229,6 +229,7 @@ namespace Bakeries.Business.Services
 
             // تعديل الكمية المتاحة
             stockModel.AvailableQuantity += quantityDifference;
+            stockModel.lastPriceCost = model.UnitPrice;
 
        
             // تحديث المخزون

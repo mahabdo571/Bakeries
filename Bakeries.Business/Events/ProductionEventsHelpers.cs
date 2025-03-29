@@ -16,12 +16,12 @@ using System.Threading.Tasks;
 
 public class ProductionEventsHelpers
 {
-    public event Func<IUnitOfWork, ProductionModel, Task> OnProductionAdded;
+    public event Func<IUnitOfWork, ProductionModel, Task<decimal>> OnProductionAdded;
     public event Func<IUnitOfWork, ProductionModel, Task> OnProductionUpdated;
-    public async Task RaiseProductionAddedEvent(IUnitOfWork unitOfWork, ProductionModel model)
+    public async Task<decimal> RaiseProductionAddedEvent(IUnitOfWork unitOfWork, ProductionModel model)
     {
 
-        await (OnProductionAdded?.Invoke(unitOfWork, model) ?? Task.CompletedTask);
+     return await OnProductionAdded?.Invoke(unitOfWork, model);
 
 
 

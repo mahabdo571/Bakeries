@@ -15,8 +15,9 @@ namespace Bakeries.DataAccess.Entities
         [Required]
         [Column(TypeName = "decimal(18,4)")]
         public decimal Quantity { get; set; } // الكمية المطلوبة من المكون لإنتاج المنتج
-
-
+        
+        [Column(TypeName = "decimal(18,5)")]
+        public decimal Cost { get; set; } 
 
 
         [Required]

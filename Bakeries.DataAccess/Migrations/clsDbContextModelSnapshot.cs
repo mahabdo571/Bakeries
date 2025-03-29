@@ -294,6 +294,9 @@ namespace Bakeries.DataAccess.Migrations
                     b.Property<decimal>("QuantityProduced")
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<decimal>("TotalCost")
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -311,6 +314,9 @@ namespace Bakeries.DataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("decimal(18,5)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -527,8 +533,14 @@ namespace Bakeries.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("FinalResult")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime>("SaleDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("TotalItems")
                         .HasColumnType("int");
@@ -576,6 +588,9 @@ namespace Bakeries.DataAccess.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("lastPriceCost")
+                        .HasColumnType("decimal(18,5)");
 
                     b.HasKey("Id");
 

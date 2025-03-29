@@ -18,10 +18,10 @@ public class StockEventHandler
         productionEventsHelpers.OnProductionUpdated += HandleProductionUpdated;
     }
 
-    private async Task HandleProductionAdded(IUnitOfWork unitOfWork, ProductionModel model)
+    private async Task<decimal> HandleProductionAdded(IUnitOfWork unitOfWork, ProductionModel model)
     {
         await StockOperation.UpdateStockAvailabilityAfterNew(unitOfWork, model.Id);
-       await GenralOperations.AddingTheQuantitiesConsumedInTheProductionProcess(unitOfWork, model);
+    return   await GenralOperations.AddingTheQuantitiesConsumedInTheProductionProcess(unitOfWork, model);
     }
 
     private async Task HandleProductionUpdated(IUnitOfWork unitOfWork, ProductionModel newModel)

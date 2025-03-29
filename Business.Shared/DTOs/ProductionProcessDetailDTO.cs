@@ -15,6 +15,10 @@ namespace Business.Shared.DTOs
 
         [Column(TypeName = "decimal(18,4)")]
         public decimal Quantity { get; set; }
+
+
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Cost { get; set; }
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         public string ItemName { get; set; }

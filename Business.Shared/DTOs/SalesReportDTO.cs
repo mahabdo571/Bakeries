@@ -13,6 +13,8 @@ namespace Business.Shared.DTOs
         public string DayName { get; set; }
 
         public decimal TotalSales { get; set; }
+        public decimal TotalCost { get; set; }
+        public decimal FinalResult { get; set; }
         public int TotalItems { get; set; }
     }
 }

@@ -16,7 +16,10 @@ namespace Bakeries.DataAccess.Entities
 
         [Required]
         [Column(TypeName = "decimal(18,4)")]
-        public decimal QuantityDamaged { get; set; }
+        public decimal QuantityDamaged { get; set; }     
+
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal TotalCost { get; set; }
 
 
         [Required]

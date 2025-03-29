@@ -23,8 +23,8 @@ namespace Business.Shared.DTOs
         [Required]
         public int ProductId { get; set; }
 
-
-
+    
+        public decimal TotalCost { get; set; }
         public DateTime? CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }

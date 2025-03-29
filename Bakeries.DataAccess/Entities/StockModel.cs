@@ -23,6 +23,8 @@ namespace Bakeries.DataAccess.Entities
 
         public int ReorderLevel { get; set; }//الحد الأدنى للكمية قبل الحاجة لإعادة الطلب.
 
+        [Column(TypeName ="decimal(18,5)")]
+        public decimal lastPriceCost { get; set; }
 
         public string Location { get; set; }
 

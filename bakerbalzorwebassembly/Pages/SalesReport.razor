@@ -46,13 +46,32 @@
 }
 else if (filteredData.Any())
 {
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-12 col-md-3 mb-2">
+                <span>عدد السجلات: @filteredData.Count</span>
+            </div>
+            <div class="col-12 col-md-3 mb-2">
+                <span>مجموع المبيعات: @filteredData.Sum(x => x.TotalSales).ToString("C")</span>
+            </div>
+            <div class="col-12 col-md-3 mb-2">
+                <span>مجموع التكاليف: @filteredData.Sum(x => x.TotalCost).ToString("C")</span>
+            </div>
+            <div class="col-12 col-md-3 mb-2">
+                <span>المربح النهائي: @filteredData.Sum(x => x.FinalResult).ToString("C")</span>
+            </div>
+        </div>
+    </div>
+    <br />
     <div class="responsive-table">
         <table class="data-table">
             <thead>
                 <tr>
                     <th>اليوم</th>
                     <th>التاريخ</th>
-                    <th>المبلغ الكلي</th>
+                    <th>مبلغ المبيعات الكلي</th>
+                    <th>مبلغ التكاليف الكلي</th>
+                    <th>المربح النهائي</th>
                     <th>عدد العناصر</th>
                 </tr>
             </thead>
@@ -64,6 +83,8 @@ else if (filteredData.Any())
                         <td>@item.SaleDate.ToShortDateString()</td>
                       
                         <td class="@GetAmountClass(item.TotalSales)">@item.TotalSales.ToString("C")</td>
+                        <td class="@GetAmountClass(item.TotalCost)">@item.TotalCost.ToString("C")</td>
+                        <td class="@GetAmountClass(item.FinalResult)">@item.FinalResult.ToString("C")</td>
                         <td>@item.TotalItems</td>
                       
                     </tr>
@@ -71,11 +92,8 @@ else if (filteredData.Any())
             </tbody>
         </table>
     </div>
+ 
 
-    <div class="summary">
-        <span>عدد السجلات: @filteredData.Count</span>
-        <span>المجموع: @filteredData.Sum(x => x.TotalSales).ToString("C")</span>
-    </div>
 }
 else
 {

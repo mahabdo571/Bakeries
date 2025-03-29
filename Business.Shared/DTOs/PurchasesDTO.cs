@@ -43,13 +43,13 @@ namespace Business.Shared.DTOs
         }
 
         [Required]
-        [Range(0.01, double.MaxValue)] // التأكد من أن السعر أكبر من 0
-        [Column(TypeName = "decimal(18, 3)")]
+        [Range(0.00001, double.MaxValue)] // التأكد من أن السعر أكبر من 0
+        [Column(TypeName = "decimal(18, 5)")]
         public decimal UnitPrice { get; set; } // سعر الوحدة
 
         [Required]
-        [Range(0.01, double.MaxValue)] // التأكد من أن السعر الإجمالي أكبر من 0
-        [Column(TypeName = "decimal(18, 3)")]
+        [Range(0.00001, double.MaxValue)] // التأكد من أن السعر الإجمالي أكبر من 0
+        [Column(TypeName = "decimal(18,5)")]
         public decimal TotalPrice { get; set; } // إجمالي السعر      
 
 

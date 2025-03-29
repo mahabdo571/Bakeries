@@ -52,7 +52,7 @@ FROM (
     FROM PurchasesFinishedProductInventorys pfp
     LEFT JOIN FinishedProductInventorys fpi 
         ON pfp.FinishedProductInventoryId = fpi.Id
-    WHERE pfp.DeletedAt IS NULL
+    WHERE pfp.DeletedAt IS NULL AND pfp.ProductionId  IS NULL
 
     UNION ALL
 

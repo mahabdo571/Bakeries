@@ -44,8 +44,8 @@ namespace Bakeries.Business.Services
               
 
                 await unitOfWork.SaveChangesAsync();
-                await productionEventsHelpers.RaiseProductionAddedEvent(unitOfWork, newModel);
-
+             decimal ddd=   await productionEventsHelpers.RaiseProductionAddedEvent(unitOfWork, newModel);
+                newModel.TotalCost = ddd;
                 await unitOfWork.ProductionRepository.UpdateAsync(newModel);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();

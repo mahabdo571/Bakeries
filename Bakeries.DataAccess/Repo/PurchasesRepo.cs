@@ -1,9 +1,11 @@
 ﻿using Bakeries.DataAccess.Entities;
 using Bakeries.DataAccess.Repo.IRepo;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,13 +32,29 @@ namespace Bakeries.DataAccess.Repo
           
         }
 
-        public async Task UpdateStockOnPurchase(int? stockId,decimal Quantity)
+        public async Task UpdateStockOnPurchase(PurchaseModel model)
         {
-            if(stockId is null || stockId <= 0) return;
+            if(model is null ) return;
+
+
+            var itemIdParam = new SqlParameter("@ItemId", model.ItemId);
+            var quantityParam = new SqlParameter("@Quantity", model.Quantity);
+            var lastPriceParam = new SqlParameter("@lastPriceCost", SqlDbType.Decimal)
+            {
+                Precision = 18,
+                Scale = 5,
+                Value = model.UnitPrice  // تأكد إن القيمة فعلاً 0.00006
+            };
+
             await context.Database.ExecuteSqlRawAsync(
-                "EXEC UpdateStockOnPurchase @p0, @p1",
-                parameters: new object[] { stockId, Quantity }
+                "EXEC UpdateStockOnPurchase @ItemId, @Quantity, @lastPriceCost",
+                itemIdParam, quantityParam, lastPriceParam
             );
+
+            //await context.Database.ExecuteSqlRawAsync(
+            //    "EXEC UpdateStockOnPurchase @p0, @p1, @p2",
+            //    parameters: new object[] { model.ItemId, model.Quantity,model.UnitPrice }
+            //);
         }
 
 

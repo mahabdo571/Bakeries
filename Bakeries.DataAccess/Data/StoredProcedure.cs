@@ -16,13 +16,16 @@ namespace Bakeries.DataAccess.Data
             dbContext.Database.ExecuteSqlRaw(@"
             CREATE OR ALTER PROCEDURE UpdateStockOnPurchase
  @ItemId INT,
-    @Quantity INT
+    @Quantity INT,
+@lastPriceCost decimal(18,5)
             AS
             BEGIN
               IF EXISTS (SELECT 1 FROM Stocks WHERE Id = @ItemId)
     BEGIN
         UPDATE Stocks
-        SET AvailableQuantity = AvailableQuantity + @Quantity,
+        SET 
+AvailableQuantity = AvailableQuantity + @Quantity,
+lastPriceCost =  @lastPriceCost ,
             UpdatedAt =DATEADD(HOUR, 2, GETUTCDATE())
         WHERE Id = @ItemId;
     END
@@ -100,22 +103,37 @@ CREATE OR ALTER PROCEDURE dbo.sp_SalesReport
     @EndDate DATE
 AS
 BEGIN
+    
+SELECT 
+    T.SaleDate,
+    FORMAT(T.SaleDate, 'dddd', 'ar-SA') AS DayName,  
+    T.TotalSales,
+    T.TotalItems,
+    ISNULL(P.TotalCost, 0) AS TotalCost,
+    T.TotalSales - ISNULL(P.TotalCost, 0) AS FinalResult
+FROM
+(
     SELECT 
-         SaleDate,
-         FORMAT(SaleDate, 'dddd', 'ar-SA') AS DayName,  
-         TotalSales,
-         TotalItems
-    FROM
-    (
-         SELECT 
-              CAST(CreatedAt AS DATE) AS SaleDate,
-              SUM(TotalAmount) AS TotalSales,
-              SUM(TotalItems) AS TotalItems
-         FROM [db12750].[dbo].[Orders]
-         WHERE CAST(CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate AND DeletedAt is  NULL
-         GROUP BY CAST(CreatedAt AS DATE)
-    ) AS T
-    ORDER BY SaleDate;
+         CAST(CreatedAt AS DATE) AS SaleDate,
+         SUM(TotalAmount) AS TotalSales,
+         SUM(TotalItems) AS TotalItems
+    FROM [dbo].[Orders]
+    WHERE CAST(CreatedAt AS DATE) BETWEEN @StartDate  AND @EndDate
+          AND DeletedAt IS NULL
+    GROUP BY CAST(CreatedAt AS DATE)
+) AS T
+LEFT JOIN
+(
+    SELECT
+         CAST(CreatedAt AS DATE) AS CostDate,
+         SUM(Cost) AS TotalCost
+    FROM ProductionProcessDetails
+    WHERE CAST(CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate
+          AND DeletedAt IS NULL
+    GROUP BY CAST(CreatedAt AS DATE)
+) AS P ON T.SaleDate = P.CostDate
+ORDER BY T.SaleDate;
+
 END;
 
         ");

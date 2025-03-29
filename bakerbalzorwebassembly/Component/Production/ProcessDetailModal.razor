@@ -19,6 +19,7 @@
                                     <th class="d-none d-md-table-cell">#</th>
                                     <th>اسم العنصر</th>
                                     <th>الكمية</th>
+                                    <th>تكلفة الانتاج</th>
                                     <th >الوحدة</th>
                                     <th class="d-none d-md-table-cell">تاريخ الإنشاء</th>
                                     <th class="d-none d-md-table-cell">تاريخ التعديل</th>
@@ -44,6 +45,7 @@
                                             <td class="d-none d-md-table-cell">@item.Id</td>
                                             <td>@item.ItemName</td>
                                             <td>@item.Quantity</td>
+                                            <td>@item.Cost</td>
                                             <td>@item.UnitOfMeasure.GetDisplayName()</td>
                                          
                                             <td class="d-none d-md-table-cell">
@@ -60,6 +62,11 @@
                                 }
                             </tbody>
                         </table>
+
+                        <div class="summary">
+
+                            <span>مجموع التكلفة : @Items.Sum(x => x.Cost).ToString("C")</span>
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" @onclick="Close">إغلاق</button>
