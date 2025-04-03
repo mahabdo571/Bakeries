@@ -11,5 +11,6 @@ namespace Bakeries.DataAccess.Repo.IRepo
     {
         Task<IEnumerable<ProductModel>> GetProductsWithComponents();
 
+        Task<int> AddProduct(ProductModel product);
     }
 }

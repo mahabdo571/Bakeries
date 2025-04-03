@@ -34,19 +34,19 @@ namespace Bakeries.Business.Services
             newModel.CreatedAt = DateTime.Now;
             newModel.UpdatedAt = DateTime.Now;
 
-             await _unitOfWork.ProductRepository.AddAsync(newModel);
-
-             await _unitOfWork.FinishedProductInventoryRepository.AddAsync(new FinishedProductInventoryModel
+           int productId =   await _unitOfWork.ProductRepository.AddProduct(newModel);
+                
+                await _unitOfWork.FinishedProductInventoryRepository.AddAsync(new FinishedProductInventoryModel
                 {
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
                     ItemName = model.Name,
-                    Notes = model.Notes,
-                    ProductId = newModel.Id,
-                    CostPrice = model.Price,
+                    Notes = $"تم اضافته تلقائيا بناء على اضافته في قسم الانتاج - ملاحظات المنتج : {model.Notes}",
+                    ProductId = productId,
+                    CostPrice = 0,
                     UnitOfMeasure = (int)model.UnitOfMeasure,
                     Discount=0,
-                    UnitPriceForPeople=0,
+                    UnitPriceForPeople= model.Price,
                     UnitPriceForResellers=0,
                     Location="-",
                     Tax=0,

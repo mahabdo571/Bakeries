@@ -17,10 +17,19 @@ namespace Bakeries.DataAccess.Repo
 
         public async Task AddAsync(ProductModel model)
         {
+            //await context.Products.AddAsync(model);
+            //await context.SaveChangesAsync();
+            //// return model.Id;
+        }  
+        
+        public async Task<int> AddProduct(ProductModel model)
+        {
             await context.Products.AddAsync(model);
             await context.SaveChangesAsync();
-            // return model.Id;
+             return model.Id;
         }
+
+
 
         public async Task DeleteAsync(int id)
         {
