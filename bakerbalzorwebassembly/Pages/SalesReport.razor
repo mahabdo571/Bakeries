@@ -81,18 +81,18 @@ else if (filteredData.Any())
                     <tr @onclick="() => onclickrow(item.SaleDate)" style="cursor: pointer;">
                         <td>@item.DayName</td>
                         <td>@item.SaleDate.ToShortDateString()</td>
-                      
+
                         <td class="@GetAmountClass(item.TotalSales)">@item.TotalSales.ToString("C")</td>
                         <td class="@GetAmountClass(item.TotalCost)">@item.TotalCost.ToString("C")</td>
                         <td class="@GetAmountClass(item.FinalResult)">@item.FinalResult.ToString("C")</td>
                         <td>@item.TotalItems</td>
-                      
+
                     </tr>
                 }
             </tbody>
         </table>
     </div>
- 
+
 
 }
 else
@@ -127,18 +127,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await GenerateDummyData();
-        FilterData();
+    
+      await  FilterData();
         isLoading = false;
     }
 
-    private async Task GenerateDummyData()
-    {
 
-        reportData = await MyService.GetAsync(startDate,endDate);
-    }
 
-    private void FilterData()
+    private async Task FilterData()
     {
         if (startDate > endDate)
         {
@@ -147,10 +143,8 @@ else
         }
 
         hasError = false;
-        filteredData = reportData
-            .Where(x => x.SaleDate >= startDate && x.SaleDate <= endDate)
-            .OrderBy(x => x.SaleDate)
-            .ToList();
+        filteredData = await MyService.GetAsync(startDate, endDate);
+
     }
 
     private string GetAmountClass(decimal amount) =>

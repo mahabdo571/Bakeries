@@ -98,19 +98,19 @@ lastPriceCost =  @lastPriceCost ,
         {
             dbContext.Database.ExecuteSqlRaw(@"
            
-CREATE OR ALTER PROCEDURE dbo.sp_SalesReport
+CREATE OR ALTER PROCEDURE [dbo].[sp_SalesReport]
     @StartDate DATE,
     @EndDate DATE
 AS
 BEGIN
-    
+
 SELECT 
     T.SaleDate,
     FORMAT(T.SaleDate, 'dddd', 'ar-SA') AS DayName,  
     T.TotalSales,
     T.TotalItems,
-    ISNULL(P.TotalCost, 0) AS TotalCost,
-    T.TotalSales - ISNULL(P.TotalCost, 0) AS FinalResult
+    ISNULL(F.FinishedProductInventoryTotalCost, 0) AS TotalCost, 
+    T.TotalSales - ISNULL(F.FinishedProductInventoryTotalCost, 0) AS FinalResult
 FROM
 (
     SELECT 
@@ -124,17 +124,20 @@ FROM
 ) AS T
 LEFT JOIN
 (
-    SELECT
-         CAST(CreatedAt AS DATE) AS CostDate,
-         SUM(Cost) AS TotalCost
-    FROM ProductionProcessDetails
-    WHERE CAST(CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate
-          AND DeletedAt IS NULL
-    GROUP BY CAST(CreatedAt AS DATE)
-) AS P ON T.SaleDate = P.CostDate
+    SELECT 
+        CAST(sd.CreatedAt AS DATE) AS InventoryDate,
+        SUM(fpi.CostPrice * sd.Quantity) AS FinishedProductInventoryTotalCost
+    FROM FinishedProductInventorys AS fpi
+    INNER JOIN SalesDetails AS sd 
+        ON fpi.Id = sd.FinishedProductInventoryId
+    WHERE CAST(sd.CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate         
+          AND sd.DeletedAt IS NULL
+    GROUP BY CAST(sd.CreatedAt AS DATE)
+) AS F ON T.SaleDate = F.InventoryDate
 ORDER BY T.SaleDate;
 
 END;
+
 
         ");
         }

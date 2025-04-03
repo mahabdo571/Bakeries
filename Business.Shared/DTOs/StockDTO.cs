@@ -19,9 +19,9 @@ namespace Business.Shared.DTOs
         [Required]
         public decimal AvailableQuantity { get; set; }
       
-        [Range(0.00001, double.MaxValue)] // التأكد من أن السعر الإجمالي أكبر من 0
+        [Range(0.000001, double.MaxValue)] 
         [Column(TypeName = "decimal(18,5)")]
-        public decimal lastPriceCost { get; set; }
+        public decimal? lastPriceCost { get; set; }
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
 

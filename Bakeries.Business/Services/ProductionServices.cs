@@ -47,6 +47,9 @@ namespace Bakeries.Business.Services
              decimal ddd=   await productionEventsHelpers.RaiseProductionAddedEvent(unitOfWork, newModel);
                 newModel.TotalCost = ddd;
                 await unitOfWork.ProductionRepository.UpdateAsync(newModel);
+                var fpi = await unitOfWork.FinishedProductInventoryRepository.GetByProuductIdAsync(newModel.ProductId);
+                fpi.CostPrice = (ddd / (newModel.QuantityProduced + newModel.QuantityDamaged));
+                await unitOfWork.FinishedProductInventoryRepository.UpdateAsync(fpi);
                 await unitOfWork.SaveChangesAsync();
                 await unitOfWork.CommitAsync();
                 return newModel.Id;
