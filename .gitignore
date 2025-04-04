@@ -530,3 +530,4 @@ app.*.map.json
 /Bakeries.Web/bakerieswepapp/android/app/profile
 /Bakeries.Web/bakerieswepapp/android/app/release
 
+Bakeries.API/appsettings.json

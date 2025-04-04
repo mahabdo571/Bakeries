@@ -1,0 +1,279 @@
+﻿@page "/pos"
+@using System.ComponentModel.DataAnnotations
+
+<!-- Product Search -->
+<div class="search-bar">
+    <input type="text" @bind="searchTerm" placeholder="Search products..."
+           class="search-input" aria-label="Product search" />
+</div>
+
+<main class="pos-container">
+    <!-- Product Grid -->
+    <section class="product-grid">
+        @foreach (var product in FilteredProducts)
+        {
+            <div class="product-card">
+                <img src="@product.ImageUrl" alt="@product.Name" class="product-image" />
+                <div class="product-info">
+                    <h3>@product.Name</h3>
+                    <p>@product.Price.ToString("C")</p>
+                    <button @onclick="() => AddToCart(product)"
+                            class="btn-primary">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        }
+    </section>
+
+    <!-- Shopping Cart -->
+    <section class="cart-container">
+        <div class="cart-header">
+            <h2>Cart (@cart.Count items)</h2>
+        </div>
+        <div class="cart-items">
+            @foreach (var item in cart)
+            {
+                <div class="cart-item">
+                    <div class="item-info">
+                        <h4>@item.Product.Name</h4>
+                        <p>@item.Product.Price.ToString("C")</p>
+                    </div>
+                    <div class="item-controls">
+                        <button @onclick="() => AdjustQuantity(item, -1)"
+                                class="btn-icon" aria-label="Decrease quantity">
+                            -
+                        </button>
+                        <span class="quantity">@item.Quantity</span>
+                        <button @onclick="() => AdjustQuantity(item, 1)"
+                                class="btn-icon" aria-label="Increase quantity">
+                            +
+                        </button>
+                        <button @onclick="() => RemoveItem(item)"
+                                class="btn-danger" aria-label="Remove item">
+                            ×
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="cart-footer">
+            <p class="total">Total: @TotalAmount.ToString("C")</p>
+            <button class="btn-checkout" @onclick="ProcessPayment">
+                Process Payment
+            </button>
+        </div>
+    </section>
+</main>
+
+@code {
+    private List<Product> products = new();
+    private List<CartItem> cart = new();
+    private string searchTerm = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        // Sample products - replace with actual data source
+        products = new List<Product>
+        {
+            new Product(1, "Laptop", 999.99m, "images/laptop.jpg"),
+            new Product(2, "Headphones", 149.99m, "images/headphones.jpg"),
+            // Add more products
+        };
+    }
+
+    private IEnumerable<Product> FilteredProducts =>
+        products.Where(p => p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+    private decimal TotalAmount =>
+        cart.Sum(item => item.Product.Price * item.Quantity);
+
+    private void AddToCart(Product product)
+    {
+        var existingItem = cart.FirstOrDefault(i => i.Product.Id == product.Id);
+        if (existingItem != null)
+        {
+            existingItem.Quantity++;
+        }
+        else
+        {
+            cart.Add(new CartItem { Product = product, Quantity = 1 });
+        }
+    }
+
+    private void AdjustQuantity(CartItem item, int delta)
+    {
+        item.Quantity += delta;
+        if (item.Quantity <= 0) cart.Remove(item);
+    }
+
+    private void RemoveItem(CartItem item) => cart.Remove(item);
+
+    private void ProcessPayment()
+    {
+        // Payment processing logic
+    }
+
+    private class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public string ImageUrl { get; set; }
+
+        public Product(int id, string name, decimal price, string imageUrl)
+        {
+            Id = id;
+            Name = name;
+            Price = price;
+            ImageUrl = imageUrl;
+        }
+    }
+
+    private class CartItem
+    {
+        public Product Product { get; set; }
+        public int Quantity { get; set; }
+    }
+}
+
+        <style>
+    /* Base Styles */
+    :root {
+        --primary-color: #2962ff;
+        --secondary-color: #455a64;
+        --background: #f5f5f5;
+        --text-dark: #212121;
+        --text-light: #ffffff;
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: var(--background);
+    }
+
+    /* POS Layout */
+    .pos-container {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 2rem;
+        padding: 1rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Product Grid */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+    }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+        }
+
+    .product-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .product-info {
+        padding: 1rem;
+        text-align: center;
+    }
+
+    /* Cart Styles */
+    .cart-container {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 1rem;
+    }
+
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .item-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .quantity {
+        min-width: 30px;
+        text-align: center;
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-checkout {
+        background: #00c853;
+        color: white;
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.1rem;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .pos-container
+
+    {
+        grid-template-columns: 1fr;
+        padding: 0.5rem;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+
+    }
+
+    @@media (max-width: 480px) {
+        .product-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    /* Accessibility */
+    button:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.8rem;
+        margin: 1rem 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+        </style>

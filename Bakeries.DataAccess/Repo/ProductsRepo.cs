@@ -54,8 +54,8 @@ namespace Bakeries.DataAccess.Repo
             if (Production)
                 throw new Exception("هذا النتج مرتبط بعمليات انتاج معرفة بالنظام احذف هذه العمليات  اولا");
 
-            //TODD
-            //حذف المكونات المرتبطة اثناء حذف المنتج ميزة للمستقبل  
+
+            //TODO: حذف المكونات المرتبطة اثناء حذف المنتج ميزة للمستقبل  
             /*                                    var ingredients = await context.ProductIngredients
                                                     .WhereNotDeleted()
                                                     .Where(i => i.ProductId == id)
