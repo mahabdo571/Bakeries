@@ -531,3 +531,4 @@ app.*.map.json
 /Bakeries.Web/bakerieswepapp/android/app/release
 
 Bakeries.API/appsettings.json
+Bakeries.API/appsettings.Development.json

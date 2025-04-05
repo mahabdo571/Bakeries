@@ -20,7 +20,7 @@ namespace DAevthERP
 
             var configuration = new ConfigurationBuilder()
 
-              .SetBasePath("C:\\Programming works\\Bakeries\\Bakeries.API\\")//
+              .SetBasePath(@"C:\MyProgrammingWork\Bakeries\Bakeries.API\")//
                                                                              // .SetBasePath("C:\\devlop\\Bakeries\\Bakeries.API")//Directory.GetCurrentDirectory()
                 .AddJsonFile("appsettings.json")
                 .Build();
